@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: "3"
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    links:
+      - "api"
+
+  api:
+    build:
+      context: ./api
+    depends_on:
+      - postgres
+    ports:
+      - "4200:4200"
+
+  postgres:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
