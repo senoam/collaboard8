@@ -12,13 +12,19 @@ Then go to http://localhost:3000/.
 
 ## React router
 
-In `./client/src/index.js`, you can add a new Route and put your Route code into `./client/src/routes`. The "/" route essentially acts as a navbar right now and renders components right under it. Click the `Whiteboard` link to check it out (http://localhost:3000/whiteboard). You can find more info about `react-router-dom` [here](https://github.com/remix-run/react-router/blob/main/docs/getting-started/tutorial.md).
+In `./client/src/index.js`, you can add a new Route and add the implementation in `./client/src/routes`. You can find more info about `react-router-dom` [here](https://github.com/remix-run/react-router/blob/main/docs/getting-started/tutorial.md).
 
 ## Backend
 
-- The api is served at http://localhost:4200/. We could introduce nginx later??
+- The api is served at http://localhost:4200/. (We could introduce nginx later??)
 - Put all your route stuff in `api/routes` and declare them in `app.js`.
-- To interact with the db, use `req.db`. Example can be found in the route testAPI/ping. Essentially, I made the db into middleware, so every query to the backend gets access to the db lol.
+- To interact with the db, use `req.db`. Example can be found in the route testAPI/ping. Essentially, the db became a part of the Express middleware, so every query to the backend will grab access to the db before getting passed to your route logic.
+
+## Database
+
+Put your sql dumps in `db/` to prepopulate tables. You can look at `whiteboard.sql` for reference. (I'm not really sure if we would need to put them all in the same file because some db attributes are dependent on others, but we'll see later on.).
+
+You can check `client\src\routes\Whiteboard.js` for how to call the db and use the values.
 
 # References used
 
