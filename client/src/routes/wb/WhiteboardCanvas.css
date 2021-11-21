@@ -1,0 +1,4 @@
+/* TODO: Make the whiteboard have a dynamic size according to user's viewport */
+.whiteboard-canvas {
+	background: rgb(222, 228, 248);
+}

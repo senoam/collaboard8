@@ -24,7 +24,7 @@ In `./client/src/index.js`, you can add a new Route and add the implementation i
 
 Put your sql dumps in `db/` to prepopulate tables. You can look at `whiteboard.sql` for reference. (I'm not really sure if we would need to put them all in the same file because some db attributes are dependent on others, but we'll see later on.).
 
-You can check `client\src\routes\Whiteboard.js` for how to call the db and use the values.
+You can check `client/src/routes/wb/Whiteboard.js` for how to call the db and use the values.
 
 # References used
 
