@@ -5,7 +5,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from "./App";
-import Whiteboard from "./routes/Whiteboard";
+import Whiteboard from "./routes/wb/Whiteboard";
 
 ReactDOM.render(
 	<BrowserRouter>

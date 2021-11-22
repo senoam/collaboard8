@@ -23,9 +23,24 @@ class App extends Component {
 			.catch((err) => err);
 	}
 
+	getWhiteboardRoles() {
+		fetch("http://localhost:4200/testAPI/collabrole")
+			.then((res) => res.json())
+			.then((d) => {
+				const rows = d.data;
+				const roles = rows.map((row) => (
+					<li key={`role_${row.role_name}`}>{row.role_name}</li>
+				));
+
+				this.setState({ roles: roles });
+			})
+			.catch((err) => err);
+	}
+
 	componentDidMount() {
 		this.callAPI();
 		this.callDB();
+		this.getWhiteboardRoles();
 	}
 
 	render() {
@@ -37,6 +52,8 @@ class App extends Component {
 				</header>
 				<p className="App-intro">{this.state.apiResponse}</p>
 				<p className="App-intro">{this.state.dbStatus}</p>
+				<h3>Whiteboard Roles (Example db call):</h3>
+				<ul>{this.state.roles}</ul>
 				<Link to="/whiteboard">Whiteboard</Link>
 			</div>
 		);
