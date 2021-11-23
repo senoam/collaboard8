@@ -8,7 +8,6 @@ class App extends Component {
 		this.state = { apiResponse: "", dbStatus: "" };
 	}
 
-	// I've been trying to make the server url be an env, but couldn't make it work. You can try it out if you guys have time. -sandy
 	callAPI() {
 		fetch("http://localhost:4200/testAPI")
 			.then((res) => res.text())
