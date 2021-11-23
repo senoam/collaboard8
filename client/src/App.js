@@ -54,6 +54,8 @@ class App extends Component {
 				<h3>Whiteboard Roles (Example db call):</h3>
 				<ul>{this.state.roles}</ul>
 				<Link to="/whiteboard">Whiteboard</Link>
+				<br/>
+				<Link to="/login">Login</Link>
 			</div>
 		);
 	}
