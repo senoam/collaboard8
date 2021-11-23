@@ -30,15 +30,5 @@ router.get("/collabrole", function (req, res) {
 		);
 });
 
-router.get("/userdb", function (req, res) {
-	req.db
-	.query(`SELECT * FROM users;`)
-	.then((data) => {
-		res.json({ data: data.rows });
-	})
-	.catch(() =>
-		res.send("Theres something wrong with user table.")
-	);
-})
 
 module.exports = router;
