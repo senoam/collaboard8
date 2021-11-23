@@ -10,8 +10,6 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testAPIRouter = require("./routes/testAPI");
 
-const PORT = process.env.PORT || 4200;
-
 // Postgres
 const client = new pg.Client({
 	password: "postgres",
@@ -56,13 +54,5 @@ app.use(function (err, req, res, next) {
 	res.status(err.status || 500);
 	res.render("error");
 });
-
-(async () => {
-	await client.connect();
-
-	app.listen(PORT, () => {
-		console.log("Started at http://localhost:%d", PORT);
-	});
-})();
 
 module.exports = app;
