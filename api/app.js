@@ -16,6 +16,7 @@ const client = new pg.Client({
 	user: "postgres",
 	host: "postgres",
 });
+client.connect();
 
 var app = express();
 
