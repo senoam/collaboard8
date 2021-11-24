@@ -19,11 +19,10 @@ services:
       - "4200:4200"
 
   postgres:
-    image: postgres:11.2-alpine
+    build:
+      context: ./db
     environment:
       POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./db/:/docker-entrypoint-initdb.d/
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
