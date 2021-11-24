@@ -1,62 +1,46 @@
-import React, { Component, createRef } from "react";
+import React, { createRef, useEffect } from "react";
 import "./WhiteboardCanvas.css";
 
-class WhiteboardCanvas extends Component {
-	constructor(props) {
-		super(props);
+function WhiteboardCanvas(props) {
+	// To get the actual canvas element, use "this.canvasRef.current"
+	var canvasRef = createRef();
 
-		// To get the actual canvas element, use "this.canvasRef.current"
-		this.canvasRef = createRef();
-	}
+	useEffect(() => {
+		window.addEventListener("mousemove", draw, false);
 
-	componentDidMount() {
-		this.canvasContext = this.canvasRef.current.getContext("2d");
-
-		window.addEventListener("mousemove", this.draw, false);
-	}
-
-	componentWillUnmount() {
-		window.addEventListener("mousemove", this.draw, false);
-	}
+		return function cleanup() {
+			window.removeEventListener("mousemove", draw, false);
+		};
+	});
 
 	// How to draw: https://stackoverflow.com/a/33063222
-	draw = (e) => {
-		var pos = this.getMousePos(this.canvasRef.current, e);
+	const draw = (e) => {
+		var pos = getMousePos(canvasRef.current, e);
 
 		// Brush Color
-		this.canvasContext.fillStyle = this.props.brush.color;
+		canvasRef.current.getContext("2d").fillStyle = props.brush.color;
 
 		// Brush size
-		const bSize = this.props.brush.size;
-		this.canvasContext.fillRect(pos.x, pos.y, bSize, bSize);
+		const bSize = props.brush.size;
+		canvasRef.current.getContext("2d").fillRect(pos.x, pos.y, bSize, bSize);
 	};
 
-	getMousePos = (canvas, evt) => {
-		var rect = this.canvasRef.current.getBoundingClientRect();
+	const getMousePos = (canvas, evt) => {
+		var rect = canvasRef.current.getBoundingClientRect();
 		return {
 			x: ((evt.clientX - rect.left) / (rect.right - rect.left)) * canvas.width,
 			y: ((evt.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height,
 		};
 	};
 
-	render() {
-		return (
-			<canvas
-				ref={this.canvasRef}
-				className="whiteboard-canvas"
-				width="1000"
-				height="500"
-			></canvas>
-		);
-	}
+	return (
+		<canvas
+			ref={canvasRef}
+			className="whiteboard-canvas"
+			width="1000"
+			height="500"
+		></canvas>
+	);
 }
-
-WhiteboardCanvas.defaultProps = {
-	brush: {
-		color: "black",
-		size: 10,
-		type: "pen",
-	},
-};
 
 export default WhiteboardCanvas;
