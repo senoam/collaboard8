@@ -15,14 +15,18 @@ function verifyToken(req, res, next) {
         if (error) {
             return res.sendStatus(403);
         }
-        console.log(user)
         req.user = user;
     });
 
     next();
-}   
+}
+
+function createAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: '20s' });
+}
 
 
 module.exports = {
-    verifyToken
+    verifyToken,
+    createAccessToken
 }

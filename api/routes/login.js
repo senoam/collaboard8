@@ -8,6 +8,9 @@ router.get('/profile', auth.verifyToken, (req, res, next) => {
     res.json(req.user)
 });
 
+// User login (takes email and password and checks if the user exists in the db)
+// JWT is used for authentication and authorization
+// Reference: https://www.youtube.com/watch?v=mbsmsi7l3r4
 router.post('/', function (req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
@@ -21,8 +24,8 @@ router.post('/', function (req, res, next) {
                 user = {
                     email: data[0].email
                 }
-                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN);
-                res.json({accessToken: accessToken})
+                const accessToken = auth.createAccessToken(user);
+                res.json({accessToken: accessToken});
             } else {
                 res.send("Invalid email and/or password")
             }
