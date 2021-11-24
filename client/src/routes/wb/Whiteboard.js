@@ -1,8 +1,12 @@
 import React, { Fragment, useState } from "react";
+import { useLocation } from "react-router";
 import WhiteboardCanvas from "./WhiteboardCanvas";
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
+	const location = useLocation();
+	const room = location.state.room;
+
 	const [brushColor, setBrushColor] = useState("black");
 	const [brushSize, setBrushSize] = useState(10);
 	// TODO: We dont have multiple brush types yet
@@ -14,6 +18,7 @@ function Whiteboard(props) {
 		<Fragment>
 			<div className="whiteboard-header">
 				<h2>Whiteboard</h2>
+				<h2>Room: {room}</h2>
 
 				<div className="whiteboard-picker">
 					<label for="brushColorPicker">Brush color: </label>
@@ -58,6 +63,7 @@ function Whiteboard(props) {
 					size: brushSize,
 					type: brushType,
 				}}
+				room={room}
 			/>
 		</Fragment>
 	);

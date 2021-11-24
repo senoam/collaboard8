@@ -4,6 +4,7 @@ import "./WhiteboardCanvas.css";
 function WhiteboardCanvas(props) {
 	// To get the actual canvas element, use "this.canvasRef.current"
 	var canvasRef = createRef();
+	const room = props.room;
 
 	useEffect(() => {
 		window.addEventListener("mousemove", draw, false);
