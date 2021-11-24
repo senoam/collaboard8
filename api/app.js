@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -8,6 +9,8 @@ var pg = require("pg");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var loginRouter = require("./routes/login");
+var signupRouter = require("./routes/signup");
 var testAPIRouter = require("./routes/testAPI");
 
 // Postgres
@@ -38,6 +41,8 @@ app.use(function (req, res, next) {
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/login", loginRouter);
+app.use("/signup", signupRouter);
 app.use("/testAPI", testAPIRouter);
 
 // catch 404 and forward to error handler

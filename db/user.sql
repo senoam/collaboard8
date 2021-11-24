@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 INSERT INTO users(first_name, last_name, email, password) VALUES ('John', 'Doe', 'johndoe@example.com','admin1234');
+
+INSERT INTO users(first_name, last_name, email, password) VALUES ('Frank', 'Map', 'idkdoe@example.com','haha1234');
+
