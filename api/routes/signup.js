@@ -14,22 +14,30 @@ router.post('/', function (req, res, next) {
 
     if(email && password && firstName && lastName) {
         req.db
-        .query('SELECT * FROM users WHERE email = ?', [email], function (error, results) {
+        .query('SELECT * FROM users WHERE email = $1', [email],  (error, results) => {
+            data = results['rows'];
+            console.log(data);
             if (error) {
                 throw error;
-            } else if (results.length > 0) {
-                response.send('account with that email already exists');
+            } else if (data.length !== 0) {
+                res.send('account with that email already exists');
+                res.end();
             } else {
-
+                insertUsertoDB(email, password, firstName, lastName, req);
+                res.send('user added');
             }
-        })
+        });
     }
-
 });
 
-function insertUsertoDB(username, password, firstName, lastName) {
+function insertUsertoDB(email, password, firstName, lastName, req) {
     req.db
-    .query('INSERT INTO users (')
+    .query('INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)', 
+        [email, password, firstName, lastName],  (err, res) => {
+        if (err) {
+            throw err;
+        }
+    });
 }
 
 module.exports = router;
