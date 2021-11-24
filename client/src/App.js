@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router";
 import logo from "./logo.svg";
 import "./App.css";
-import { Link } from "react-router-dom";
 
 function App(props) {
 
 	const [apiResponse,setResponse] = useState("");
   	const [dbStatus,setStatus] = useState("");
 	const [roles, setRoles] = useState("");
+
+	const [room_id, setRoom] = React.useState("");
+
+	let navigate = useNavigate();
+
+	const inputRoom = (event) => {
+		setRoom(event.target.value);
+	};
 
 	const callAPI = () => {
 		fetch("http://localhost:4200/testAPI")
@@ -36,6 +44,10 @@ function App(props) {
 			.catch((err) => err);
 	}
 
+	const updateNavigate = (event) => {
+		navigate('/whiteboard', {state: {room: room_id}});
+	 };
+
 	useEffect(()=>{
 		callAPI();
 		callDB();
@@ -52,7 +64,14 @@ function App(props) {
 			<p className="App-intro">{dbStatus}</p>
 			<h3>Whiteboard Roles (Example db call):</h3>
 			<ul>{roles}</ul>
-			<Link to="/whiteboard">Whiteboard</Link>
+			<br></br>
+			<input
+				type="text"
+				placeholder="Room Name"
+				value={room_id}
+				onChange={inputRoom}
+			/>
+			<button type="button" onClick={updateNavigate}>Join Room</button>
 		</div>
 	);
 };
