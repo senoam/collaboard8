@@ -52,13 +52,12 @@ app.use(function (err, req, res, next) {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	// render the error page
 	res.status(err.status || 500);
-	res.render("error");
+	res.send("Please check that your query is valid.");
 });
 
 // Set up for socket.io
-const http = require('http');
+const http = require("http");
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
@@ -69,7 +68,7 @@ const messages = {
 };
 
 // Connection event, sockets represent user
-io.on('connection', socket => {
+io.on("connection", (socket) => {
 	/*socket.on('join_server',  (username) => {
 		const user = {
 			username,
@@ -79,19 +78,19 @@ io.on('connection', socket => {
 		io.emit('new_user', users);
 	});*/
 
-	socket.on('join_room', (room_id, callback) => {
+	socket.on("join_room", (room_id, callback) => {
 		socket.join(room_id);
 		callback(messages[room_id]);
 	});
 
-	socket.on('drawing', (data, room_id) => {
-		socket.to(room_id).emit('drawing', data);
+	socket.on("drawing", (data, room_id) => {
+		socket.to(room_id).emit("drawing", data);
 	});
 
 	//Disconnection event, filter out user that leaves room
-	socket.on('disconnect', () => {
-		users = user.filter(u => u.id != socket.id);
-		io.emit('new_user', users);
+	socket.on("disconnect", () => {
+		users = user.filter((u) => u.id != socket.id);
+		io.emit("new_user", users);
 	});
 });
 
