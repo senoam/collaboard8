@@ -1,9 +1,11 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
+var auth = require("../middleware/auth");
 
-router.get('/', function (req, res, next) {
-    res.send('Login Page');
+// Checks if the right user is logged in
+router.get('/profile', auth.verifyToken, (req, res, next) => {
+    res.json(req.user)
 });
 
 router.post('/', function (req, res, next) {
@@ -15,19 +17,15 @@ router.post('/', function (req, res, next) {
             data = results['rows'];
             if (error) {
                 throw error;
-            } else if (!data) {
-                console.log(JSON.stringify(results));
-                console.log(email);
-                console.log(password);
-                res.send("Invalid email and/or password!");
-            }
-            else if (data[0].password === password) {
+            } else if (data[0].password === password) {
                 user = {
                     email: data[0].email
                 }
                 const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN);
                 res.json({accessToken: accessToken})
-            } 
+            } else {
+                res.send("Invalid email and/or password")
+            }
             res.end();
         });
     } else {
