@@ -16,7 +16,6 @@ router.post('/', function (req, res, next) {
         req.db
         .query('SELECT * FROM users WHERE email = $1', [email],  (error, results) => {
             data = results['rows'];
-            console.log(data);
             if (error) {
                 throw error;
             } else if (data.length !== 0) {
@@ -27,6 +26,8 @@ router.post('/', function (req, res, next) {
                 res.send('user added');
             }
         });
+    } else {
+        res.send("Please insert your information");
     }
 });
 
