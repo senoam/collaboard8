@@ -16,23 +16,30 @@ router.post('/', function (req, res, next) {
     var password = req.body.password;
 
     if (email && password) {
-        req.db.query('SELECT * FROM user WHERE email = $1', [email], (error, results) => {
+        req.db.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
             data = results['rows'];
             if (error) {
                 throw error;
-            } 
-            var valid = bcrypt.compare(password, data[0].password).then(valid => {
-                if (valid) {
-                    user = {
-                        email: data[0].email
+            }
+
+            // Checks if the input email exists in the db
+            if (data.length > 0) {
+                var valid = bcrypt.compare(password, data[0].password).then(valid => {
+                    if (valid) {
+                        user = {
+                            email: data[0].email
+                        }
+                        const accessToken = auth.createAccessToken(user);
+                        res.json({accessToken: accessToken});
+                    } else {
+                        res.send("Invalid email and/or password");
                     }
-                    const accessToken = auth.createAccessToken(user);
-                    res.json({accessToken: accessToken});
-                } else {
-                    res.send("Invalid email and/or password")
-                }
+                    res.end();
+                });
+            } else {
+                res.send("Invalid email and/or password");
                 res.end();
-            })
+            }
         });
     } else {
         res.send('Enter email and password');

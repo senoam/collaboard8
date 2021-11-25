@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
 router.get("/db", function (req, res) {
 	req.db
-	.query(`SELECT * FROM user;`)
+	.query(`SELECT * FROM users;`)
 	.then((data) => {
 		res.json({ data: data.rows });
 	})

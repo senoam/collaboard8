@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS whiteboard_collaborator (
   user_id int,
   user_role varchar(50),
   FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id),
-  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (user_role) REFERENCES whiteboard_collaborator_role(role_name)
 );
 
