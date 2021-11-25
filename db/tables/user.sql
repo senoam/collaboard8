@@ -10,4 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 
-INSERT INTO users(first_name, last_name, email, password) VALUES ('John', 'Doe', 'johndoe@example.com','admin1234');
+INSERT INTO users(first_name, last_name, email, password) VALUES ('John', 'Doe', 'johndoe@example.com','$2a$10$Nyl..HUfKHr65wY3pc3XnOJJFSlSk.kgx.2v11VpfpAtvBlzbST3m');
+
+INSERT INTO users(first_name, last_name, email, password) VALUES ('Frank', 'Map', 'frankmap@example.com','$2a$10$KHgJG16r8v9WkChV6zB2gusUkW4Ak8hJg.MF/F18hE8UijKlkBT8u');
+
