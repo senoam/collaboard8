@@ -1,9 +1,8 @@
 -- Creating tables for the whiteboard
 
 CREATE TABLE IF NOT EXISTS whiteboard_collaborator_role (
-  role_id serial,
-  role_name varchar(100),
-  PRIMARY KEY (role_id)
+  role_name varchar(50),
+  PRIMARY KEY (role_name)
 );
 
 CREATE TABLE IF NOT EXISTS whiteboard (
@@ -14,10 +13,11 @@ CREATE TABLE IF NOT EXISTS whiteboard (
 
 CREATE TABLE IF NOT EXISTS whiteboard_collaborator (
   whiteboard_id serial,
-  user_id int, -- TODO: This would be a foreign key as well.
-  user_role int,
+  user_id int,
+  user_role varchar(50),
   FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id),
-  FOREIGN KEY (user_role) REFERENCES whiteboard_collaborator_role(role_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (user_role) REFERENCES whiteboard_collaborator_role(role_name)
 );
 
 

@@ -1,6 +1,7 @@
 require('dotenv').config();
 var createError = require("http-errors");
 var express = require("express");
+
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -56,9 +57,50 @@ app.use(function (err, req, res, next) {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	// render the error page
 	res.status(err.status || 500);
-	res.render("error");
+	res.send("Please check that your query is valid.");
 });
+
+// Set up for socket.io
+const http = require("http");
+const server = http.createServer(app);
+const socket = require("socket.io");
+const io = socket(server);
+
+let users = [];
+const messages = {
+	history: [],
+};
+
+// Connection event, sockets represent user
+io.on("connection", (socket) => {
+	/*socket.on('join_server',  (username) => {
+		const user = {
+			username,
+			id: socket.id,
+		};
+		users.push(user);
+		io.emit('new_user', users);
+	});*/
+
+	socket.on("join_room", (room_id, callback) => {
+		socket.join(room_id);
+		callback(messages[room_id]);
+	});
+
+	socket.on("drawing", (data, room_id) => {
+		socket.to(room_id).emit("drawing", data);
+	});
+
+	//Disconnection event, filter out user that leaves room
+	socket.on("disconnect", () => {
+		users = user.filter((u) => u.id != socket.id);
+		io.emit("new_user", users);
+	});
+});
+
+/*server.listen(port, () => {
+    console.log(`Listening on port: ${port}`);
+})*/
 
 module.exports = app;
