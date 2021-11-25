@@ -1,6 +1,8 @@
 var express = require('express');
 const { request, response } = require('../app');
 var router = express.Router();
+var helpers = require('../modules/helpers');
+var bcrypt = require('bcrypt');
 
 router.get('/', function (req, res, next) {
     res.send('Sign up Page');
@@ -22,8 +24,14 @@ router.post('/', function (req, res, next) {
                 res.send('account with that email already exists');
                 res.end();
             } else {
-                insertUsertoDB(email, password, firstName, lastName, req);
-                res.send('user added');
+                saltRounds = 10;
+                bcrypt.hash(password, saltRounds, function (err, hash) {
+                    if (err) {
+                        throw err;
+                    }
+                    helpers.insertUsertoDB(email, hash, firstName, lastName, req);
+                    res.send('user added successfully');
+                });
             }
         });
     } else {
@@ -31,14 +39,6 @@ router.post('/', function (req, res, next) {
     }
 });
 
-function insertUsertoDB(email, password, firstName, lastName, req) {
-    req.db
-    .query('INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)', 
-        [email, password, firstName, lastName],  (err, res) => {
-        if (err) {
-            throw err;
-        }
-    });
-}
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
 var router = express.Router();
-var auth = require("../middleware/auth");
+var auth = require("../modules/auth");
+var bcrypt = require('bcrypt');
 
 // Checks if the right user is logged in
 router.get('/profile', auth.verifyToken, (req, res, next) => {
@@ -20,16 +20,19 @@ router.post('/', function (req, res, next) {
             data = results['rows'];
             if (error) {
                 throw error;
-            } else if (data[0].password === password) {
-                user = {
-                    email: data[0].email
+            } 
+            var valid = bcrypt.compare(password, data[0].password).then(valid => {
+                if (valid) {
+                    user = {
+                        email: data[0].email
+                    }
+                    const accessToken = auth.createAccessToken(user);
+                    res.json({accessToken: accessToken});
+                } else {
+                    res.send("Invalid email and/or password")
                 }
-                const accessToken = auth.createAccessToken(user);
-                res.json({accessToken: accessToken});
-            } else {
-                res.send("Invalid email and/or password")
-            }
-            res.end();
+                res.end();
+            })
         });
     } else {
         res.send('Enter email and password');
