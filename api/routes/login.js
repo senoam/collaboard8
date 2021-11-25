@@ -16,7 +16,7 @@ router.post('/', function (req, res, next) {
     var password = req.body.password;
 
     if (email && password) {
-        req.db.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
+        req.db.query('SELECT * FROM user WHERE email = $1', [email], (error, results) => {
             data = results['rows'];
             if (error) {
                 throw error;
