@@ -10,6 +10,7 @@ var pg = require("pg");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testAPIRouter = require("./routes/testAPI");
+var strokesRouter = require("./routes/strokes");
 
 // Postgres
 const client = new pg.Client({
@@ -40,6 +41,7 @@ app.use(function (req, res, next) {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
+app.use("/strokes", strokesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

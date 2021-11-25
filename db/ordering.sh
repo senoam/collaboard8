@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tables_ordered=("user" "whiteboard" "history")
+tables_ordered=("user" "whiteboard" "history" "strokes")
 len=${#tables_ordered[*]}
 
 i=1
