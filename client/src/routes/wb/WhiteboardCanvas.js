@@ -22,29 +22,29 @@ function WhiteboardCanvas(props) {
 		}
 
 		var current;
-		const onMouseDown  = (e) => {
+		const onStrokeStart  = (e) => {
 			current = getMousePos(canvas, e);
 			isDrawing = true;
 		}
 
-		const onMouseUp  = (e) => {
+		const onStrokeEnd  = (e) => {
 			if (!isDrawing) return;
 			isDrawing = false;
 			const pos = getMousePos(canvas, e);
 			draw(current.x, current.y, pos.x, pos.y);
 		}
 
-		const onMouseMove  = (e) => {
+		const onStrokeContinue  = (e) => {
 			if (!isDrawing) return;
 			const pos = getMousePos(canvas, e);
 			draw(current.x, current.y, pos.x, pos.y);
 			current = getMousePos(canvas, e);
 		}
 
-		canvas.addEventListener('mousedown', onMouseDown, false);
-		canvas.addEventListener('mouseup', onMouseUp, false);
-		canvas.addEventListener('mouseout', onMouseUp, false);
-		canvas.addEventListener('mousemove', onMouseMove, false);
+		canvas.addEventListener('mousedown', onStrokeStart, false);
+		canvas.addEventListener('mouseup', onStrokeEnd, false);
+		canvas.addEventListener('mouseout', onStrokeEnd, false);
+		canvas.addEventListener('mousemove', onStrokeContinue, false);
 
 	});
 
