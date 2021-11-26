@@ -1,5 +1,6 @@
 import React, { createRef, useEffect } from "react";
 import "./WhiteboardCanvas.css";
+import { io } from "socket.io-client"
 
 function WhiteboardCanvas(props) {
 	// To get the actual canvas element, use "this.canvasRef.current"
@@ -7,9 +8,20 @@ function WhiteboardCanvas(props) {
 	const room = props.room;
 	var isDrawing = false;
 
+	const socket = io("http://localhost:4000");
+	socket.emit("join_room", room);
+
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		const context = canvas.getContext("2d");
+
+		socket.on("drawing", (data) => {
+			var stroke = new Image();
+			stroke.onload = function() {
+				context.drawImage(stroke, 0, 0);
+			};
+			stroke.src = data;
+		})
 
 		const draw = (x0, y0, x1, y1) => {
 			context.beginPath();
@@ -19,6 +31,12 @@ function WhiteboardCanvas(props) {
 			context.lineWidth = props.brush.size;
 			context.stroke();
 			context.closePath();
+
+			const timeout = setTimeout(() => {
+				var strokeData = canvas.toDataURL("image/png");
+				socket.emit("drawing", room, strokeData);
+			}, 1000);
+			return () => clearTimeout(timeout);
 		}
 
 		var current;
