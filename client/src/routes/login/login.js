@@ -5,7 +5,7 @@ function Login(props) {
 	return (
 		<div className="login-wrapper">
 			<h2>Login</h2>
-			<form>
+			<form action="http://localhost:4200/login" method="post">
 				<label>
 					<p>Username</p>
 					<input type="text" />
