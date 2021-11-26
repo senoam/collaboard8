@@ -64,45 +64,31 @@ app.use(function (err, req, res, next) {
 });
 
 // Set up for socket.io
-const http = require("http");
-const server = http.createServer(app);
-const socket = require("socket.io");
-const io = socket(server);
+var socketapp = express();
+var server = require("http").createServer(socketapp);
+var io = require("socket.io")(server, {
+	cors: {
+	  origin: "*"
+	}
+  });
 
-let users = [];
-const messages = {
-	history: [],
-};
+var serv_port = 4000;
+
+server.listen(serv_port, function () {
+    console.log('Express server listening on port %d in %s mode', serv_port, socketapp.get('env'));
+});
 
 // Connection event, sockets represent user
 io.on("connection", (socket) => {
-	/*socket.on('join_server',  (username) => {
-		const user = {
-			username,
-			id: socket.id,
-		};
-		users.push(user);
-		io.emit('new_user', users);
-	});*/
+	console.log(`Listening on port: ${socket.id}`);
 
-	socket.on("join_room", (room_id, callback) => {
+	socket.on("join_room", (room_id) => {
 		socket.join(room_id);
-		callback(messages[room_id]);
 	});
 
-	socket.on("drawing", (data, room_id) => {
+	socket.on("drawing", (room_id, data) => {
 		socket.to(room_id).emit("drawing", data);
 	});
-
-	//Disconnection event, filter out user that leaves room
-	socket.on("disconnect", () => {
-		users = user.filter((u) => u.id != socket.id);
-		io.emit("new_user", users);
-	});
 });
-
-/*server.listen(port, () => {
-    console.log(`Listening on port: ${port}`);
-})*/
 
 module.exports = app;

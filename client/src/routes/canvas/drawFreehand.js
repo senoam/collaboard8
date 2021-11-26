@@ -2,7 +2,9 @@ import { logData, getMousePos } from "./utils";
 import { sendStroke } from "./strokeData";
 
 // handles freehand drawing
-export const drawFreehand = (canvas, context) => {
+export const drawFreehand = () => {
+  const canvas = window.canvasRef.current;
+  const context = canvas.getContext("2d");
   var data_string = ""
   var isDrawing = false;
   var current;

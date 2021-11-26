@@ -1,29 +1,30 @@
 import React, { createRef, useEffect } from "react";
+import { io } from "socket.io-client"
 import "./WhiteboardCanvas.css";
 import { retrieveStroke } from "./strokeData";
 import { drawFreehand } from "./drawFreehand";
 
 function WhiteboardCanvas(props) {
 	// To get the actual canvas element, use "this.canvasRef.current"
-	const canvasRef = createRef();
-	const room = props.room;
+	window.canvasRef = createRef();
+	window.room = props.room;
+	window.socket = io("http://localhost:4000");
+	window.socket.emit("join_room", window.room);
 
 	useEffect(() => {
-		const canvas = canvasRef.current;
+		const canvas = window.canvasRef.current;
 		const context = canvas.getContext("2d");
 
 		context.strokeStyle = props.brush.color;
 		context.lineWidth = props.brush.size;
 
-		//TODO(jen): remove this later, just used here for demo that it works
-		retrieveStroke(canvas);
-
-		drawFreehand(canvas, context);
+		retrieveStroke();
+		drawFreehand();
 	});
 
 	return (
 		<canvas
-			ref={canvasRef}
+			ref={window.canvasRef}
 			className="whiteboard-canvas"
 			width="1920"
 			height="1080"
