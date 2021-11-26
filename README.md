@@ -29,6 +29,13 @@ Quick tutorial on how to add tables:
 
 You can check `client/src/routes/wb/Whiteboard.js` for how to call the db and use the values.
 
+## Sockets
+
+The socket server is served at http://localhost:4000/. Details of the server-side implementation are located in `api/app.js`.
+Currently the socket client-side code is handled by the `WhiteboardCanvas.js` component and broadcasts stroke image data to render for other users in the same room.
+
+Rooms are currently handled explicitly through text input on the home page. To test the whiteboard collaboration, open two tabs of the app and input the same room name for both instances. Strokes drawn in one whiteboard canvas will show up on the secondary page.
+
 # References used
 
 - [Create a React FrontEnd, a Node/Express BackEnd and connect them together](https://medium.com/@jrshenrique/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c)
