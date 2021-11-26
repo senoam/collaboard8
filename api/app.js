@@ -1,5 +1,7 @@
+require('dotenv').config();
 var createError = require("http-errors");
 var express = require("express");
+
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -8,9 +10,10 @@ var pg = require("pg");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var loginRouter = require("./routes/login");
+var signupRouter = require("./routes/signup");
 var testAPIRouter = require("./routes/testAPI");
-
-const PORT = process.env.PORT || 4200;
+var strokesRouter = require("./routes/strokes");
 
 // Postgres
 const client = new pg.Client({
@@ -18,6 +21,7 @@ const client = new pg.Client({
 	user: "postgres",
 	host: "postgres",
 });
+client.connect();
 
 var app = express();
 
@@ -39,7 +43,10 @@ app.use(function (req, res, next) {
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/login", loginRouter);
+app.use("/signup", signupRouter);
 app.use("/testAPI", testAPIRouter);
+app.use("/strokes", strokesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -52,17 +59,36 @@ app.use(function (err, req, res, next) {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	// render the error page
 	res.status(err.status || 500);
-	res.render("error");
+	res.send("Please check that your query is valid.");
 });
 
-(async () => {
-	await client.connect();
+// Set up for socket.io
+var socketapp = express();
+var server = require("http").createServer(socketapp);
+var io = require("socket.io")(server, {
+	cors: {
+	  origin: "*"
+	}
+  });
 
-	app.listen(PORT, () => {
-		console.log("Started at http://localhost:%d", PORT);
+var serv_port = 4000;
+
+server.listen(serv_port, function () {
+    console.log('Express server listening on port %d in %s mode', serv_port, socketapp.get('env'));
+});
+
+// Connection event, sockets represent user
+io.on("connection", (socket) => {
+	console.log(`Listening on port: ${socket.id}`);
+
+	socket.on("join_room", (room_id) => {
+		socket.join(room_id);
 	});
-})();
+
+	socket.on("drawing", (room_id, data) => {
+		socket.to(room_id).emit("drawing", data);
+	});
+});
 
 module.exports = app;

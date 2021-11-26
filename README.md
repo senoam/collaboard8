@@ -22,9 +22,19 @@ In `./client/src/index.js`, you can add a new Route and add the implementation i
 
 ## Database
 
-Put your sql dumps in `db/` to prepopulate tables. You can look at `whiteboard.sql` for reference. (I'm not really sure if we would need to put them all in the same file because some db attributes are dependent on others, but we'll see later on.).
+Quick tutorial on how to add tables:
+
+1. Put your sql dumps in `db/tables/` to prepopulate tables. You can look at `whiteboard.sql` for reference.
+2. In `db/ordering.sh`, add your database name to the bash array `tables_ordered`. This will guarantee the order of when tables get created. Each element in `tables_ordered` is a `.sql` file in the `db` directory. Please order the table dependencies accordingly OR ELSE SANDY'S DOCKER-COMPOSE BUILD WILL BREAK!
 
 You can check `client/src/routes/wb/Whiteboard.js` for how to call the db and use the values.
+
+## Sockets
+
+The socket server is served at http://localhost:4000/. Details of the server-side implementation are located in `api/app.js`.
+Currently the socket client-side code is handled by the `WhiteboardCanvas.js` component and broadcasts stroke image data to render for other users in the same room.
+
+Rooms are currently handled explicitly through text input on the home page. To test the whiteboard collaboration, open two tabs of the app and input the same room name for both instances. Strokes drawn in one whiteboard canvas will show up on the secondary page.
 
 # References used
 

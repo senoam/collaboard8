@@ -1,63 +1,79 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router";
 import logo from "./logo.svg";
 import "./App.css";
-import { Link } from "react-router-dom";
-class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { apiResponse: "", dbStatus: "" };
-	}
 
-	// I've been trying to make the server url be an env, but couldn't make it work. You can try it out if you guys have time. -sandy
-	callAPI() {
+function App(props) {
+
+	const [apiResponse,setResponse] = useState("");
+  	const [dbStatus,setStatus] = useState("");
+	const [roles, setRoles] = useState("");
+
+	const [room_id, setRoom] = React.useState("");
+
+	let navigate = useNavigate();
+
+	const inputRoom = (event) => {
+		setRoom(event.target.value);
+	};
+
+	const callAPI = () => {
 		fetch("http://localhost:4200/testAPI")
 			.then((res) => res.text())
-			.then((res) => this.setState({ apiResponse: res }))
+			.then((res) => setResponse(res))
 			.catch((err) => err);
 	}
-
-	callDB() {
+	const callDB = () => {
 		fetch("http://localhost:4200/testAPI/ping")
 			.then((res) => res.text())
-			.then((res) => this.setState({ dbStatus: res }))
+			.then((res) => setStatus(res))
 			.catch((err) => err);
 	}
 
-	getWhiteboardRoles() {
+	const getWhiteboardRoles = () => {
 		fetch("http://localhost:4200/testAPI/collabrole")
 			.then((res) => res.json())
 			.then((d) => {
 				const rows = d.data;
-				const roles = rows.map((row) => (
+				const rolesmap = rows.map((row) => (
 					<li key={`role_${row.role_name}`}>{row.role_name}</li>
 				));
 
-				this.setState({ roles: roles });
+				setRoles(rolesmap);
 			})
 			.catch((err) => err);
 	}
 
-	componentDidMount() {
-		this.callAPI();
-		this.callDB();
-		this.getWhiteboardRoles();
-	}
+	const updateNavigate = (event) => {
+		navigate('/whiteboard', {state: {room: room_id}});
+	 };
 
-	render() {
-		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h1 className="App-title">Welcome to React</h1>
-				</header>
-				<p className="App-intro">{this.state.apiResponse}</p>
-				<p className="App-intro">{this.state.dbStatus}</p>
-				<h3>Whiteboard Roles (Example db call):</h3>
-				<ul>{this.state.roles}</ul>
-				<Link to="/whiteboard">Whiteboard</Link>
-			</div>
-		);
-	}
-}
+	useEffect(()=>{
+		callAPI();
+		callDB();
+		getWhiteboardRoles();
+	},[])
+
+	return (
+		<div className="App">
+			<header className="App-header">
+				<img src={logo} className="App-logo" alt="logo" />
+				<h1 className="App-title">Welcome to React</h1>
+			</header>
+			<p className="App-intro">{apiResponse}</p>
+			<p className="App-intro">{dbStatus}</p>
+			<h3>Whiteboard Roles (Example db call):</h3>
+			<ul>{roles}</ul>
+			<br></br>
+			<input
+				type="text"
+				placeholder="Room Name"
+				value={room_id}
+				onChange={inputRoom}
+			/>
+			<button type="button" onClick={updateNavigate}>Join Room</button>
+		</div>
+	);
+};
 
 export default App;
