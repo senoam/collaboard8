@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useLocation } from "react-router";
-import WhiteboardCanvas from "./WhiteboardCanvas";
+import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import "./Whiteboard.css";
 
 function Whiteboard(props) {

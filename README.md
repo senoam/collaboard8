@@ -40,3 +40,4 @@ Rooms are currently handled explicitly through text input on the home page. To t
 
 - [Create a React FrontEnd, a Node/Express BackEnd and connect them together](https://medium.com/@jrshenrique/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c)
 - [react-router-dom tutorial](https://github.com/remix-run/react-router/blob/main/docs/getting-started/tutorial.md)
+- [A shareable whiteboard with Canvas, Socket.io, and React](https://dev.to/jerrymcdonald/creating-a-shareable-whiteboard-with-canvas-socket-io-and-react-2en)
