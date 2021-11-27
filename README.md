@@ -8,6 +8,11 @@ Whiteboard application with commenting and collaboration.
 
 Then go to http://localhost:3000/.
 
+# Sample login information
+
+email: johndoe@example.com
+password: admin1234
+
 # Architecture crash course for my peeps:
 
 ## React router
