@@ -3,6 +3,10 @@ CREATE TABLE IF NOT EXISTS strokes (
     whiteboard_id int,
     user_id int,
     stroke_time timestamp(3),
+    stroke_string varchar(1000),
+    stroke_shape varchar(10),
+    stroke_colour varchar(10),
+    stroke_size int,
     PRIMARY KEY (stroke_id),
     FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
