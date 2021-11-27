@@ -14,12 +14,11 @@ router.get('/profile', auth.verifyToken, (req, res, next) => {
 router.post('/', function (req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
-
     if (email && password) {
         req.db.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
             data = results['rows'];
             if (error) {
-                throw error;
+                res.send({error: error})
             }
 
             // Checks if the input email exists in the db
@@ -30,7 +29,11 @@ router.post('/', function (req, res, next) {
                             email: data[0].email
                         }
                         const accessToken = auth.createAccessToken(user);
-                        res.json({accessToken: accessToken});
+                        // res.json({accessToken: accessToken});
+                        res.status(200).send({
+                            email: email,
+                            accessToken: accessToken
+                        })
                     } else {
                         res.send("Invalid email and/or password");
                     }
