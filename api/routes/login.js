@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var auth = require("../modules/auth");
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 // Checks if the right user is logged in
 router.get('/profile', auth.verifyToken, (req, res, next) => {
