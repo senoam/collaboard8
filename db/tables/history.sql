@@ -3,6 +3,7 @@
 CREATE TABLE IF NOT EXISTS snapshots (
     image_id serial,
     image_time timestamp(3),
+    image_url varchar(100),
     PRIMARY KEY (image_id)
 );
 

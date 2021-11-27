@@ -20,7 +20,20 @@ function WhiteboardCanvas(props) {
 
 		retrieveStroke();
 		drawFreehand();
-	});
+
+		const storeCanvas = () => {
+			var timestamp = new Date().getTime();
+			
+			alert("You are closing this tab");
+			var dataURL = canvas.toDataURL("image/png");
+			window.open(dataURL);
+		}
+	  
+		window.addEventListener('beforeunload', storeCanvas);
+		return () => {
+			window.removeEventListener('beforeunload', storeCanvas);
+		}
+	}, []);
 
 	return (
 		<canvas
