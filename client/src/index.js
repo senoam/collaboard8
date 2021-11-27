@@ -11,9 +11,9 @@ import Login from "./routes/login/login";
 ReactDOM.render(
 	<BrowserRouter>
 		<Routes>
-			<Route path="/" element={<App />}></Route>
+			<Route path="/" element={<Login />}></Route>
 			<Route path="/whiteboard" element={<Whiteboard />} />
-			<Route path="/login" element={<Login />} />
+			<Route path="/home" element={<App />} />
 		</Routes>
 	</BrowserRouter>,
 	document.getElementById("root")

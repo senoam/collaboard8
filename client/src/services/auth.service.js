@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL = process.env.API_URL
-
+// Authentication and Login https://www.bezkoder.com/react-jwt-auth/
 class AuthService {
     login(email, password) {
         return axios.post(API_URL + "login", {
