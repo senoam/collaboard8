@@ -2,7 +2,7 @@ var express = require('express');
 const { request, response } = require('../app');
 var router = express.Router();
 var helpers = require('../modules/helpers');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 router.get('/', function (req, res, next) {
     res.send('Sign up Page');
