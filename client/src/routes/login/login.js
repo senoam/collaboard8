@@ -22,7 +22,7 @@ const required = value => {
 };
 
 
-
+// Authentication and Login https://www.bezkoder.com/react-jwt-auth/
 
 function Login(props) {
 	let navigate = useNavigate();
