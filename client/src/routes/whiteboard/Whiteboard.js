@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { useLocation } from "react-router";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
+import CommentContainer from "../comments/CommentContainer";
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
@@ -65,6 +66,8 @@ function Whiteboard(props) {
 				}}
 				room={room}
 			/>
+
+			<CommentContainer/>
 		</Fragment>
 	);
 }

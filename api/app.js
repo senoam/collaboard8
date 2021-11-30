@@ -91,6 +91,10 @@ io.on("connection", (socket) => {
 	socket.on("drawing", (room_id, data) => {
 		socket.to(room_id).emit("drawing", data);
 	});
+
+	socket.on("comment", (room_id, comment) => {
+		socket.to(room_id).emit("comment", comment);
+	});
 });
 
 module.exports = app;
