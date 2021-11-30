@@ -21,9 +21,9 @@ In `./client/src/index.js`, you can add a new Route and add the implementation i
 
 ## Backend
 
-- The api is served at http://localhost:4200/. (We could introduce nginx later??)
-- Put all your route stuff in `api/routes` and declare them in `app.js`.
-- To interact with the db, use `req.db`. Example can be found in the route testAPI/ping. Essentially, the db became a part of the Express middleware, so every query to the backend will grab access to the db before getting passed to your route logic.
+-   The api is served at http://localhost:4200/. (We could introduce nginx later??)
+-   Put all your route stuff in `api/routes` and declare them in `app.js`.
+-   To interact with the db, use `req.db`. Example can be found in the route testAPI/ping. Essentially, the db became a part of the Express middleware, so every query to the backend will grab access to the db before getting passed to your route logic.
 
 ## Database
 
@@ -41,8 +41,30 @@ Currently the socket client-side code is handled by the `WhiteboardCanvas.js` co
 
 Rooms are currently handled explicitly through text input on the home page. To test the whiteboard collaboration, open two tabs of the app and input the same room name for both instances. Strokes drawn in one whiteboard canvas will show up on the secondary page.
 
+# Development Environment
+
+## We now have Nodemon!
+
+    docker-compose -f docker-compose.dev.yml up --build
+
+After saving your changes in either `/api` or `/client`, wait for nodemon to finish restarting the updated server then reload your browser page.
+
+## Code Style
+
+Install the [Prettier VS Code extension](https://www.codereadability.com/automated-code-formatting-with-prettier/). (You might have to restart VS Code.)
+
+You can test to see if it works by adding this temporary line of code in any `.js` file:
+
+    console.log('The single quotes will be changed to double quotes.')
+
+If the single quotes get changed to double quotes on save, its all good.
+
+The code styling configuration is in `/.prettierrc.json`. The VS Code autosave configuration is in `settings.json`.
+
+Note that its okay if you end up updating the code styling for code that you didn't write. You can commit these and move on.
+
 # References used
 
-- [Create a React FrontEnd, a Node/Express BackEnd and connect them together](https://medium.com/@jrshenrique/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c)
-- [react-router-dom tutorial](https://github.com/remix-run/react-router/blob/main/docs/getting-started/tutorial.md)
-- [A shareable whiteboard with Canvas, Socket.io, and React](https://dev.to/jerrymcdonald/creating-a-shareable-whiteboard-with-canvas-socket-io-and-react-2en)
+-   [Create a React FrontEnd, a Node/Express BackEnd and connect them together](https://medium.com/@jrshenrique/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c)
+-   [react-router-dom tutorial](https://github.com/remix-run/react-router/blob/main/docs/getting-started/tutorial.md)
+-   [A shareable whiteboard with Canvas, Socket.io, and React](https://dev.to/jerrymcdonald/creating-a-shareable-whiteboard-with-canvas-socket-io-and-react-2en)
