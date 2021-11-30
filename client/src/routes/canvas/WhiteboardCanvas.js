@@ -1,5 +1,6 @@
 import React, { createRef, useEffect } from "react";
 import { io } from "socket.io-client"
+import axios from "axios";
 import "./WhiteboardCanvas.css";
 import { retrieveStroke } from "./strokeData";
 import { drawFreehand } from "./drawFreehand";
@@ -10,6 +11,12 @@ function WhiteboardCanvas(props) {
 	window.room = props.room;
 	window.socket = io("http://localhost:4000");
 	window.socket.emit("join_room", window.room);
+
+	//Blocking function referencing https://stackoverflow.com/questions/41909365/what-are-the-limitation-using-before-unload-event/42914045#42914045
+	function block(delay) {
+		var start = new Date().getTime();
+		while (new Date().getTime() < start + delay);
+	  }
 
 	useEffect(() => {
 		const canvas = window.canvasRef.current;
@@ -23,10 +30,21 @@ function WhiteboardCanvas(props) {
 
 		const storeCanvas = () => {
 			var timestamp = new Date().getTime();
-			
+			axios.post("http://localhost:4200/history/add-history", {
+				timestamp: timestamp,
+				room_id: window.room
+			  })
+			  .then(function (response) {
+				console.log(response);
+			  })
+			  .catch(function (error) {
+				console.log(error);
+			  });
+
 			alert("You are closing this tab");
 			var dataURL = canvas.toDataURL("image/png");
-			window.open(dataURL);
+
+			block(10000);
 		}
 	  
 		window.addEventListener('beforeunload', storeCanvas);
