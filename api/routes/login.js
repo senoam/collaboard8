@@ -35,18 +35,15 @@ router.post('/', function (req, res, next) {
                             accessToken: accessToken
                         })
                     } else {
-                        res.send("Invalid email and/or password");
+                        res.status(401).send("Invalid email and/or password");
                     }
-                    res.end();
                 });
             } else {
-                res.send("Invalid email and/or password");
-                res.end();
+                res.status(401).send("Invalid email and/or password");
             }
         });
     } else {
         res.send('Enter email and password');
-        res.end();
     }
 });
 

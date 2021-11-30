@@ -22,8 +22,7 @@ router.post('/', function (req, res, next) {
             if (error) {
                 throw error;
             } else if (data.length !== 0) {
-                res.send('account with that email already exists');
-                res.end();
+                res.status(403).send('account with that email already exists');
             } else {
                 saltRounds = 10;
                 bcrypt.hash(password, saltRounds, function (err, hash) {
@@ -31,12 +30,12 @@ router.post('/', function (req, res, next) {
                         throw err;
                     }
                     helpers.insertUsertoDB(email, hash, firstName, lastName, req);
-                    res.send('user added successfully');
+                    res.status(201).send('user added successfully');
                 });
             }
         });
     } else {
-        res.send("Please insert your information");
+        res.status(403).send("Please insert your information");
     }
 });
 
