@@ -1,18 +1,20 @@
 import axios from "axios";
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.API_URL;
 
 class AuthService {
     login(email, password) {
-        return axios.post(API_URL + "login", {
-            email: email,
-            password: password
-        }).then((response) => {
-            if (response.data.accessToken) {
-                localStorage.setItem("user", JSON.stringify(response.data));
-            }
-            return response.data
-        });
+        return axios
+            .post(API_URL + "login", {
+                email: email,
+                password: password
+            })
+            .then((response) => {
+                if (response.data.accessToken) {
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                }
+                return response.data;
+            });
     }
 
     register(email, password, firstName, lastName) {
@@ -21,11 +23,11 @@ class AuthService {
             password,
             firstName,
             lastName
-        })
+        });
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        return JSON.parse(localStorage.getItem("user"));
     }
 }
 
