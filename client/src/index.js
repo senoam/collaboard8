@@ -9,13 +9,13 @@ import Whiteboard from "./routes/whiteboard/Whiteboard";
 import Login from "./routes/login/login";
 
 ReactDOM.render(
-	<BrowserRouter>
-		<Routes>
-			<Route path="/" element={<Login />}></Route>
-			<Route path="/whiteboard" element={<Whiteboard />} />
-			<Route path="/home" element={<App />} />
-		</Routes>
-	</BrowserRouter>,
-	document.getElementById("root")
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Login />}></Route>
+            <Route path="/whiteboard" element={<Whiteboard />} />
+            <Route path="/home" element={<App />} />
+        </Routes>
+    </BrowserRouter>,
+    document.getElementById("root")
 );
 registerServiceWorker();
