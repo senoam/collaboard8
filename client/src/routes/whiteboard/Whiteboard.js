@@ -16,7 +16,6 @@ function Whiteboard(props) {
 
     const brushTypes = ["pen", "eraser", "highlighter"];
 
-<<<<<<< HEAD
 	window.socket = io("http://localhost:4000");
 	window.socket.emit("join_room", window.room);
 
@@ -25,13 +24,6 @@ function Whiteboard(props) {
 			<div className="whiteboard-header">
 				<h2>Whiteboard</h2>
 				<h2>Room: {room}</h2>
-=======
-    return (
-        <Fragment>
-            <div className="whiteboard-header">
-                <h2>Whiteboard</h2>
-                <h2>Room: {room}</h2>
->>>>>>> e935e49bd2525a4b0143897c3f1dc1e2c3cb385d
 
                 <div className="whiteboard-picker">
                     <label for="brushColorPicker">Brush color: </label>

@@ -3,9 +3,9 @@ var router = express.Router();
 
 router.get("/test", function (req, res, next) {
 	req.db
-		.query("SELECT * FROM session_history")
+		.query(`SELECT * FROM session_history;`)
 		.then((data) => {
-			res.json({ data: data.rows });
+			res.json({data: data.rows});
 		})
 		.catch(() =>
             next(err)
@@ -29,13 +29,13 @@ router.get("/add-history", function(req, res, next) {
                     next(err2);
                     res.send("Error in session_history table.");
                 } else {
-                    data = result2["rows"];
-                    console.log(data);
                     res.json({data: result.rows[0].image_id})
                 }
             })
         }
     });
+
+
 });
 
 //Set up getting cross table
