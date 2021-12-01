@@ -1,6 +1,6 @@
-import * as ToolManager from "./ToolManager";
+import { ToolManager } from "./ToolManager";
 
-// deals with all stroke database interactions
+// deals with all stroke database and socket interactions
 
 export const sendStroke = (shape, data_string) => {
     var formData = new FormData();
@@ -11,17 +11,13 @@ export const sendStroke = (shape, data_string) => {
         shape: shape,
         data: data_string
     });
-    console.log("sending stroke", formData.getAll("data"));
-    console.log("sending stroke", formData.getAll("shape"));
+    console.log("sending stroke", formData.getAll("shape"), formData.getAll("data"));
 };
 
 export const retrieveStroke = () => {
     // TODO(jen): get strokes from database
+    const toolManager = new ToolManager();
     window.socket.on("drawing", (stroke) => {
-        ToolManager.loadStroke(
-            window.canvasRef.current,
-            stroke.shape,
-            stroke.data
-        );
+        toolManager.load(stroke.shape, stroke.data);
     });
 };

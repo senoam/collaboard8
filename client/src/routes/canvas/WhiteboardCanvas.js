@@ -2,7 +2,7 @@ import React, { createRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import "./WhiteboardCanvas.css";
 import { retrieveStroke } from "./strokeData";
-import * as ToolManager from "./ToolManager";
+import { drawingHandler } from "./DrawingHandler";
 
 function WhiteboardCanvas(props) {
     // To get the actual canvas element, use "this.canvasRef.current"
@@ -10,6 +10,7 @@ function WhiteboardCanvas(props) {
     window.room = props.room;
     window.socket = io("http://localhost:4000");
     window.socket.emit("join_room", window.room);
+    window.tool = props.brush.type;
 
     useEffect(() => {
         const canvas = window.canvasRef.current;
@@ -18,8 +19,8 @@ function WhiteboardCanvas(props) {
         context.strokeStyle = props.brush.color;
         context.lineWidth = props.brush.size;
 
-        retrieveStroke(canvas);
-        ToolManager.use(canvas, props.brush.type);
+        retrieveStroke();
+        drawingHandler(canvas);
     });
 
     return (
