@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { io } from "socket.io-client"
 import { useLocation } from "react-router";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
@@ -14,6 +15,9 @@ function Whiteboard(props) {
 	const [brushType, setBrushType] = useState("pen");
 
 	const brushTypes = ["pen", "eraser", "highlighter"];
+
+	window.socket = io("http://localhost:4000");
+	window.socket.emit("join_room", window.room);
 
 	return (
 		<Fragment>

@@ -1,6 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
+router.get("/test", function (req, res, next) {
+	req.db
+		.query("SELECT * FROM session_history")
+		.then((data) => {
+			res.json({ data: data.rows });
+		})
+		.catch(() =>
+            next(err)
+		);
+});
+
 router.get("/add-history", function(req, res, next) {
     var timestamp = req.body.timestamp;
     var room_id = req.body.room_id;
