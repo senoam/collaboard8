@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.24.0",
+    "browserify-fs": "^1.0.0",
     "dotenv": "^10.0.0",
-    "file-system": "^2.2.2",
     "history": "^5.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

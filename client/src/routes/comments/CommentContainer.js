@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
+import { io } from "socket.io-client"
 import "./CommentContainer.css";
 
 function CommentContainer(props) {
 	window.room = props.room;
+  window.socket = io("http://localhost:4000");
+	window.socket.emit("join_room", window.room);
 
 	useEffect(() => {
     retrieveComment();
