@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { io } from "socket.io-client";
 import "./CommentContainer.css";
+import axios from "axios";
 
 function CommentContainer(props) {
     window.room = props.room;
@@ -18,6 +19,18 @@ function CommentContainer(props) {
         const formProps = Object.fromEntries(formData);
         document.getElementById("comment-form").reset();
         addComment(formProps.comment);
+
+        // Get current time https://stackoverflow.com/questions/10645994/how-to-format-a-utc-date-as-a-yyyy-mm-dd-hhmmss-string-using-nodejs
+        // Post comment to comments db
+        axios.post("http://localhost:4200/comments/db", {
+            whiteboard_id: 2,
+            comment_location: "23,23",
+            message_text: formProps.comment,
+            user_id: 2,
+            parent_comment_id: 2,
+            time_stamp: new Date().toISOString().replace("T", " ").substr(0, 19)
+        });
+
         sendComment(formProps.comment);
     };
 
