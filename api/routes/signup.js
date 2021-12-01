@@ -13,6 +13,10 @@ router.post('/', function (req, res, next) {
     var password = req.body.password;
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
+    console.log(email);
+    console.log(password);
+    console.log(firstName);
+    console.log(lastName);
 
     if(email && password && firstName && lastName) {
         req.db

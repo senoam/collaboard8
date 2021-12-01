@@ -21,19 +21,6 @@ const required = value => {
 	}
 };
 
-
-// Authentication and Login https://www.bezkoder.com/react-jwt-auth/
-
-// const required = (value) => {
-// 	if (!value) {
-// 		return (
-// 			<div className="alert alert-danger" role="alert">
-// 				This field is required
-// 			</div>
-// 		);
-// 	}
-// };
-
 // Authentication and Login https://www.bezkoder.com/react-jwt-auth/
 
 function Login(props) {
