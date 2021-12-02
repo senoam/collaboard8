@@ -67,7 +67,7 @@ function Whiteboard(props) {
                 room={room}
             />
 
-            <CommentContainer />
+            <CommentContainer room={room} />
         </Fragment>
     );
 }
