@@ -2,18 +2,19 @@ import React, { Fragment, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
+
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
     const location = useLocation();
     const room = location.state.room;
+    window.room = room;
 
     const [brushColor, setBrushColor] = useState("black");
     const [brushSize, setBrushSize] = useState(10);
-    // TODO: We dont have multiple brush types yet
-    const [brushType, setBrushType] = useState("pen");
+    const [brushType, setBrushType] = useState("freehand");
 
-    const brushTypes = ["pen", "eraser", "highlighter"];
+    const brushTypes = ["freehand", "rectangle"];
 
     let navigate = useNavigate();
     const updateNavigate = (event) => {
@@ -30,7 +31,7 @@ function Whiteboard(props) {
                 </button>
 
                 <div className="whiteboard-picker">
-                    <label for="brushColorPicker">Brush color: </label>
+                    <label htmlFor="brushColorPicker">Brush color: </label>
                     <input
                         type="color"
                         id="brushColorPicker"
@@ -41,7 +42,7 @@ function Whiteboard(props) {
                 </div>
 
                 <div className="whiteboard-picker">
-                    <label for="brushSizePicker">Brush size: </label>
+                    <label htmlFor="brushSizePicker">Brush size: </label>
                     <input
                         type="range"
                         id="brushSizePicker"
@@ -53,14 +54,18 @@ function Whiteboard(props) {
                 </div>
 
                 <div className="whiteboard-picker">
-                    <label for="brushTypePicker">Brush type: </label>
+                    <label htmlFor="brushTypePicker">Brush type: </label>
                     <select
                         name="brushTypePicker"
                         id="brushTypePicker"
-                        onChange={(e) => setBrushType(e.target.value)}
+                        onChange={(e) => {
+                            setBrushType(e.target.value);
+                        }}
                     >
                         {brushTypes.map((t) => (
-                            <option value="t">{t}</option>
+                            <option key={t} value={t}>
+                                {t}
+                            </option>
                         ))}
                     </select>
                 </div>
@@ -75,7 +80,7 @@ function Whiteboard(props) {
                 room={room}
             />
 
-            <CommentContainer />
+            <CommentContainer room={room} />
         </Fragment>
     );
 }

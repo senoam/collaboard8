@@ -2,17 +2,12 @@ import React, { createRef, useEffect } from "react";
 import "./WhiteboardCanvas.css";
 import { io } from "socket.io-client"
 import axios from "axios";
-import { retrieveStroke } from "./strokeData";
-import { drawFreehand } from "./drawFreehand";
+import { retrieveStroke } from "./tools/strokeData";
+import { drawingHandler } from "./tools/DrawingHandler";
 
 function WhiteboardCanvas(props) {
-	// To get the actual canvas element, use "this.canvasRef.current"
-	window.canvasRef = createRef();
-	window.room = props.room;
-	window.socket = io("http://localhost:4000");
-	window.socket.emit("join_room", window.room);
-
-	var room_id = props.room;
+    // To get the actual canvas element, use "this.canvasRef.current"
+    window.canvasRef = createRef();
 
 	const trackHistory = () => {
 		var mouse_y = 0;
@@ -28,7 +23,7 @@ function WhiteboardCanvas(props) {
 
 				axios.post("http://localhost:4200/history/add-history", {
 						timestamp: timestamp,
-						room_id: room_id
+						room_id: props.room
 					})
 					.then((response) => {
 						console.log(response.data);
@@ -53,17 +48,25 @@ function WhiteboardCanvas(props) {
 	};
 
     useEffect(() => {
+        window.socket = io("http://localhost:4000");
+        window.socket.emit("join_room", props.room);
+
+        const canvas = window.canvasRef.current;
+        drawingHandler(canvas);
+    }, [props.room]);
+
+    useEffect(() => {
         const canvas = window.canvasRef.current;
         const context = canvas.getContext("2d");
 
         context.strokeStyle = props.brush.color;
         context.lineWidth = props.brush.size;
+        window.tool = props.brush.type;
 
-		retrieveStroke();
-		drawFreehand();
+        retrieveStroke();
 		trackHistory();
-	}, []);
-
+    });
+	
 	window.onbeforeunload = function() {
 		return "Are you sure you want to leave this whiteboard?";
 	};
