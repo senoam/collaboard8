@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 import "./Whiteboard.css";
@@ -15,11 +15,19 @@ function Whiteboard(props) {
 
     const brushTypes = ["pen", "eraser", "highlighter"];
 
+    let navigate = useNavigate();
+    const updateNavigate = (event) => {
+        navigate("/whiteboard/history", { state: { room: room } });
+    };
+
 	return (
 		<Fragment>
 			<div className="whiteboard-header">
 				<h2>Whiteboard</h2>
 				<h2>Room: {room}</h2>
+                <button type="button" onClick={updateNavigate}>
+                    See Version History
+                </button>
 
                 <div className="whiteboard-picker">
                     <label for="brushColorPicker">Brush color: </label>

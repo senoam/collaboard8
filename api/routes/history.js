@@ -41,7 +41,7 @@ router.post("/get-history", function(req, res, next){
     "SELECT session_history.image_id \
     FROM session_history \
     JOIN snapshots ON session_history.image_id = snapshots.image_id \
-    WHERE session_history.whiteboard_id = $1 \
+    WHERE session_history.room_id = $1 \
     ORDER BY snapshots.image_time"
 
     req.db.query(query_str, [room_id], function(err, result){

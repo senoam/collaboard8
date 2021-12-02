@@ -26,13 +26,12 @@ function WhiteboardCanvas(props) {
 				var timestamp = new Date().getTime();
 				console.log("Timestamp: " + timestamp + " Room: " + room_id);
 
-				//var imgURL = canvas.toDataURL("image/png");
 				axios.post("http://localhost:4200/history/add-history", {
 						timestamp: timestamp,
 						room_id: room_id
 					})
 					.then((response) => {
-						console.log(response);
+						console.log(response.data);
 
 						var fs = require('browserify-fs');
 
