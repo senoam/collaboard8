@@ -10,9 +10,11 @@ router.post("/add-history", function(req, res, next) {
 
     var timestamp = req.body.timestamp;
     var room_id = req.body.room_id;
+    var buffer = req.body.buffer;
+    buffer = buffer.replace("data:image/png;base64,", "");
 
-    var query_str = "INSERT INTO snapshots(image_time) VALUES(to_timestamp($1)) RETURNING image_id"
-    req.db.query(query_str, [timestamp], function(err, result){
+    var query_str = "INSERT INTO snapshots(image_time, image_data) VALUES(to_timestamp($1), decode($2, 'base64')) RETURNING image_id"
+    req.db.query(query_str, [timestamp, buffer], function(err, result){
         if (err) {
             next(err);
             res.send("Error in snapshots table.");
@@ -38,7 +40,7 @@ router.post("/get-history", function(req, res, next){
     var room_id = req.body.room_id;
 
     var query_str = 
-    "SELECT session_history.image_id \
+    "SELECT snapshots.image_id, 'data:image/png;base64,' || encode(snapshots.image_data, 'base64') AS image_data \
     FROM session_history \
     JOIN snapshots ON session_history.image_id = snapshots.image_id \
     WHERE session_history.room_id = $1 \

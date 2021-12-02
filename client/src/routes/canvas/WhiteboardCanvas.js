@@ -22,29 +22,19 @@ function WhiteboardCanvas(props) {
 			if (mouse_y < window_top){
 				console.log("Sending a history POST request.");
 				var timestamp = new Date().getTime();
-				console.log("Timestamp: " + timestamp + " Room: " + socketObj.room);
+
+				const canvas = window.canvasRef.current;
+        		var imgURL = canvas.toDataURL();
+
+				console.log(imgURL);
 
 				axios.post("http://localhost:4200/history/add-history", {
 						timestamp: timestamp,
-						room_id: socketObj.room
+						room_id: socketObj.room,
+						buffer: imgURL,
 					})
 					.then((response) => {
-						console.log(response.data);
-
-						var fs = require('browserify-fs');
-
-						//Image encoding referenced from https://stackoverflow.com/questions/43487543/writing-binary-data-using-node-js-fs-writefile-to-create-an-image-fil
-						const canvas = window.canvasRef.current;
-        				var imgURL = canvas.toDataURL();
-						var data = imgURL.replace(/^data:image\/\w+;base64,/, "");
-						var buffer = Buffer.from(data, 'base64');
-
-						fs.mkdir('/history', function() {
-							fs.writeFile('/history/' + response.data +'.png', buffer, (err) => {
-								if (err) throw err;
-								console.log("Saved snapshot image data");
-							  });
-						});
+						console.log("Saved image id: " + response.data.data);
 					});
 			}
 		}, false);
