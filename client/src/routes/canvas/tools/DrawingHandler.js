@@ -1,7 +1,7 @@
 import { ToolManager } from "./ToolManager";
 import { getMousePos } from "./utils";
 
-export const drawingHandler = (canvas) => {
+export const drawingHandler = (socketObj, canvas) => {
     const context = canvas.getContext("2d");
     var data_string = "";
     var isDrawing = false;
@@ -11,7 +11,7 @@ export const drawingHandler = (canvas) => {
     var current;
 
     var canvasState = context.getImageData(0, 0, canvas.width, canvas.height);
-    const toolManager = new ToolManager();
+    const toolManager = new ToolManager(socketObj);
 
     const onStrokeStart = (e) => {
         // Save the canvas state before adding our own work
