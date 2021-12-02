@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useLocation } from "react-router";
-
+import { io } from "socket.io-client";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 
@@ -8,8 +8,14 @@ import "./Whiteboard.css";
 
 function Whiteboard(props) {
     const location = useLocation();
-    const room = location.state.room;
-    window.room = room;
+    const socketObj = {
+        socket: io("http://localhost:4000"),
+        room: location.state.room
+    };
+
+    useEffect(() => {
+        socketObj.socket.emit("join_room", socketObj.room);
+    }, [props.room]);
 
     const [brushColor, setBrushColor] = useState("black");
     const [brushSize, setBrushSize] = useState(10);
@@ -21,7 +27,7 @@ function Whiteboard(props) {
         <Fragment>
             <div className="whiteboard-header">
                 <h2>Whiteboard</h2>
-                <h2>Room: {room}</h2>
+                <h2>Room: {socketObj.room}</h2>
 
                 <div className="whiteboard-picker">
                     <label htmlFor="brushColorPicker">Brush color: </label>
@@ -70,10 +76,10 @@ function Whiteboard(props) {
                     size: brushSize,
                     type: brushType
                 }}
-                room={room}
+                socketObj={socketObj}
             />
 
-            <CommentContainer room={room} />
+            <CommentContainer socketObj={socketObj} />
         </Fragment>
     );
 }

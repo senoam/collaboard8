@@ -4,7 +4,8 @@ import { sendStroke } from "./strokeData";
 import { logData } from "./utils";
 
 export class ToolManager {
-    constructor() {
+    constructor(socketObj) {
+        this.socketObj = socketObj;
         // Instance brushes only save data upon start and completion to create one instance of a stroke.
         this.instanceBrushes = ["rectangle"];
     }
@@ -43,7 +44,7 @@ export class ToolManager {
             data_string = logData(data_string, x, y);
 
             if (data_string.length > 900) {
-                sendStroke(window.tool, data_string);
+                sendStroke(this.socketObj, window.tool, data_string);
                 return "";
             }
 
@@ -52,7 +53,7 @@ export class ToolManager {
 
         if (stage === "end") {
             data_string = logData(data_string, x, y);
-            sendStroke(window.tool, data_string);
+            sendStroke(this.socketObj, window.tool, data_string);
             return "";
         }
 

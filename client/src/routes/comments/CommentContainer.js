@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
-import { io } from "socket.io-client";
 import "./CommentContainer.css";
 
 function CommentContainer(props) {
-    useEffect(() => {
-        window.socket = io("http://localhost:4000");
-        window.socket.emit("join_room", props.room);
-    }, [props.room]);
+    const socketObj = props.socketObj;
 
     useEffect(() => {
         retrieveComment();
@@ -30,11 +26,13 @@ function CommentContainer(props) {
     };
 
     const sendComment = (comment) => {
-        window.socket.emit("comment", window.room, comment);
+        // add database store
+        socketObj.socket.emit("comment", socketObj.room, comment);
     };
 
     const retrieveComment = (comment) => {
-        window.socket.on("comment", (comment) => {
+        // and database retrieve
+        socketObj.socket.on("comment", (comment) => {
             addComment(comment);
         });
     };
