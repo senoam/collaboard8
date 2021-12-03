@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { io } from "socket.io-client";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
@@ -23,11 +23,19 @@ function Whiteboard(props) {
 
     const brushTypes = ["freehand", "rectangle"];
 
+    let navigate = useNavigate();
+    const updateNavigate = (event) => {
+        navigate("/whiteboard/history", { state: { room: socketObj.room } });
+    };
+
     return (
         <Fragment>
             <div className="whiteboard-header">
                 <h2>Whiteboard</h2>
                 <h2>Room: {socketObj.room}</h2>
+                <button type="button" onClick={updateNavigate}>
+                    See Version History
+                </button>
 
                 <div className="whiteboard-picker">
                     <label htmlFor="brushColorPicker">Brush color: </label>
