@@ -7,24 +7,24 @@ function CommentContainer(props) {
     useEffect(() => {
         retrieveComment();
     });
-    
+
     const handleCommentSubmit = (e) => {
-      // get form values https://stackoverflow.com/questions/3547035/getting-html-form-values
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const formProps = Object.fromEntries(formData);
-      document.getElementById("comment-form").reset();
-      addComment(formProps.comment);
-      sendComment(formProps.comment);
+        // get form values https://stackoverflow.com/questions/3547035/getting-html-form-values
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const formProps = Object.fromEntries(formData);
+        document.getElementById("comment-form").reset();
+        addComment(formProps.comment);
+        sendComment(formProps.comment);
     };
-  
+
     const addComment = (comment) => {
-      const commentDom = document.getElementById("comment-list");
-      var newComment = document.createElement("li")
-      newComment.innerText = comment
-      commentDom.appendChild(newComment)
-    }
-  
+        const commentDom = document.getElementById("comment-list");
+        var newComment = document.createElement("li");
+        newComment.innerText = comment;
+        commentDom.appendChild(newComment);
+    };
+
     const sendComment = (comment) => {
         // add database store
         socketObj.socket.emit("comment", socketObj.room, comment);
