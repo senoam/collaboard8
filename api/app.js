@@ -15,6 +15,7 @@ var signupRouter = require("./routes/signup");
 var testAPIRouter = require("./routes/testAPI");
 var strokesRouter = require("./routes/strokes");
 var commentsRouter = require("./routes/comments")
+var historyRouter = require("./routes/history")
 
 // Postgres
 const client = new pg.Client({
@@ -49,6 +50,7 @@ app.use("/signup", signupRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/strokes", strokesRouter);
 app.use("/comments", commentsRouter);
+app.use("/history", historyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
