@@ -42,11 +42,13 @@ function WhiteboardCanvas(props) {
         );
     };
 
+    // Component on room change
     useEffect(() => {
         const canvas = window.canvasRef.current;
         drawingHandler(socketObj, canvas);
     }, [socketObj.room]);
 
+    // Component on update
     useEffect(() => {
         const canvas = window.canvasRef.current;
         const context = canvas.getContext("2d");
@@ -56,6 +58,10 @@ function WhiteboardCanvas(props) {
         window.tool = props.brush.type;
 
         retrieveStroke(socketObj);
+    });
+
+    // Component on mount
+    useEffect(() => {
         trackHistory();
 
         return () => {
