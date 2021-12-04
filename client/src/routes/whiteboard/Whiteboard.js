@@ -1,28 +1,44 @@
-import React, { Fragment, useState } from "react";
-import { useLocation } from "react-router";
+import React, { Fragment, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { io } from "socket.io-client";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
+
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
     const location = useLocation();
-    const room = location.state.room;
+    const socketObj = {
+        socket: io("http://localhost:4000"),
+        room: location.state.room
+    };
+
+    useEffect(() => {
+        socketObj.socket.emit("join_room", socketObj.room);
+    }, [props.room]);
 
     const [brushColor, setBrushColor] = useState("black");
     const [brushSize, setBrushSize] = useState(10);
-    // TODO: We dont have multiple brush types yet
-    const [brushType, setBrushType] = useState("pen");
+    const [brushType, setBrushType] = useState("freehand");
 
-    const brushTypes = ["pen", "eraser", "highlighter"];
+    const brushTypes = ["freehand", "rectangle"];
+
+    let navigate = useNavigate();
+    const updateNavigate = (event) => {
+        navigate("/whiteboard/history", { state: { room: socketObj.room } });
+    };
 
     return (
         <Fragment>
             <div className="whiteboard-header">
                 <h2>Whiteboard</h2>
-                <h2>Room: {room}</h2>
+                <h2>Room: {socketObj.room}</h2>
+                <button type="button" onClick={updateNavigate}>
+                    See Version History
+                </button>
 
                 <div className="whiteboard-picker">
-                    <label for="brushColorPicker">Brush color: </label>
+                    <label htmlFor="brushColorPicker">Brush color: </label>
                     <input
                         type="color"
                         id="brushColorPicker"
@@ -33,7 +49,7 @@ function Whiteboard(props) {
                 </div>
 
                 <div className="whiteboard-picker">
-                    <label for="brushSizePicker">Brush size: </label>
+                    <label htmlFor="brushSizePicker">Brush size: </label>
                     <input
                         type="range"
                         id="brushSizePicker"
@@ -45,14 +61,18 @@ function Whiteboard(props) {
                 </div>
 
                 <div className="whiteboard-picker">
-                    <label for="brushTypePicker">Brush type: </label>
+                    <label htmlFor="brushTypePicker">Brush type: </label>
                     <select
                         name="brushTypePicker"
                         id="brushTypePicker"
-                        onChange={(e) => setBrushType(e.target.value)}
+                        onChange={(e) => {
+                            setBrushType(e.target.value);
+                        }}
                     >
                         {brushTypes.map((t) => (
-                            <option value="t">{t}</option>
+                            <option key={t} value={t}>
+                                {t}
+                            </option>
                         ))}
                     </select>
                 </div>
@@ -64,10 +84,10 @@ function Whiteboard(props) {
                     size: brushSize,
                     type: brushType
                 }}
-                room={room}
+                socketObj={socketObj}
             />
 
-            <CommentContainer room={room} />
+            <CommentContainer socketObj={socketObj} />
         </Fragment>
     );
 }

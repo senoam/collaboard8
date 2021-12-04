@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
-import { io } from "socket.io-client";
 import "./CommentContainer.css";
 import axios from "axios";
 
 function CommentContainer(props) {
-    window.room = props.room;
-    window.socket = io("http://localhost:4000");
-    window.socket.emit("join_room", window.room);
+    const socketObj = props.socketObj;
 
     useEffect(() => {
         retrieveComment();
@@ -23,7 +20,7 @@ function CommentContainer(props) {
         // Get current time https://stackoverflow.com/questions/10645994/how-to-format-a-utc-date-as-a-yyyy-mm-dd-hhmmss-string-using-nodejs
         // Post comment to comments db
         axios.post("http://localhost:4200/comments/db", {
-            whiteboard_id: window.room,
+            whiteboard_id: socketObj.room,
             comment_location: "23,23",
             message_text: formProps.comment,
             user_id: 2,
@@ -43,13 +40,14 @@ function CommentContainer(props) {
     };
 
     const sendComment = (comment) => {
-        window.socket.emit("comment", window.room, comment);
+        // add database store
+        socketObj.socket.emit("comment", socketObj.room, comment);
     };
 
     const retrieveComment = (comment) => {
         axios
             .post("http://localhost:4200/comments//get-comments", {
-                whiteboard_id: window.room
+                whiteboard_id: socketObj.room
             })
             .then((res) => {
                 console.log(res.data["comments"][0]);
@@ -59,7 +57,8 @@ function CommentContainer(props) {
                     addComment(comment);
                 }
             });
-        window.socket.on("comment", (comment) => {
+        // and database retrieve
+        socketObj.socket.on("comment", (comment) => {
             addComment(comment);
         });
     };
