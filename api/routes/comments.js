@@ -28,16 +28,11 @@ router.post("/get-comments", function (req, res) {
 });
 
 router.post("/db", function (req, res) {
-    var whiteboardID = req.body.whiteboard_id;
-    var commentLocation = req.body.comment_location;
-    var messageText = req.body.message_text;
-    var userID = req.body.user_id;
-    var parentCommentID = req.body.parent_comment_id;
-    var timestamp = req.body.time_stamp;
+    const { whiteboard_id, comment_location, message_text, user_id, parent_comment_id } = req.body;
 
     req.db.query(
-        `INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp) VALUES ($1, $2, $3, $4, $5, $6)`,
-        [whiteboardID, commentLocation, messageText, userID, parentCommentID, timestamp],
+        `INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp) VALUES ($1, $2, $3, $4, $5, current_timestamp)`,
+        [whiteboard_id, comment_location, message_text, user_id, parent_comment_id],
         (err, result) => {
             if (err) {
                 throw err;

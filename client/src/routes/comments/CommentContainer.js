@@ -28,15 +28,13 @@ function CommentContainer(props) {
     };
 
     const sendComment = (comment) => {
-        // Get current time https://stackoverflow.com/questions/10645994/how-to-format-a-utc-date-as-a-yyyy-mm-dd-hhmmss-string-using-nodejs
         // Post comment to comments db
         axios.post("http://localhost:4200/comments/db", {
             whiteboard_id: socketObj.room,
             comment_location: "23,23",
             message_text: comment,
             user_id: 2,
-            parent_comment_id: 2,
-            time_stamp: new Date().toISOString().replace("T", " ").substr(0, 19)
+            parent_comment_id: 2
         });
     };
 
