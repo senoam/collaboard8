@@ -1,5 +1,6 @@
 import * as Freehand from "./Freehand";
 import * as Rectangle from "./Rectangle";
+import * as Circle from "./Circle";
 import { sendStroke } from "./strokeData";
 import { logData } from "./utils";
 
@@ -7,7 +8,7 @@ export class ToolManager {
     constructor(socketObj) {
         this.socketObj = socketObj;
         // Instance brushes only save data upon start and completion to create one instance of a stroke.
-        this.instanceBrushes = ["rectangle"];
+        this.instanceBrushes = ["rectangle", "circle"];
     }
 
     draw(context, start, previous, current) {
@@ -17,6 +18,10 @@ export class ToolManager {
                 break;
             case "rectangle":
                 Rectangle.draw(context, start.x, start.y, current.x, current.y);
+                break;
+            case "circle":
+                Circle.draw(context, start.x, start.y, current.x, current.y);
+                Circle.draw(context, current.x, current.y, start.x, start.y); // close the loop
                 break;
             default:
                 Freehand.draw(context, previous.x, previous.y, current.x, current.y);
@@ -31,6 +36,9 @@ export class ToolManager {
                 break;
             case "rectangle":
                 Rectangle.load(canvas, data);
+                break;
+            case "circle":
+                Circle.load(canvas, data);
                 break;
             default:
                 Freehand.load(canvas, data);

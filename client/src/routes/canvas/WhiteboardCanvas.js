@@ -8,6 +8,42 @@ function WhiteboardCanvas(props) {
     // To get the actual canvas element, use "this.canvasRef.current"
     window.canvasRef = createRef();
     const socketObj = props.socketObj;
+<<<<<<< HEAD
+
+    var handler;
+
+    const trackHistory = () => {
+        var mouse_y = 0;
+        var window_top = 0;
+
+        window.addEventListener(
+            "mouseout",
+            (handler = function (e) {
+                mouse_y = e.clientY;
+
+                if (mouse_y < window_top) {
+                    console.log("Sending a history POST request.");
+                    var timestamp = new Date().getTime();
+
+                    const canvas = window.canvasRef.current;
+                    var imgURL = canvas.toDataURL();
+
+                    axios
+                        .post("http://localhost:4200/history/add-history", {
+                            timestamp: timestamp,
+                            room_id: socketObj.room,
+                            buffer: imgURL
+                        })
+                        .then((response) => {
+                            console.log("Saved image id: " + response.data.data);
+                        });
+                }
+            }),
+            false
+        );
+    };
+=======
+>>>>>>> fca17fd54a40cd5639a2df0b6d425a31fa67967c
 
     var handler;
 
@@ -42,11 +78,13 @@ function WhiteboardCanvas(props) {
         );
     };
 
+    // Component on room change
     useEffect(() => {
         const canvas = window.canvasRef.current;
         drawingHandler(socketObj, canvas);
     }, [socketObj.room]);
 
+    // Component on update
     useEffect(() => {
         const canvas = window.canvasRef.current;
         const context = canvas.getContext("2d");
@@ -56,6 +94,19 @@ function WhiteboardCanvas(props) {
         window.tool = props.brush.type;
 
         retrieveStroke(socketObj);
+        trackHistory();
+
+        return () => {
+            window.removeEventListener("mouseout", handler, false);
+        };
+    }, []);
+
+    window.onbeforeunload = function () {
+        return "Are you sure you want to leave this whiteboard?";
+    };
+
+    // Component on mount
+    useEffect(() => {
         trackHistory();
 
         return () => {

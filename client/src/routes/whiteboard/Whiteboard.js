@@ -21,7 +21,12 @@ function Whiteboard(props) {
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
 
-    const brushTypes = ["freehand", "rectangle"];
+    const brushTypes = ["freehand", "rectangle", "circle"];
+
+    let navigate = useNavigate();
+    const updateNavigate = (event) => {
+        navigate("/whiteboard/history", { state: { room: socketObj.room } });
+    };
 
     let navigate = useNavigate();
     const updateNavigate = (event) => {
