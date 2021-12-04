@@ -35,17 +35,9 @@ router.post("/db", function (req, res) {
     var parentCommentID = req.body.parent_comment_id;
     var timestamp = req.body.time_stamp;
 
-    console.log("OOOOOOOOOO");
     req.db.query(
         `INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp) VALUES ($1, $2, $3, $4, $5, $6)`,
-        [
-            whiteboardID,
-            commentLocation,
-            messageText,
-            userID,
-            parentCommentID,
-            timestamp
-        ],
+        [whiteboardID, commentLocation, messageText, userID, parentCommentID, timestamp],
         (err, result) => {
             if (err) {
                 throw err;
