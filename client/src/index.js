@@ -10,11 +10,14 @@ import Carousel from "./routes/history/Carousel";
 import Login from "./routes/login/login";
 import Signup from "./routes/signup/signup";
 import PrivateRoute from "./routes/private/private-route";
+import LoginAuthRoute from "./routes/private/login-auth-route";
 
 ReactDOM.render(
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Login />}></Route>
+            <Route exact path="/" element={<LoginAuthRoute />}>
+                <Route exact path="/" element={<Login />} />
+            </Route>
             <Route path="/whiteboard/history" element={<Carousel />} />
             <Route path="/whiteboard" element={<Whiteboard />} />
             <Route exact path="/home" element={<PrivateRoute />}>
