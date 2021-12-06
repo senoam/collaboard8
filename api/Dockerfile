@@ -4,7 +4,6 @@ EXPOSE 4200 4000
 WORKDIR /home/app
 
 COPY package.json /home/app/
-RUN apk --no-cache add --virtual builds-deps build-base python
 RUN npm install
 
 COPY . /home/app

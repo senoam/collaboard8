@@ -26,7 +26,7 @@ function verifyToken(req, res, next) {
 }
 
 function createAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "20s" });
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "60m" });
 }
 
 module.exports = {
