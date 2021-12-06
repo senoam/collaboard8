@@ -23,6 +23,8 @@ function App(props) {
 
         if (user) {
             setCurrentUser(user);
+        } else {
+            console.log("You need to be logged in");
         }
     };
 
