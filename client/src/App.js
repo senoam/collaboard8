@@ -2,18 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import logo from "./logo.svg";
 import "./App.css";
+import authService from "./services/auth.service";
 
 function App(props) {
     const [apiResponse, setResponse] = useState("");
     const [dbStatus, setStatus] = useState("");
     const [roles, setRoles] = useState("");
 
+    const [currentUser, setCurrentUser] = useState("");
     const [room_id, setRoom] = React.useState("");
 
     let navigate = useNavigate();
 
     const inputRoom = (event) => {
         setRoom(event.target.value);
+    };
+
+    const authorize = () => {
+        const user = authService.getCurrentUser();
+
+        if (user) {
+            setCurrentUser(user);
+        }
+    };
+
+    const logOut = () => {
+        authService.logout();
+        navigate("/");
     };
 
     const callAPI = () => {
@@ -48,6 +63,7 @@ function App(props) {
     };
 
     useEffect(() => {
+        authorize();
         callAPI();
         callDB();
         getWhiteboardRoles();
@@ -64,14 +80,12 @@ function App(props) {
             <h3>Whiteboard Roles (Example db call):</h3>
             <ul>{roles}</ul>
             <br></br>
-            <input
-                type="text"
-                placeholder="Room Name"
-                value={room_id}
-                onChange={inputRoom}
-            />
+            <input type="text" placeholder="Room Name" value={room_id} onChange={inputRoom} />
             <button type="button" onClick={updateNavigate}>
                 Join Room
+            </button>
+            <button type="button" onClick={logOut}>
+                Logout
             </button>
         </div>
     );

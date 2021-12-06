@@ -43,6 +43,10 @@ function Login(props) {
             });
     };
 
+    const getCurrentUser = (e) => {
+        return JSON.parse(localStorage.getItem("user"));
+    };
+
     return (
         <div className="login-wrapper">
             <h2>Login</h2>
