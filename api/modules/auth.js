@@ -10,16 +10,20 @@ function verifyToken(req, res, next) {
     console.log(token);
     if (token == null) {
         res.sendStatus(401);
+        res.end();
+        return;
     }
 
     var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
         if (error) {
-            return res.sendStatus(403);
+            res.status(401).send({
+                message: "forbidden"
+            });
+            return;
         }
         req.user = user;
+        next();
     });
-
-    next();
 }
 
 function createAccessToken(user) {
