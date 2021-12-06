@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 
@@ -14,14 +14,14 @@ var loginRouter = require("./routes/login");
 var signupRouter = require("./routes/signup");
 var testAPIRouter = require("./routes/testAPI");
 var strokesRouter = require("./routes/strokes");
-var commentsRouter = require("./routes/comments")
-var historyRouter = require("./routes/history")
+var commentsRouter = require("./routes/comments");
+var historyRouter = require("./routes/history");
 
 // Postgres
 const client = new pg.Client({
-	password: "postgres",
-	user: "postgres",
-	host: "postgres",
+    password: "postgres",
+    user: "postgres",
+    host: "postgres"
 });
 client.connect();
 
@@ -39,8 +39,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(function (req, res, next) {
-	req.db = client; //this db comes from app.js context where you define it
-	next();
+    req.db = client; //this db comes from app.js context where you define it
+    next();
 });
 
 app.use("/", indexRouter);
@@ -54,49 +54,49 @@ app.use("/history", historyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	next(createError(404));
+    next(createError(404));
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get("env") === "development" ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	res.status(err.status || 500);
-	res.send("Please check that your query is valid.");
+    res.status(err.status || 500);
+    res.send("Please check that your query is valid.");
 });
 
 // Set up for socket.io
 var socketapp = express();
 var server = require("http").createServer(socketapp);
 var io = require("socket.io")(server, {
-	cors: {
-	  origin: "*"
-	}
-  });
+    cors: {
+        origin: "*"
+    }
+});
 
 var serv_port = 4000;
 
 server.listen(serv_port, function () {
-    console.log('Express server listening on port %d in %s mode', serv_port, socketapp.get('env'));
+    console.log("Express server listening on port %d in %s mode", serv_port, socketapp.get("env"));
 });
 
 // Connection event, sockets represent user
 io.on("connection", (socket) => {
-	console.log(`Listening on port: ${socket.id}`);
+    console.log(`Listening on port: ${socket.id}`);
 
-	socket.on("join_room", (room_id) => {
-		socket.join(room_id);
-	});
+    socket.on("join_room", (room_id) => {
+        socket.join(room_id);
+    });
 
-	socket.on("drawing", (room_id, data) => {
-		socket.to(room_id).emit("drawing", data);
-	});
+    socket.on("drawing", (room_id, data) => {
+        socket.to(room_id).emit("drawing", data);
+    });
 
-	socket.on("comment", (room_id, comment) => {
-		socket.to(room_id).emit("comment", comment);
-	});
+    socket.on("comment", (room_id, comment) => {
+        socket.to(room_id).emit("comment", comment);
+    });
 });
 
 module.exports = app;
