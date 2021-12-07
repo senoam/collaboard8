@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS strokes (
     stroke_id serial,
-    whiteboard_id int,
+    whiteboard_id varchar(100),
     user_id int,
-    stroke_time timestamp(3),
-    stroke_string varchar(1000),
-    stroke_shape varchar(10),
-    stroke_colour varchar(10),
-    stroke_size int,
+    draw_time timestamp(3),
+    data_string varchar(1000),
+    brush_shape varchar(10),
+    brush_colour varchar(10),
+    brush_size int,
     PRIMARY KEY (stroke_id),
-    FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id),
+    --FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id), add this back once whiteboard db is implemented
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
