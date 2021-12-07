@@ -28,11 +28,6 @@ function Whiteboard(props) {
         navigate("/whiteboard/history", { state: { room: socketObj.room } });
     };
 
-    let navigate = useNavigate();
-    const updateNavigate = (event) => {
-        navigate("/whiteboard/history", { state: { room: socketObj.room } });
-    };
-
     return (
         <Fragment>
             <div className="whiteboard-header">
