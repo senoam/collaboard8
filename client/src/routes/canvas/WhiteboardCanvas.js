@@ -58,16 +58,7 @@ function WhiteboardCanvas(props) {
         window.tool = props.brush.type;
 
         retrieveStroke(socketObj);
-        trackHistory();
-
-        return () => {
-            window.removeEventListener("mouseout", handler, false);
-        };
-    }, []);
-
-    window.onbeforeunload = function () {
-        return "Are you sure you want to leave this whiteboard?";
-    };
+    });
 
     // Component on mount
     useEffect(() => {

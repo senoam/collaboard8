@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS strokes (
     stroke_id serial,
     whiteboard_id int,
     user_id int,
-    stroke_time timestamp(3),
+    stroke_time timestamp(0),
     stroke_string varchar(1000),
     stroke_shape varchar(10),
     stroke_colour varchar(10),
