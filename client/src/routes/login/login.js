@@ -37,29 +37,35 @@ function Login(props) {
 
     return (
         <div className="login-wrapper">
-            <h2>Login</h2>
+            <h1>
+                Colla<span id="logo-green">Board</span>8
+            </h1>
+            <h3>A Collaborative Whiteboarding Tool</h3>
+            <hr class="short" />
             <form onSubmit={login}>
-                <label>
-                    <p>Email Address</p>
-                    <input
-                        type="text"
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                        }}
-                    />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input
-                        type="password"
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                    />
-                </label>
+                <input
+                    type="text"
+                    placeholder="Email"
+                    class="login-input"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                />
+                <br />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    class="login-input"
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                    }}
+                />
                 <br />
                 <div>
                     <button type="submit">Login</button>
+                    <p>
+                        No Account? <a href="#">Sign up</a>
+                    </p>
                 </div>
             </form>
         </div>
