@@ -55,8 +55,8 @@ router.post("/get-history", function (req, res, next) {
     });
 });
 
-router.post("/thumbnail", function (req, res, next) {
-    var room_id = req.body.room_id;
+router.get("/thumbnail/:whiteboardId", function (req, res, next) {
+    var room_id = req.params.whiteboardId;
 
     var query_str =
         "SELECT 'data:image/png;base64,' || encode(snapshots.image_data, 'base64') AS image_data, snapshots.image_time \
