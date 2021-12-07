@@ -55,4 +55,24 @@ router.post("/get-history", function (req, res, next) {
     });
 });
 
+router.post("/thumbnail", function (req, res, next) {
+    var room_id = req.body.room_id;
+
+    var query str = "SELECT 'data:image/png;base64,' || encode(snapshots.image_data, 'base64') AS image_data, snapshots.image_time \
+    FROM session_history \
+    JOIN snapshots ON session_history.image_id = snapshots.image_id \
+    WHERE session_history.room_id = $1 \
+    ORDER BY snapshots.image_time \
+    DESC LIMIT 1";
+
+    req.db.query(query_str, [room_id], function (err, result) {
+        if (err) {
+            next(err);
+            res.send("Error in getting history.");
+        } else {
+            res.json({ data: result.rows });
+        }
+    });
+});
+
 module.exports = router;
