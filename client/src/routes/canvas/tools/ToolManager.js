@@ -23,6 +23,10 @@ export class ToolManager {
                 Circle.draw(context, start.x, start.y, current.x, current.y);
                 Circle.draw(context, current.x, current.y, start.x, start.y); // close the loop
                 break;
+            case "eraser":
+                context.strokeStyle = "#FFFFFF";
+                Freehand.draw(context, previous.x, previous.y, current.x, current.y);
+                break;
             default:
                 Freehand.draw(context, previous.x, previous.y, current.x, current.y);
         }
@@ -30,6 +34,7 @@ export class ToolManager {
 
     load(tool, data) {
         const canvas = window.canvasRef.current;
+        const context = canvas.getContext("2d");
         switch (tool) {
             case "freehand":
                 Freehand.load(canvas, data);
@@ -39,6 +44,10 @@ export class ToolManager {
                 break;
             case "circle":
                 Circle.load(canvas, data);
+                break;
+            case "eraser":
+                context.strokeStyle = "#FFFFFF";
+                Freehand.load(canvas, data);
                 break;
             default:
                 Freehand.load(canvas, data);
