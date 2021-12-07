@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS comments (
     message_text varchar(200),
     user_id int,
     parent_comment_id int, 
-    time_stamp timestamp(3),
+    time_stamp timestamp(0),
     PRIMARY KEY (comment_id),
     FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id)
 
