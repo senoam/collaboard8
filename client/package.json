@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "dev": "nodemon -L --exec npm start"
+    "dev": "nodemon -L --exec npm start --config nodemon.json"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
