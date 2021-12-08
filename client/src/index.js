@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from "./App";
 import Whiteboard from "./routes/whiteboard/Whiteboard";
-import HistoryCarousel from "./routes/history/Carousel";
 import Login from "./routes/login/login";
 import Signup from "./routes/signup/signup";
 import PrivateRoute from "./routes/private/private-route";
