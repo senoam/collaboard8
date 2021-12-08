@@ -31,7 +31,7 @@ function Login(props) {
                 if (response.data.accessToken) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
-                navigate("/home");
+                navigate("/home", { state: { userId: response.data.user_id } });
             });
     };
 

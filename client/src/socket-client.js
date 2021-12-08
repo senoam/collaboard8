@@ -10,4 +10,4 @@ socket.on('connection', () => {
 
 socket.emit('joinServer', username)
 
-socket.emit('joinRoom', room_id, callback)
+socket.emit('joinRoom', whiteboard_id, callback)

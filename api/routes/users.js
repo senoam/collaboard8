@@ -1,18 +1,22 @@
 var express = require("express");
 var router = express.Router();
 
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-    res.send("respond with a resource");
-});
+// Returns the user's whiteboard ids, titles, and their role
+router.get("/id/:userId/whiteboards", function (req, res, next) {
+    const query =
+        "SELECT wb.whiteboard_id, wb.whiteboard_title, wbc.user_role \
+        FROM whiteboard wb, whiteboard_collaborator wbc \
+        WHERE \
+            wb.whiteboard_id=wbc.whiteboard_id AND \
+            wbc.user_id=$1;";
 
-router.get("/db", function (req, res) {
-    req.db
-        .query(`SELECT * FROM users;`)
-        .then((data) => {
-            res.json({ data: data.rows });
-        })
-        .catch(() => res.send("Theres something wrong with user table."));
+    const { userId } = req.params;
+
+    req.db.query(query, [userId], function (err, dbResult) {
+        if (err) next(err);
+
+        res.json({ data: dbResult.rows });
+    });
 });
 
 module.exports = router;

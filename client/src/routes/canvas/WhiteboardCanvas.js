@@ -30,7 +30,7 @@ function WhiteboardCanvas(props) {
                     axios
                         .post("http://localhost:4200/history/add-history", {
                             timestamp: timestamp,
-                            room_id: socketObj.room,
+                            whiteboard_id: socketObj.room,
                             buffer: imgURL
                         })
                         .then((response) => {

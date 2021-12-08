@@ -6,15 +6,8 @@ import "./App.css";
 function App(props) {
     const [apiResponse, setResponse] = useState("");
     const [dbStatus, setStatus] = useState("");
-    const [roles, setRoles] = useState("");
-
-    const [room_id, setRoom] = React.useState("");
 
     let navigate = useNavigate();
-
-    const inputRoom = (event) => {
-        setRoom(event.target.value);
-    };
 
     const callAPI = () => {
         fetch("http://localhost:4200/testAPI")
@@ -29,28 +22,16 @@ function App(props) {
             .catch((err) => err);
     };
 
-    const getWhiteboardRoles = () => {
-        fetch("http://localhost:4200/testAPI/collabrole")
-            .then((res) => res.json())
-            .then((d) => {
-                const rows = d.data;
-                const rolesmap = rows.map((row) => (
-                    <li key={`role_${row.role_name}`}>{row.role_name}</li>
-                ));
-
-                setRoles(rolesmap);
-            })
-            .catch((err) => err);
-    };
-
     const updateNavigate = (event) => {
-        navigate("/whiteboard", { state: { room: room_id } });
+        // Hardcoded whiteboardid for John Smith for now until we have the boards page. This id is from the whiteboard.sql.
+        navigate("/whiteboard", {
+            state: { whiteboardId: "4db898e8-556c-11ec-beb4-0242ac130002" }
+        });
     };
 
     useEffect(() => {
         callAPI();
         callDB();
-        getWhiteboardRoles();
     }, []);
 
     return (
@@ -61,17 +42,9 @@ function App(props) {
             </header>
             <p className="App-intro">{apiResponse}</p>
             <p className="App-intro">{dbStatus}</p>
-            <h3>Whiteboard Roles (Example db call):</h3>
-            <ul>{roles}</ul>
             <br></br>
-            <input
-                type="text"
-                placeholder="Room Name"
-                value={room_id}
-                onChange={inputRoom}
-            />
             <button type="button" onClick={updateNavigate}>
-                Join Room
+                Join Room 4db898e8-556c-11ec-beb4-0242ac130002
             </button>
         </div>
     );
