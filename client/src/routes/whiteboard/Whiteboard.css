@@ -1,3 +1,73 @@
-.whiteboard-header {
+/* overwriting default color input style from https://stackoverflow.com/questions/48832432/rounded-input-type-color*/
+input[type="color"] {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    border: 0.3em solid var(--primary);
+    overflow: hidden;
+    margin-top: 0.3em;
+}
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+}
+
+option {
+    font-size: 2em;
+}
+
+.whiteboard-header,
+.whiteboard-toolbar {
     width: 100%;
+    height: 5vh;
+    position: fixed;
+    display: grid;
+    grid-gap: 2em;
+    background-color: var(--secondary);
+}
+
+.whiteboard-header {
+    top: 0;
+    grid-template-columns: 4fr 4fr 4fr;
+}
+
+.whiteboard-title {
+    margin-top: 0.5em;
+    text-align: center;
+}
+
+.whiteboard-toolbar {
+    bottom: 0;
+    grid-template-columns: 3fr 1fr 1fr 3fr 3fr;
+}
+
+#brush-size-picker {
+    margin-top: 0.8em;
+}
+
+#brush-type-picker > select {
+    width: 3em;
+    height: 3em;
+    line-height: 1.5em;
+    border-radius: 50%;
+    color: var(--dark);
+    text-align: center;
+    background: var(--primary);
+    margin-top: 0.3em;
+}
+
+#logout-button {
+    margin-left: 29vw;
 }

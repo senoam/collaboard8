@@ -1,12 +1,15 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useNavigate } from "react";
 import { useLocation } from "react-router";
 import { io } from "socket.io-client";
+import { CgUserAdd } from "react-icons/cg";
+import { MdHistory, MdLogout } from "react-icons/md";
+import Toggle from "react-toggle";
 import axios from "axios";
-
 import ReactModal from "react-modal";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 import HistoryCarousel from "../history/Carousel";
+import authService from "../../services/auth.service";
 
 import "./Whiteboard.css";
 
@@ -18,6 +21,12 @@ function Whiteboard(props) {
     };
 
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
+
+    const logOut = () => {
+        const navigate = useNavigate();
+        authService.logout();
+        navigate("/");
+    };
 
     useEffect(() => {
         socketObj.socket.emit("join_room", socketObj.room);
@@ -31,7 +40,7 @@ function Whiteboard(props) {
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
 
-    const brushTypes = ["freehand", "rectangle", "circle", "eraser"];
+    const colourPickerStyle = { backgroundColor: brushColor };
 
     const [openModal, setOpen] = useState(false);
     function toggleModal() {
@@ -41,37 +50,70 @@ function Whiteboard(props) {
     return (
         <Fragment>
             <div className="whiteboard-header">
-                <h2>Whiteboard id: {socketObj.room}</h2>
-                <h2>Title: {whiteboardTitle}</h2>
-                <button type="button" onClick={toggleModal}>
-                    See Version History
+                <h1 className="mini-logo">
+                    Colla<span className="logo-green">board</span>8
+                </h1>
+                <h3 className="whiteboard-title">
+                    {whiteboardTitle}&nbsp;&nbsp;
+                    <MdHistory onClick={toggleModal} />
+                </h3>
+                <button className="round-button" id="logout-button" onClick={logOut}>
+                    <MdLogout />
                 </button>
+            </div>
 
-                <ReactModal
-                    isOpen={openModal}
-                    ariaHideApp={false}
-                    onRequestClose={toggleModal}
-                    shouldCloseOnOverlayClick={true}
-                    shouldCloseOnEsc={true}
-                >
-                    <HistoryCarousel socketObj={socketObj} />
-                    <button type="button" onClick={toggleModal}>
-                        Close
+            <ReactModal
+                isOpen={openModal}
+                ariaHideApp={false}
+                onRequestClose={toggleModal}
+                shouldCloseOnOverlayClick={true}
+                shouldCloseOnEsc={true}
+            >
+                <HistoryCarousel socketObj={socketObj} />
+                <button type="button" onClick={toggleModal}>
+                    Close
+                </button>
+            </ReactModal>
+
+            <WhiteboardCanvas
+                brush={{
+                    color: brushColor,
+                    size: brushSize,
+                    type: brushType
+                }}
+                socketObj={socketObj}
+            />
+
+            <div className="whiteboard-toolbar">
+                <div>
+                    <button className="round-button">
+                        <CgUserAdd />
                     </button>
-                </ReactModal>
+                </div>
 
-                <div className="whiteboard-picker">
-                    <label htmlFor="brushColorPicker">Brush color: </label>
+                <div id="brush-type-picker">
+                    <select
+                        onChange={(e) => {
+                            setBrushType(e.target.value);
+                        }}
+                    >
+                        <option value="freehand">&#9998;</option>
+                        <option value="rectangle">&#9633;</option>
+                        <option value="circle">&#9675;</option>
+                        <option value="eraser">&#8998;</option>
+                    </select>
+                </div>
+
+                <div>
                     <input
                         type="color"
-                        id="brushColorPicker"
-                        name="brushColorPicker"
                         value={brushColor}
+                        style={{ backgroundColor: brushColor }}
                         onChange={(e) => setBrushColor(e.target.value)}
                     />
                 </div>
 
-                <div className="whiteboard-picker">
+                <div id="brush-size-picker">
                     <label htmlFor="brushSizePicker">Brush size: </label>
                     <input
                         type="range"
@@ -83,32 +125,10 @@ function Whiteboard(props) {
                     />
                 </div>
 
-                <div className="whiteboard-picker">
-                    <label htmlFor="brushTypePicker">Brush type: </label>
-                    <select
-                        name="brushTypePicker"
-                        id="brushTypePicker"
-                        onChange={(e) => {
-                            setBrushType(e.target.value);
-                        }}
-                    >
-                        {brushTypes.map((t) => (
-                            <option key={t} value={t}>
-                                {t}
-                            </option>
-                        ))}
-                    </select>
+                <div>
+                    <Toggle defaultChecked={true} icons={false} />
                 </div>
             </div>
-
-            <WhiteboardCanvas
-                brush={{
-                    color: brushColor,
-                    size: brushSize,
-                    type: brushType
-                }}
-                socketObj={socketObj}
-            />
 
             <CommentContainer socketObj={socketObj} />
         </Fragment>
