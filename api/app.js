@@ -17,6 +17,7 @@ var testAPIRouter = require("./routes/testAPI");
 var strokesRouter = require("./routes/strokes");
 var commentsRouter = require("./routes/comments");
 var historyRouter = require("./routes/history");
+var currentUserRouter = require("./routes/currentUser");
 var whiteboardRouter = require("./routes/whiteboard");
 
 // Postgres
@@ -55,6 +56,7 @@ app.use("/testAPI", testAPIRouter);
 app.use("/strokes", strokesRouter);
 app.use("/comments", commentsRouter);
 app.use("/history", historyRouter);
+app.use("/current-user", currentUserRouter);
 app.use("/whiteboard", whiteboardRouter);
 
 // catch 404 and forward to error handler

@@ -9,20 +9,20 @@ function verifyToken(req, res, next) {
 
     if (token == null) {
         res.sendStatus(401);
+        res.end();
+        return;
     }
 
-    var verifiedUser = jwt.verify(
-        token,
-        process.env.ACCESS_TOKEN,
-        (error, user) => {
-            if (error) {
-                return res.sendStatus(403);
-            }
-            req.user = user;
+    var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
+        if (error) {
+            res.status(401).send({
+                message: "forbidden"
+            });
+            return;
         }
-    );
-
-    next();
+        req.user = user;
+        next();
+    });
 }
 
 function createAccessToken(user) {

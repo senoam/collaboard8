@@ -26,7 +26,16 @@ class AuthService {
         });
     }
 
+    logout() {
+        localStorage.removeItem("user");
+    }
+
     getCurrentUser() {
+        if (localStorage.getItem("user") === null) {
+            return undefined;
+        }
+        console.log(localStorage.getItem("user"));
+
         return JSON.parse(localStorage.getItem("user"));
     }
 }
