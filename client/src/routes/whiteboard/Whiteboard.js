@@ -23,7 +23,7 @@ function Whiteboard(props) {
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
 
-    const brushTypes = ["freehand", "rectangle", "circle"];
+    const brushTypes = ["freehand", "rectangle", "circle", "eraser"];
 
     const [openModal, setOpen] = useState(false);
     function toggleModal() {

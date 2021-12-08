@@ -8,7 +8,10 @@
     "history": "^5.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+<<<<<<< HEAD
     "react-modal": "^3.14.4",
+=======
+>>>>>>> d1a90ff5d8e093e16908c89f99765a6578f51931
     "react-responsive-carousel": "^3.2.22",
     "react-router": "^6.0.2",
     "react-router-dom": "^6.0.2",
