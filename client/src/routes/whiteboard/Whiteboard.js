@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { io } from "socket.io-client";
+import axios from "axios";
+
 import ReactModal from "react-modal";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
@@ -12,14 +14,20 @@ function Whiteboard(props) {
     const location = useLocation();
     const socketObj = {
         socket: io("http://localhost:4000"),
-        room: location.state.room
+        room: location.state.whiteboardId
     };
+
+    const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
     useEffect(() => {
         socketObj.socket.emit("join_room", socketObj.room);
-    }, [props.room]);
 
-    const [brushColor, setBrushColor] = useState("black");
+        axios.get(`http://localhost:4200/whiteboard/id/${socketObj.room}`).then((res) => {
+            setWhiteboardTitle(res.data.whiteboard_title);
+        });
+    }, []);
+
+    const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
 
@@ -33,8 +41,8 @@ function Whiteboard(props) {
     return (
         <Fragment>
             <div className="whiteboard-header">
-                <h2>Whiteboard</h2>
-                <h2>Room: {socketObj.room}</h2>
+                <h2>Whiteboard id: {socketObj.room}</h2>
+                <h2>Title: {whiteboardTitle}</h2>
                 <button type="button" onClick={toggleModal}>
                     See Version History
                 </button>

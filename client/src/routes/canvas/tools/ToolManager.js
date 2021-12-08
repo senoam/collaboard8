@@ -32,9 +32,11 @@ export class ToolManager {
         }
     }
 
-    load(tool, data) {
+    load(data, tool, colour, size) {
         const canvas = window.canvasRef.current;
         const context = canvas.getContext("2d");
+        context.strokeStyle = colour;
+        context.lineWidth = size;
         switch (tool) {
             case "freehand":
                 Freehand.load(canvas, data);

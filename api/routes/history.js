@@ -8,7 +8,7 @@ router.get("/", function (req, res, next) {
 router.post("/add-history", function (req, res, next) {
     console.log("Got add-history request");
 
-    var { timestamp, room_id, buffer } = req.body;
+    var { timestamp, whiteboard_id, buffer } = req.body;
     buffer = buffer.replace("data:image/png;base64,", "");
 
     var query_str =
@@ -20,8 +20,8 @@ router.post("/add-history", function (req, res, next) {
         } else {
             var snap_id = result.rows[0].image_id;
 
-            var query_str2 = "INSERT INTO session_history(room_id, image_id) VALUES($1, $2)";
-            req.db.query(query_str2, [room_id, snap_id], function (err2, result2) {
+            var query_str2 = "INSERT INTO session_history(whiteboard_id, image_id) VALUES($1, $2)";
+            req.db.query(query_str2, [whiteboard_id, snap_id], function (err2, result2) {
                 if (err2) {
                     next(err2);
                     res.send("Error in session_history table.");
@@ -36,16 +36,16 @@ router.post("/add-history", function (req, res, next) {
 
 //Set up getting cross table
 router.post("/get-history", function (req, res, next) {
-    var room_id = req.body.room_id;
+    var whiteboard_id = req.body.whiteboard_id;
 
     var query_str =
         "SELECT snapshots.image_id, to_char(snapshots.image_time, 'DD Mon YYYY HH:MI:SSPM') AS image_time, 'data:image/png;base64,' || encode(snapshots.image_data, 'base64') AS image_data \
     FROM session_history \
     JOIN snapshots ON session_history.image_id = snapshots.image_id \
-    WHERE session_history.room_id = $1 \
+    WHERE session_history.whiteboard_id = $1 \
     ORDER BY snapshots.image_time";
 
-    req.db.query(query_str, [room_id], function (err, result) {
+    req.db.query(query_str, [whiteboard_id], function (err, result) {
         if (err) {
             next(err);
             res.send("Error in getting history.");
@@ -62,7 +62,7 @@ router.get("/thumbnail/:whiteboardId", function (req, res, next) {
         "SELECT 'data:image/png;base64,' || encode(snapshots.image_data, 'base64') AS image_data, snapshots.image_time \
     FROM session_history \
     JOIN snapshots ON session_history.image_id = snapshots.image_id \
-    WHERE session_history.room_id = $1 \
+    WHERE session_history.whiteboard_id = $1 \
     ORDER BY snapshots.image_time \
     DESC LIMIT 1";
 

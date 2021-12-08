@@ -24,17 +24,19 @@ router.post("/", function (req, res, next) {
                             email: data[0].email
                         };
                         const accessToken = auth.createAccessToken(user);
-
                         res.status(200).send({
+                            user_id: data[0].user_id,
                             email: email,
                             accessToken: accessToken
                         });
                     } else {
-                        res.status(401).send("Invalid email and/or password");
+                        res.send("Invalid email and/or password");
                     }
+                    res.end();
                 });
             } else {
-                res.status(401).send("Invalid email and/or password");
+                res.send("Invalid email and/or password");
+                res.end();
             }
         });
     } else {
