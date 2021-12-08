@@ -1,8 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { io } from "socket.io-client";
+import ReactModal from "react-modal";
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
+import HistoryCarousel from "../history/Carousel";
 
 import "./Whiteboard.css";
 
@@ -23,19 +25,32 @@ function Whiteboard(props) {
 
     const brushTypes = ["freehand", "rectangle", "circle"];
 
-    let navigate = useNavigate();
-    const updateNavigate = (event) => {
-        navigate("/whiteboard/history", { state: { room: socketObj.room } });
-    };
+    const [openModal, setOpen] = useState(false);
+    function toggleModal() {
+        setOpen(!openModal);
+    }
 
     return (
         <Fragment>
             <div className="whiteboard-header">
                 <h2>Whiteboard</h2>
                 <h2>Room: {socketObj.room}</h2>
-                <button type="button" onClick={updateNavigate}>
+                <button type="button" onClick={toggleModal}>
                     See Version History
                 </button>
+
+                <ReactModal
+                    isOpen={openModal}
+                    ariaHideApp={false}
+                    onRequestClose={toggleModal}
+                    shouldCloseOnOverlayClick={true}
+                    shouldCloseOnEsc={true}
+                >
+                    <HistoryCarousel socketObj={socketObj} />
+                    <button type="button" onClick={toggleModal}>
+                        Close
+                    </button>
+                </ReactModal>
 
                 <div className="whiteboard-picker">
                     <label htmlFor="brushColorPicker">Brush color: </label>
