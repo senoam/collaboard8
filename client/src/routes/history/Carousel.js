@@ -1,40 +1,44 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 import axios from "axios";
 
-function Carousel(props) {
+function HistoryCarousel(props) {
     const location = useLocation();
     const room = location.state.room;
     const [imgs, setImgs] = useState([]);
-    
-    const getHistory = () => {
-        axios.post("http://localhost:4200/history/get-history", {
-						room_id: room
-					})
-					.then((response) => {
-						console.log(response.data.data);
-                        
-                        const rows = response.data.data;
-                        const imgsmap = rows.map((row) => (
-                                <img key={row.image_id} src={row.image_data} alt=""></img>
-                            ));
 
-                        setImgs(imgsmap);
-                    });
+    const getHistory = () => {
+        axios
+            .post("http://localhost:4200/history/get-history", {
+                room_id: room
+            })
+            .then((response) => {
+                console.log(response.data.data);
+
+                const rows = response.data.data;
+                const imgsmap = rows.map((row) => (
+                    <div>
+                        <img key={row.image_id} src={row.image_data} alt="" />
+                        <p className="legend">{row.image_time}</p>
+                    </div>
+                ));
+
+                setImgs(imgsmap);
+            });
     };
 
     useEffect(() => {
-		getHistory();
+        getHistory();
     }, []);
 
     return (
         <Fragment>
             <h1>Snapshot History</h1>
-            <div>
-                {imgs}
-            </div>
+            <Carousel>{imgs}</Carousel>
         </Fragment>
     );
 }
 
-export default Carousel;
+export default HistoryCarousel;
