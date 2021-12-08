@@ -3,16 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "./login.css";
 
-// const required = (value) => {
-// 	if (!value) {
-// 		return (
-// 			<div className="alert alert-danger" role="alert">
-// 				This field is required
-// 			</div>
-// 		);
-// 	}
-// };
-
 // Authentication and Login https://www.bezkoder.com/react-jwt-auth/
 
 function Login(props) {
@@ -64,7 +54,7 @@ function Login(props) {
                 <div>
                     <button type="submit">Login</button>
                     <p>
-                        No Account? <a href="#">Sign up</a>
+                        No Account? <a href="/signup">Sign up</a>
                     </p>
                 </div>
             </form>

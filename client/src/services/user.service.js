@@ -5,7 +5,7 @@ const API_URL = process.env.API_URL;
 
 class UserService {
     getUserProfile() {
-        return axios.get(API_URL + "login/profile");
+        return axios.get(API_URL + "login/profile", { headers: authHeader() });
     }
 }
 
