@@ -1,12 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useLocation } from "react-router";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import axios from "axios";
 
 function HistoryCarousel(props) {
-    const location = useLocation();
-    const room = location.state.room;
+    const socketObj = props.socketObj;
+    const room = socketObj.room;
     const [imgs, setImgs] = useState([]);
 
     const getHistory = () => {
