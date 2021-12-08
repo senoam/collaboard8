@@ -19,7 +19,7 @@ function Whiteboard(props) {
         socketObj.socket.emit("join_room", socketObj.room);
     }, [props.room]);
 
-    const [brushColor, setBrushColor] = useState("black");
+    const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
 
