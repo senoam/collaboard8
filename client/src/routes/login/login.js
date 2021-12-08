@@ -2,14 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import "./login.css";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-
-import authService from "../../services/auth.service";
-
-import { isEmail } from "validator";
-import { Redirect } from "react-router-dom";
 
 const required = (value) => {
     if (!value) {
