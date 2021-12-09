@@ -8,6 +8,8 @@ function UserList(props) {
     const whiteboardId = socketObj.room;
 
     const [users, setUsers] = useState([]);
+    const [email, setEmail] = useState("");
+    const [role, setRole] = useState("");
 
     const removeUser = (id) => {
         axios
@@ -16,7 +18,7 @@ function UserList(props) {
                 user_id: id
             })
             .then((res) => {
-                console.log("Deleted user");
+                alert("You have deleted user");
             });
     };
 
@@ -27,8 +29,8 @@ function UserList(props) {
             const rows = res.data.collaborators;
             const usermap = rows.map((row) => (
                 <Fragment>
-                    <div class="user-email">{row.email}</div>
-                    <div class="user-role">{row.user_role}</div>
+                    <div className="user-email">{row.email}</div>
+                    <div className="user-role">{row.user_role}</div>
                     <div>
                         <button type="button" onClick={() => removeUser(row.user_id)}>
                             Remove
@@ -41,9 +43,36 @@ function UserList(props) {
         });
     };
 
+    const inputEmail = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const inputRole = (event) => {
+        setRole(event.target.value);
+    };
+
+    const handleAdd = (event) => {
+        event.preventDefault();
+        alert("You have submitted an add collaborator request");
+    };
+
     const addCollab = (email, role) => {
         axios.get(`http://localhost:4200/users/id/${email}`).then((res) => {
-            console.log(res.data);
+            if (res.data) {
+                var uid = res.data;
+
+                console.log(uid);
+                axios
+                    .post(`http://localhost:4200/whiteboard/add-collaborator`, {
+                        whiteboard_id: whiteboardId,
+                        user_id: uid,
+                        user_role: role
+                    })
+                    .then((res) => {
+                        console.log("Added collaborator");
+                        console.log(res.data);
+                    });
+            }
         });
     };
 
@@ -62,9 +91,30 @@ function UserList(props) {
             </div>
 
             <br></br>
-            <form></form>
-
-            <button type="button">Add Collaborator</button>
+            <form onSubmit={handleAdd}>
+                <fieldset>
+                    <label>
+                        <p>Collaborator Email</p>
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            value={email}
+                            onChange={inputEmail}
+                        />
+                    </label>
+                    <label>
+                        <p>Role</p>
+                        <select name="role" onChange={inputRole} value={role}>
+                            <option value="">Please choose a role</option>
+                            <option value="owner">owner</option>
+                            <option value="editor">editor</option>
+                        </select>
+                    </label>
+                </fieldset>
+                <button type="submit" onClick={() => addCollab(email, role)}>
+                    Add Collaborator
+                </button>
+            </form>
         </Fragment>
     );
 }

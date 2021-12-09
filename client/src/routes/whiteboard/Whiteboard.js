@@ -79,9 +79,6 @@ function Whiteboard(props) {
     return (
         !isLoading && (
             <Fragment>
-                <button type="button" onClick={toggleUsers}>
-                    Open
-                </button>
                 <div className="whiteboard-header">
                     <h1 className="mini-logo">
                         Colla<span className="logo-green">board</span>8
@@ -119,7 +116,7 @@ function Whiteboard(props) {
 
                 <div className="whiteboard-toolbar">
                     <div>
-                        <button className="round-button" onclick={toggleUsers}>
+                        <button className="round-button" onClick={toggleUsers}>
                             <CgUserAdd />
                         </button>
 
