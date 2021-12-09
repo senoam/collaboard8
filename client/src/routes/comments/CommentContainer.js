@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./CommentContainer.css";
 import axios from "axios";
+import authHeader from "../../services/auth-header";
 
 function CommentContainer(props) {
     const socketObj = props.socketObj;
@@ -29,23 +30,30 @@ function CommentContainer(props) {
 
     const sendComment = (comment) => {
         // Post comment to comments db
-        axios.post("http://localhost:4200/comments/db", {
-            whiteboard_id: socketObj.room,
-            comment_location: "23,23",
-            message_text: comment,
-            user_id: 2,
-            parent_comment_id: 2
-        });
+        axios.post(
+            "http://localhost:4200/comments/db",
+            {
+                whiteboard_id: socketObj.room,
+                comment_location: "23,23",
+                message_text: comment,
+                user_id: 2,
+                parent_comment_id: 2
+            },
+            { headers: authHeader() }
+        );
     };
 
     const retrieveComment = (comment) => {
         // database retrieve
         axios
-            .post("http://localhost:4200/comments//get-comments", {
-                whiteboard_id: socketObj.room
-            })
+            .post(
+                "http://localhost:4200/comments//get-comments",
+                {
+                    whiteboard_id: socketObj.room
+                },
+                { headers: authHeader() }
+            )
             .then((res) => {
-                console.log(res.data["comments"][0]);
                 var comments = res.data["comments"];
                 for (let i = 0; i < comments.length; i++) {
                     comment = comments[i]["message_text"];

@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
+var auth = require("../modules/auth");
 
-router.get("/db", function (req, res) {
+router.get("/db", auth.verifyToken, function (req, res) {
     req.db
         .query(`SELECT * FROM comments;`)
         .then((data) => {
@@ -10,7 +11,7 @@ router.get("/db", function (req, res) {
         .catch(() => res.send("Theres something wrong with user table."));
 });
 
-router.post("/get-comments", function (req, res) {
+router.post("/get-comments", [auth.verifyToken], function (req, res) {
     var whiteboardID = req.body.whiteboard_id;
     req.db.query(
         `SELECT * FROM comments WHERE whiteboard_id = $1`,
@@ -27,7 +28,7 @@ router.post("/get-comments", function (req, res) {
     );
 });
 
-router.post("/db", function (req, res) {
+router.post("/db", auth.verifyToken, function (req, res) {
     const { whiteboard_id, comment_location, message_text, user_id, parent_comment_id } = req.body;
 
     req.db.query(

@@ -29,8 +29,9 @@ router.get("/get/:whiteboard_id", function (req, res, next) {
 
 /* POST new stroke. */
 router.post("/save", function (req, res, next) {
+    const { whiteboard_id, data_string, brush_shape, brush_colour, brush_size } = req.body;
     const sql = `INSERT INTO strokes(whiteboard_id, draw_time, data_string, brush_shape, brush_colour, brush_size)
-    VALUES ('${req.body.whiteboard_id}', current_timestamp, '${req.body.data_string}', '${req.body.brush_shape}', 'black', 1);`;
+    VALUES ('${whiteboard_id}', current_timestamp, '${data_string}', '${brush_shape}', '${brush_colour}', '${brush_size}');`;
 
     req.db.query(sql, function (err, result) {
         if (err) throw err;

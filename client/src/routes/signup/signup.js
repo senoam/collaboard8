@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import "./login.css";
+import "./signup.css";
 
-// Authentication and Login https://www.bezkoder.com/react-jwt-auth/
-
-function Login(props) {
+function Signup(props) {
     let navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
-    const login = (e) => {
+    const signup = (e) => {
         e.preventDefault();
         axios
-            .post("http://localhost:4200/login", {
+            .post("http://localhost:4200/signup", {
                 email: email,
-                password: password
+                password: password,
+                firstName: firstName,
+                lastName: lastName
             })
-            .then((response) => {
-                if (response.data.accessToken) {
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                }
-                navigate("/home", { state: { userId: response.data.user_id } });
+            .then(() => {
+                navigate("/");
             });
     };
 
@@ -32,7 +31,24 @@ function Login(props) {
             </h1>
             <h3>A Collaborative Whiteboarding Tool</h3>
             <hr class="short" />
-            <form onSubmit={login}>
+            <form onSubmit={signup}>
+                <input
+                    type="text"
+                    placeholder="First name"
+                    class="login-input name-input"
+                    onChange={(e) => {
+                        setFirstName(e.target.value);
+                    }}
+                />
+                <input
+                    type="text"
+                    placeholder="Last name"
+                    class="login-input name-input"
+                    onChange={(e) => {
+                        setLastName(e.target.value);
+                    }}
+                />
+                <br />
                 <input
                     type="text"
                     placeholder="Email"
@@ -52,9 +68,9 @@ function Login(props) {
                 />
                 <br />
                 <div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Sign up</button>
                     <p>
-                        No Account? <a href="/signup">Sign up</a>
+                        Have an account? <a href="/">Login</a>
                     </p>
                 </div>
             </form>
@@ -62,4 +78,4 @@ function Login(props) {
     );
 }
 
-export default Login;
+export default Signup;

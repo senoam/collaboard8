@@ -1,0 +1,110 @@
+:root {
+    /* https://stackoverflow.com/questions/33606565/is-it-possible-to-calculate-the-viewport-width-vw-without-scrollbar */
+    /* IMPORTANT: IF YOU WANT TO ADD MARGINS TO BOARDS PAGE, PLEASE UPDATE THE MATH FOR --boards-full-width */
+    --boards-full-width: calc(100vw - (100vw - 100%));
+    --boards-width-2: calc(var(--boards-full-width) / 2);
+    --boards-width-3: calc(var(--boards-full-width) / 3);
+    --boards-width-4: calc(var(--boards-full-width) / 4);
+    --boards-width-5: calc(var(--boards-full-width) / 5);
+}
+
+.Boards-container {
+    grid-gap: 0vh;
+    display: grid;
+}
+
+.Boards-create-tile {
+    padding: 16px;
+    text-align: center;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+.Boards-create-button {
+    border: rgb(196, 196, 196) 2px solid;
+    width: 100%;
+    height: 100%;
+}
+
+.Boards-create-button-container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.Boards-create-button-icon {
+    width: 25%;
+}
+
+/* Rainbow gradient on the text for funsies */
+.Boards-create-button:hover .Boards-create-button-label {
+    background-image: linear-gradient(-45deg, #f38d6e, #fa68a0, #4dc0eb, #81ecd3);
+    background-size: 400% 400%;
+    animation: gradient 5s ease infinite;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* https://www.sliderrevolution.com/resources/css-animated-background/ */
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Used the following resource on media queries */
+/* https://www.w3schools.com/css/css_rwd_mediaqueries.asp */
+
+@media only screen and (max-width: 600px) {
+    .Boards-container {
+        grid-template-columns: var(--boards-full-width);
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .Boards-container {
+        grid-template-columns:
+            var(--boards-width-2)
+            var(--boards-width-2);
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .Boards-container {
+        width: var(--boards-full-width);
+        grid-template-columns:
+            var(--boards-width-3)
+            var(--boards-width-3)
+            var(--boards-width-3);
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .Boards-container {
+        grid-template-columns:
+            var(--boards-width-4)
+            var(--boards-width-4)
+            var(--boards-width-4)
+            var(--boards-width-4);
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    .Boards-container {
+        grid-template-columns:
+            var(--boards-width-5)
+            var(--boards-width-5)
+            var(--boards-width-5)
+            var(--boards-width-5)
+            var(--boards-width-5);
+    }
+}

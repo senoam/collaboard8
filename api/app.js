@@ -17,6 +17,8 @@ var testAPIRouter = require("./routes/testAPI");
 var strokesRouter = require("./routes/strokes");
 var commentsRouter = require("./routes/comments");
 var historyRouter = require("./routes/history");
+var currentUserRouter = require("./routes/currentUser");
+var whiteboardRouter = require("./routes/whiteboard");
 
 // Postgres
 const client = new pg.Client({
@@ -54,6 +56,8 @@ app.use("/testAPI", testAPIRouter);
 app.use("/strokes", strokesRouter);
 app.use("/comments", commentsRouter);
 app.use("/history", historyRouter);
+app.use("/current-user", currentUserRouter);
+app.use("/whiteboard", whiteboardRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -89,16 +93,16 @@ server.listen(serv_port, function () {
 io.on("connection", (socket) => {
     console.log(`Listening on port: ${socket.id}`);
 
-    socket.on("join_room", (room_id) => {
-        socket.join(room_id);
+    socket.on("join_room", (whiteboard_id) => {
+        socket.join(whiteboard_id);
     });
 
-    socket.on("drawing", (room_id, data) => {
-        socket.to(room_id).emit("drawing", data);
+    socket.on("drawing", (whiteboard_id, data) => {
+        socket.to(whiteboard_id).emit("drawing", data);
     });
 
-    socket.on("comment", (room_id, comment) => {
-        socket.to(room_id).emit("comment", comment);
+    socket.on("comment", (whiteboard_id, comment) => {
+        socket.to(whiteboard_id).emit("comment", comment);
     });
 });
 

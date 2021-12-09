@@ -1,0 +1,85 @@
+:root {
+    --board-tile-padding: 16px;
+    --board-tile-img-border: 2px;
+    --board-tile-width: 100%;
+}
+
+.BoardTile {
+    padding: var(--board-tile-padding);
+    position: relative;
+    display: block;
+}
+
+.BoardTile-link {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    display: block;
+}
+
+/* A new class for the hover is needed to not override the non-hover .BoardTile css */
+.BoardTile-hover:hover {
+    background-color: rgb(196, 196, 196);
+}
+
+.BoardTile-btn {
+    display: inline;
+    right: calc(var(--board-tile-padding) + 6px);
+    top: calc(var(--board-tile-padding) + 6px);
+    padding: 15px 20px;
+    background-color: rgb(0, 0, 0, 0.8);
+    border-radius: 25%;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+
+    /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.BoardTile-edit-btn {
+    display: none;
+}
+
+.BoardTile-hover:hover .BoardTile-edit-btn {
+    display: inline;
+}
+
+.BoardTile-title {
+    width: var(--board-tile-width);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.BoardTile-img {
+    /* If you use --board-tile-width on its own, the image will become slightly larger than the .BoardTile */
+    width: calc(var(--board-tile-width) - var(--board-tile-img-border));
+    border: solid var(--board-tile-img-border);
+}
+
+.BoardTile-edit-overlay {
+    background-color: rgb(0, 0, 0, 0.8);
+    padding: 0px;
+    color: white;
+    position: relative;
+}
+
+.BoardTile-edit-overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+.BoardTile-delete-btn:hover {
+    background-color: rgb(255, 68, 55);
+    color: white;
+}

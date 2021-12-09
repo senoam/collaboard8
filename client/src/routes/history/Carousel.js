@@ -11,7 +11,7 @@ function HistoryCarousel(props) {
     const getHistory = () => {
         axios
             .post("http://localhost:4200/history/get-history", {
-                room_id: room
+                whiteboard_id: room
             })
             .then((response) => {
                 console.log(response.data.data);
