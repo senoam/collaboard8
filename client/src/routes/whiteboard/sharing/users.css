@@ -1,4 +1,25 @@
 #user-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 40% 30% 30%;
+}
+
+.user-email {
+    font-size: 30px;
+    padding: 20px;
+    border: 2px solid black;
+    background-color: aliceblue;
+}
+
+.user-role {
+    font-size: 30px;
+    padding: 20px;
+    border: 2px solid black;
+    background-color: aliceblue;
+}
+
+.table-header {
+    font-size: 45px;
+    font-weight: bold;
 }

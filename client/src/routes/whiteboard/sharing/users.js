@@ -26,16 +26,24 @@ function UserList(props) {
 
             const rows = res.data.collaborators;
             const usermap = rows.map((row) => (
-                <div id="user-container">
+                <Fragment>
                     <div class="user-email">{row.email}</div>
                     <div class="user-role">{row.user_role}</div>
-                    <button type="button" onClick={() => removeUser(row.user_id)}>
-                        Remove
-                    </button>
-                </div>
+                    <div>
+                        <button type="button" onClick={() => removeUser(row.user_id)}>
+                            Remove
+                        </button>
+                    </div>
+                </Fragment>
             ));
 
             setUsers(usermap);
+        });
+    };
+
+    const addCollab = (email, role) => {
+        axios.get(`http://localhost:4200/users/id/${email}`).then((res) => {
+            console.log(res.data);
         });
     };
 
@@ -46,7 +54,17 @@ function UserList(props) {
     return (
         <Fragment>
             <h1>Collaborators List</h1>
-            <body>{users}</body>
+            <div id="user-container">
+                <div id="table-header">Email</div>
+                <div id="table-header">User Role</div>
+                <div id="table-header">Delete Collaborator from Whiteboard</div>
+                {users}
+            </div>
+
+            <br></br>
+            <form></form>
+
+            <button type="button">Add Collaborator</button>
         </Fragment>
     );
 }

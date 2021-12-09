@@ -19,4 +19,19 @@ router.get("/id/:userId/whiteboards", function (req, res, next) {
     });
 });
 
+//Return user id given email
+router.get("/id/:email", function (req, res, next) {
+    const query = "SELECT user_id\
+        FROM users \
+        WHERE email=$1;";
+
+    const { email } = req.params;
+
+    req.db.query(query, [email], function (err, dbResult) {
+        if (err) next(err);
+
+        res.json(dbResult.rows[0]);
+    });
+});
+
 module.exports = router;
