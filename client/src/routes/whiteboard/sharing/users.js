@@ -59,7 +59,7 @@ function UserList(props) {
     const addCollab = (email, role) => {
         axios.get(`http://localhost:4200/users/id/${email}`).then((res) => {
             if (res.data) {
-                var uid = res.data;
+                var uid = res.data.user_id;
 
                 console.log(uid);
                 axios
