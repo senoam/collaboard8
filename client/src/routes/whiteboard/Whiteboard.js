@@ -66,7 +66,6 @@ function Whiteboard(props) {
     const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
-
     const [openModal, setOpen] = useState(false);
     function toggleModal() {
         setOpen(!openModal);

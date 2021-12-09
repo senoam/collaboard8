@@ -25,48 +25,53 @@ function Signup(props) {
     };
 
     return (
-        <div className="signup-wrapper">
-            <h2>Signup</h2>
+        <div className="login-wrapper">
+            <h1>
+                Colla<span className="logo-green">Board</span>8
+            </h1>
+            <h3>A Collaborative Whiteboarding Tool</h3>
+            <hr class="short" />
             <form onSubmit={signup}>
-                <label>
-                    <p>First Name</p>
-                    <input
-                        type="text"
-                        onChange={(e) => {
-                            setFirstName(e.target.value);
-                        }}
-                    />
-                </label>
-                <label>
-                    <p>Last Name</p>
-                    <input
-                        type="text"
-                        onChange={(e) => {
-                            setLastName(e.target.value);
-                        }}
-                    />
-                </label>
-                <label>
-                    <p>Email Address</p>
-                    <input
-                        type="text"
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                        }}
-                    />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input
-                        type="password"
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                    />
-                </label>
+                <input
+                    type="text"
+                    placeholder="First name"
+                    class="login-input name-input"
+                    onChange={(e) => {
+                        setFirstName(e.target.value);
+                    }}
+                />
+                <input
+                    type="text"
+                    placeholder="Last name"
+                    class="login-input name-input"
+                    onChange={(e) => {
+                        setLastName(e.target.value);
+                    }}
+                />
+                <br />
+                <input
+                    type="text"
+                    placeholder="Email"
+                    class="login-input"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                />
+                <br />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    class="login-input"
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                    }}
+                />
                 <br />
                 <div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Sign up</button>
+                    <p>
+                        Have an account? <a href="/">Login</a>
+                    </p>
                 </div>
             </form>
         </div>
