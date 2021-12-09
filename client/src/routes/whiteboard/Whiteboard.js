@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import React, { Fragment, useState, useEffect } from "react";
-import { useLocation } from "react-router";
-import { io } from "socket.io-client";
-import ReactModal from "react-modal";
-import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
-import CommentContainer from "../comments/CommentContainer";
-import HistoryCarousel from "../history/Carousel";
-=======
 import React, { Fragment, useState, useEffect, useNavigate } from "react";
 import { useLocation } from "react-router";
 import { io } from "socket.io-client";
@@ -20,7 +11,7 @@ import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
->>>>>>> 8ec5a467fcc54c74a35cf74e513951639f18d83c
+import UserList from "./sharing/users";
 
 import "./Whiteboard.css";
 
@@ -49,8 +40,6 @@ function Whiteboard(props) {
 
         var whiteboardId = location.state.whiteboardId;
 
-<<<<<<< HEAD
-=======
         if (!!whiteboardId) {
             axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
                 setWhiteboardTitle(res.data.whiteboard_title);
@@ -78,47 +67,21 @@ function Whiteboard(props) {
     const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
->>>>>>> 8ec5a467fcc54c74a35cf74e513951639f18d83c
     const [openModal, setOpen] = useState(false);
     function toggleModal() {
         setOpen(!openModal);
     }
+    const [openUsers, setUsers] = useState(false);
+    function toggleUsers() {
+        setUsers(!openUsers);
+    }
 
     return (
-<<<<<<< HEAD
-        <Fragment>
-            <div className="whiteboard-header">
-                <h2>Whiteboard</h2>
-                <h2>Room: {socketObj.room}</h2>
-                <button type="button" onClick={toggleModal}>
-                    See Version History
-                </button>
-
-                <ReactModal
-                    isOpen={openModal}
-                    ariaHideApp={false}
-                    onRequestClose={toggleModal}
-                    shouldCloseOnOverlayClick={true}
-                    shouldCloseOnEsc={true}
-                >
-                    <HistoryCarousel socketObj={socketObj} />
-                    <button type="button" onClick={toggleModal}>
-                        Close
-                    </button>
-                </ReactModal>
-
-                <div className="whiteboard-picker">
-                    <label htmlFor="brushColorPicker">Brush color: </label>
-                    <input
-                        type="color"
-                        id="brushColorPicker"
-                        name="brushColorPicker"
-                        value={brushColor}
-                        onChange={(e) => setBrushColor(e.target.value)}
-                    />
-=======
         !isLoading && (
             <Fragment>
+                <button type="button" onClick={toggleUsers}>
+                    Open
+                </button>
                 <div className="whiteboard-header">
                     <h1 className="mini-logo">
                         Colla<span className="logo-green">board</span>8
@@ -130,7 +93,6 @@ function Whiteboard(props) {
                     <button className="round-button" id="logout-button" onClick={logOut}>
                         <MdLogout />
                     </button>
->>>>>>> 8ec5a467fcc54c74a35cf74e513951639f18d83c
                 </div>
 
                 <ReactModal
@@ -157,9 +119,22 @@ function Whiteboard(props) {
 
                 <div className="whiteboard-toolbar">
                     <div>
-                        <button className="round-button">
+                        <button className="round-button" onclick={toggleUsers}>
                             <CgUserAdd />
                         </button>
+
+                        <ReactModal
+                            isOpen={openUsers}
+                            ariaHideApp={false}
+                            onRequestClose={toggleUsers}
+                            shouldCloseOnOverlayClick={true}
+                            shouldCloseOnEsc={true}
+                        >
+                            <UserList socketObj={socketObj} />
+                            <button type="button" onClick={toggleUsers}>
+                                Close
+                            </button>
+                        </ReactModal>
                     </div>
 
                     <div id="brush-type-picker">

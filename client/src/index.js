@@ -14,15 +14,9 @@ import LoginAuthRoute from "./routes/private/login-auth-route";
 ReactDOM.render(
     <BrowserRouter>
         <Routes>
-<<<<<<< HEAD
-            <Route path="/" element={<Login />}></Route>
-            <Route path="/whiteboard" element={<Whiteboard />} />
-            <Route path="/home" element={<App />} />
-=======
             <Route exact path="/" element={<LoginAuthRoute />}>
                 <Route exact path="/" element={<Login />} />
             </Route>
-            <Route path="/whiteboard/history" element={<HistoryCarousel />} />
             <Route exact path="/whiteboard" element={<PrivateRoute />}>
                 <Route exact path="/whiteboard" element={<Whiteboard />} />
             </Route>
@@ -30,7 +24,6 @@ ReactDOM.render(
                 <Route exact path="/home" element={<Boards />} />
             </Route>
             <Route path="/signup" element={<Signup />} />
->>>>>>> 8ec5a467fcc54c74a35cf74e513951639f18d83c
         </Routes>
     </BrowserRouter>,
     document.getElementById("root")

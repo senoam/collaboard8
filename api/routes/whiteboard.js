@@ -9,8 +9,9 @@ router.get("/id/:whiteboardId", function (req, res, next) {
         WHERE whiteboard_id=$1;";
 
     const wbcQuery =
-        "SELECT user_id, user_role \
+        "SELECT whiteboard_collaborator.user_id, whiteboard_collaborator.user_role, users.email \
         FROM whiteboard_collaborator \
+        JOIN users on whiteboard_collaborator.user_id = users.user_id\
         WHERE whiteboard_id=$1;";
 
     const { whiteboardId } = req.params;
