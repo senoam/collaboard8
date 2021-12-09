@@ -28,6 +28,7 @@ button {
     border-radius: 0.3em;
     font-size: 1.1em;
     font-family: var(--text-font); /* get semibold */
+    cursor: pointer;
 }
 
 h1 {

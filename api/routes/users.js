@@ -15,7 +15,7 @@ router.get("/id/:userId/whiteboards", function (req, res, next) {
     req.db.query(query, [userId], function (err, dbResult) {
         if (err) next(err);
 
-        res.json({ data: dbResult.rows });
+        res.json(dbResult.rows);
     });
 });
 
