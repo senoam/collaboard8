@@ -1,5 +1,13 @@
 .login-input {
     width: 25vw;
+    font-family: var(--text-font);
+    padding: 1em 2em;
+    margin-top: 2em;
+    border: 0.2em solid var(--light);
+    border-radius: 0.3em;
+    background-color: #f9f9fa;
+    color: var(--medium);
+    outline: none;
 }
 
 .login-wrapper {
