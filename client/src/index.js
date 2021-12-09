@@ -4,7 +4,7 @@ import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import App from "./App";
+import Boards from "./routes/boards/Boards";
 import Whiteboard from "./routes/whiteboard/Whiteboard";
 import HistoryCarousel from "./routes/history/Carousel";
 import Login from "./routes/login/login";
@@ -23,7 +23,7 @@ ReactDOM.render(
                 <Route exact path="/whiteboard" element={<Whiteboard />} />
             </Route>
             <Route exact path="/home" element={<PrivateRoute />}>
-                <Route exact path="/home" element={<App />} />
+                <Route exact path="/home" element={<Boards />} />
             </Route>
             <Route path="/signup" element={<Signup />} />
         </Routes>

@@ -49,7 +49,7 @@ router.post("/create", function (req, res, next) {
         req.db.query(ownerQuery, [whiteboardId, req.body.user_id], function (err, ownerResult) {
             if (err) next(err);
 
-            res.json({ data: ownerResult.rows[0] });
+            res.json(ownerResult.rows[0]);
         });
     });
 });
@@ -64,7 +64,7 @@ router.delete("/delete", function (req, res, next) {
     req.db.query(wbQuery, [whiteboard_id], function (err, wbResult) {
         if (err) next(err);
 
-        res.json({ data: wbResult.rows[0] });
+        res.json(wbResult.rows[0]);
     });
 });
 
@@ -80,7 +80,7 @@ router.put("/edit-title", function (req, res, next) {
     req.db.query(wbQuery, [new_whiteboard_title, whiteboard_id], function (err, wbResult) {
         if (err) next(err);
 
-        res.json({ data: wbResult.rows[0] });
+        res.json(wbResult.rows[0]);
     });
 });
 
@@ -95,7 +95,7 @@ router.post("/add-collaborator", function (req, res, next) {
     req.db.query(wbcQuery, [whiteboard_id, user_id, user_role], function (err, wbcResult) {
         if (err) next(err);
 
-        res.json({ data: wbcResult.rows[0] });
+        res.json(wbcResult.rows[0]);
     });
 });
 
@@ -110,7 +110,7 @@ router.delete("/remove-collaborator", function (req, res, next) {
     req.db.query(wbcQuery, [whiteboard_id, user_id], function (err, wbcResult) {
         if (err) next(err);
 
-        res.json({ data: wbcResult.rows[0] });
+        res.json(wbcResult.rows[0]);
     });
 });
 

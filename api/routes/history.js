@@ -71,7 +71,7 @@ router.get("/thumbnail/:whiteboardId", function (req, res, next) {
             next(err);
             res.send("Error in getting history.");
         } else {
-            res.json({ data: result.rows });
+            res.json(result.rows[0]);
         }
     });
 });
