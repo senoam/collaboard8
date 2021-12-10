@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { MdPersonRemoveAlt1 } from "react-icons/md";
 
 import "./users.css";
 
@@ -28,15 +29,19 @@ function UserList(props) {
 
             const rows = res.data.collaborators;
             const usermap = rows.map((row) => (
-                <Fragment>
-                    <div className="user-email">{row.email}</div>
-                    <div className="user-role">{row.user_role}</div>
-                    <div>
-                        <button type="button" onClick={() => removeUser(row.user_id)}>
-                            Remove
+                <tr>
+                    <td className="user-email">{row.email}</td>
+                    <td className="user-role">{row.user_role}</td>
+                    <td>
+                        <button
+                            type="button"
+                            className="round-button"
+                            onClick={() => removeUser(row.user_id)}
+                        >
+                            <MdPersonRemoveAlt1 />
                         </button>
-                    </div>
-                </Fragment>
+                    </td>
+                </tr>
             ));
 
             setUsers(usermap);
@@ -82,35 +87,43 @@ function UserList(props) {
 
     return (
         <Fragment>
-            <h1>Collaborators List</h1>
-            <div id="user-container">
-                <div id="table-header">Email</div>
-                <div id="table-header">User Role</div>
-                <div id="table-header">Delete Collaborator from Whiteboard</div>
+            <h2>Current collaborators</h2>
+            <hr className="hr-long"></hr>
+            <br />
+            <br />
+            <table>
+                <tr>
+                    <th>Email</th>
+                    <th>User Role</th>
+                    <th>Remove Collaborator</th>
+                </tr>
                 {users}
-            </div>
+            </table>
 
-            <br></br>
+            <h2>Add a new collaborator</h2>
+            <hr className="hr-long"></hr>
+            <br />
+            <br />
             <form onSubmit={handleAdd}>
-                <fieldset>
-                    <label>
-                        <p>Collaborator Email</p>
-                        <input
-                            type="text"
-                            placeholder="Email"
-                            value={email}
-                            onChange={inputEmail}
-                        />
-                    </label>
-                    <label>
-                        <p>Role</p>
-                        <select name="role" onChange={inputRole} value={role}>
-                            <option value="">Please choose a role</option>
-                            <option value="owner">owner</option>
-                            <option value="editor">editor</option>
-                        </select>
-                    </label>
-                </fieldset>
+                <label>
+                    <h4>Collaborator Email:</h4>
+                    <input
+                        type="text"
+                        className="search-bar"
+                        placeholder="example@email.com"
+                        value={email}
+                        onChange={inputEmail}
+                        required
+                    />
+                </label>
+                <label>
+                    <h4>Role:</h4>
+                    <select name="role" id="role-select" onChange={inputRole} value={role} required>
+                        <option value="owner">Owner</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                </label>
+                <br />
                 <button type="submit" onClick={() => addCollab(email, role)}>
                     Add Collaborator
                 </button>

@@ -26,7 +26,7 @@ function WhiteboardTitle(props) {
     return (
         <div className="whiteboard-edit-title" title={whiteboardTitle}>
             <label className="whiteboard-edit-title-label">
-                <p className="whiteboard-edit-title-text">{whiteboardTitle}</p>
+                <h3 className="whiteboard-edit-title-text">{whiteboardTitle}</h3>
                 <input
                     className="whiteboard-edit-title-input whiteboard-edit-title-input-hover"
                     type="text"
