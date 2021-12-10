@@ -11,6 +11,12 @@ import Login from "./routes/login/login";
 import Signup from "./routes/signup/signup";
 import PrivateRoute from "./routes/private/private-route";
 import LoginAuthRoute from "./routes/private/login-auth-route";
+import AuthVerify from "./common/AuthVerify";
+import authService from "./services/auth.service";
+
+const logOut = () => {
+    dispatchEvent(authService.logout());
+};
 
 ReactDOM.render(
     <BrowserRouter>
@@ -27,6 +33,8 @@ ReactDOM.render(
             </Route>
             <Route path="/signup" element={<Signup />} />
         </Routes>
+
+        <AuthVerify logOut={logOut}></AuthVerify>
     </BrowserRouter>,
     document.getElementById("root")
 );
