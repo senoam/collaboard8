@@ -1,7 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
+import { IconContext } from "react-icons";
 import { CgUserAdd } from "react-icons/cg";
 import { MdHistory, MdLogout, MdUndo, MdRedo } from "react-icons/md";
 import Toggle from "react-toggle";
@@ -12,6 +14,7 @@ import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
+import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
 import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
 
 import "./Whiteboard.css";
@@ -43,27 +46,26 @@ function Whiteboard(props) {
 
         if (!!whiteboardId) {
             axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
-                setWhiteboardTitle(res.data.whiteboard_title);
-
-                setSocketObj({
-                    socket: io("http://localhost:4000"),
-                    room: whiteboardId
-                });
+                initializeWhiteboard(res.data.whiteboard_title, whiteboardId);
             });
         } else {
             // Create a new whiteboard
             axios
                 .post("http://localhost:4200/whiteboard/create", { user_id: user.user_id })
                 .then((res) => {
-                    setWhiteboardTitle("Untitled CollaBoard");
-
-                    setSocketObj({
-                        socket: io("http://localhost:4000"),
-                        room: res.data.whiteboard_id
-                    });
+                    initializeWhiteboard("Untitled CollaBoard", res.data.whiteboard_id);
                 });
         }
     }, []);
+
+    const initializeWhiteboard = (title, id) => {
+        setWhiteboardTitle(title);
+
+        setSocketObj({
+            socket: io("http://localhost:4000"),
+            room: id
+        });
+    };
 
     const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState(10);
@@ -77,12 +79,21 @@ function Whiteboard(props) {
         !isLoading && (
             <Fragment>
                 <div className="whiteboard-header">
-                    <h1 className="mini-logo">
-                        Colla<span className="logo-green">board</span>8
-                    </h1>
+                    <Link to="/home" className="whiteboard-link">
+                        <h1 className="mini-logo">
+                            Colla<span className="logo-green">board</span>8
+                        </h1>
+                    </Link>
                     <h3 className="whiteboard-title">
-                        {whiteboardTitle}&nbsp;&nbsp;
-                        <MdHistory onClick={toggleModal} />
+                        <WhiteboardTitleEditor
+                            initialTitle={whiteboardTitle}
+                            whiteboardId={socketObj.room}
+                        />
+                        <IconContext.Provider
+                            value={{ className: "whiteboard-history-btn", size: 26 }}
+                        >
+                            <MdHistory onClick={toggleModal} />
+                        </IconContext.Provider>
                     </h3>
                     <button className="round-button" id="logout-button" onClick={logOut}>
                         <MdLogout />

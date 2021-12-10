@@ -1,0 +1,49 @@
+/* https://stackoverflow.com/questions/64092841/react-how-to-make-an-input-only-as-wide-as-the-amount-of-text-provided */
+.whiteboard-edit-title-input {
+    padding: 4px 0 4px 0px;
+    border: 1px solid var(--secondary);
+    border-radius: 0.3em;
+    background-color: var(--secondary);
+    color: var(--medium);
+    outline: none;
+    text-overflow: ellipsis;
+
+    font-family: inherit;
+    font-weight: bold;
+    font-size: inherit;
+    position: absolute;
+    vertical-align: top;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.whiteboard-edit-title-input-hover:hover {
+    border: 1px solid var(--light);
+}
+
+.whiteboard-edit-title-input-hover:focus {
+    border: 4px solid var(--primary-dark);
+}
+
+.whiteboard-edit-title-text {
+    white-space: pre;
+    padding: 4px 0;
+    margin: 0;
+    width: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.whiteboard-edit-title-label {
+    display: inline-block;
+    position: relative;
+    min-width: 2em;
+    min-height: 1.4em;
+    max-width: calc(100% - 50px);
+}
+
+.whiteboard-edit-title {
+    width: calc(100% - 50px);
+    display: inline;
+}

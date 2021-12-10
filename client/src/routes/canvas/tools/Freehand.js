@@ -12,6 +12,7 @@ export const load = (canvas, data_string) => {
 
 // handles freehand drawing
 export const draw = (context, x0, y0, x1, y1) => {
+    context.lineCap = "round";
     context.beginPath();
     context.moveTo(x0, y0);
     context.lineTo(x1, y1);
