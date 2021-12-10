@@ -23,6 +23,10 @@ export const sendStroke = (socketObj, brush_shape, data_string) => {
         brush_colour: brush_colour,
         brush_size: brush_size
     });
+
+    axios.delete("http://localhost:4200/strokes/clean_undo_redo/" + socketObj.room, {
+        whiteboard_id: socketObj.room
+    });
 };
 
 export const retrieveStroke = (socketObj) => {
@@ -47,3 +51,41 @@ export const retrieveStroke = (socketObj) => {
         }
     });
 };
+
+export function undoStroke(socketObj) {
+    const canvas = window.canvasRef.current;
+    const context = canvas.getContext("2d");
+    axios
+        .post("http://localhost:4200/strokes/undo", {
+            whiteboard_id: socketObj.room
+        })
+        .then(() => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            retrieveStroke(socketObj);
+        });
+    // TODO: use sockets to redraw all other windows...
+}
+
+export function redoStroke(socketObj) {
+    axios
+        .post("http://localhost:4200/strokes/redo", {
+            whiteboard_id: socketObj.room
+        })
+        .then((response) => response.data)
+        .then((data) => {
+            if (data === "") return; // nothing to redo
+            const toolManager = new ToolManager(socketObj);
+            toolManager.load(
+                data.data_string,
+                data.brush_shape,
+                data.brush_colour,
+                data.brush_size
+            );
+            socketObj.socket.emit("drawing", socketObj.room, {
+                data_string: data.data_string,
+                brush_shape: data.brush_shape,
+                brush_colour: data.brush_colour,
+                brush_size: data.brush_size
+            });
+        });
+}
