@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Boards from "./routes/boards/Boards";
 import Whiteboard from "./routes/whiteboard/Whiteboard";
-import HistoryCarousel from "./routes/history/Carousel";
 import Login from "./routes/login/login";
 import Signup from "./routes/signup/signup";
 import PrivateRoute from "./routes/private/private-route";
@@ -18,7 +17,6 @@ ReactDOM.render(
             <Route exact path="/" element={<LoginAuthRoute />}>
                 <Route exact path="/" element={<Login />} />
             </Route>
-            <Route path="/whiteboard/history" element={<HistoryCarousel />} />
             <Route exact path="/whiteboard" element={<PrivateRoute />}>
                 <Route exact path="/whiteboard" element={<Whiteboard />} />
             </Route>

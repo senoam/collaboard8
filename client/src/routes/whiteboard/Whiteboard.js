@@ -16,6 +16,7 @@ import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
 import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
 import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
+import UserList from "./sharing/users";
 
 import "./Whiteboard.css";
 
@@ -74,6 +75,10 @@ function Whiteboard(props) {
     function toggleModal() {
         setOpen(!openModal);
     }
+    const [openUsers, setUsers] = useState(false);
+    function toggleUsers() {
+        setUsers(!openUsers);
+    }
 
     return (
         !isLoading && (
@@ -124,9 +129,22 @@ function Whiteboard(props) {
 
                 <div className="whiteboard-toolbar">
                     <div>
-                        <button className="round-button">
+                        <button className="round-button" onClick={toggleUsers}>
                             <CgUserAdd />
                         </button>
+
+                        <ReactModal
+                            isOpen={openUsers}
+                            ariaHideApp={false}
+                            onRequestClose={toggleUsers}
+                            shouldCloseOnOverlayClick={true}
+                            shouldCloseOnEsc={true}
+                        >
+                            <UserList socketObj={socketObj} />
+                            <button type="button" onClick={toggleUsers}>
+                                Close
+                            </button>
+                        </ReactModal>
                     </div>
 
                     <div id="brush-type-picker">
