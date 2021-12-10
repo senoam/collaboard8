@@ -11,3 +11,10 @@ CREATE TABLE IF NOT EXISTS strokes (
     FOREIGN KEY (whiteboard_id) REFERENCES whiteboard(whiteboard_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE IF NOT EXISTS undo_redo (
+    stroke_id serial,
+    user_id int,
+    FOREIGN KEY (stroke_id) REFERENCES strokes(stroke_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

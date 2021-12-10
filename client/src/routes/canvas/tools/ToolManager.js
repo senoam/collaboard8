@@ -35,6 +35,8 @@ export class ToolManager {
     load(data, tool, colour, size) {
         const canvas = window.canvasRef.current;
         const context = canvas.getContext("2d");
+        const prev_colour = context.strokeStyle;
+        const prev_size = context.lineWidth;
         context.strokeStyle = colour;
         context.lineWidth = size;
         switch (tool) {
@@ -54,6 +56,8 @@ export class ToolManager {
             default:
                 Freehand.load(canvas, data);
         }
+        context.strokeStyle = prev_colour;
+        context.lineWidth = prev_size;
     }
 
     log(stage, data_string, x, y) {
