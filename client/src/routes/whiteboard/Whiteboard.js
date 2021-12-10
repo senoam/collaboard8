@@ -1,8 +1,9 @@
-import React, { Fragment, useState, useEffect, useNavigate } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
 import { io } from "socket.io-client";
 import { CgUserAdd } from "react-icons/cg";
-import { MdHistory, MdLogout } from "react-icons/md";
+import { MdHistory, MdLogout, MdUndo, MdRedo } from "react-icons/md";
 import Toggle from "react-toggle";
 import axios from "axios";
 import ReactModal from "react-modal";
@@ -11,11 +12,13 @@ import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import CommentContainer from "../comments/CommentContainer";
 import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
+import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
 import UserList from "./sharing/users";
 
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
+    const navigate = useNavigate();
     const location = useLocation();
     const [socketObj, setSocketObj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +26,6 @@ function Whiteboard(props) {
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
     const logOut = () => {
-        const navigate = useNavigate();
         authService.logout();
         navigate("/");
     };
@@ -166,6 +168,12 @@ function Whiteboard(props) {
                             name="brushSizePicker"
                             onChange={(e) => setBrushSize(e.target.value)}
                         />
+                    </div>
+
+                    <div id="undo-redo">
+                        <MdUndo id="undo" onClick={() => undoStroke(socketObj)} />
+                        &nbsp;&nbsp;
+                        <MdRedo id="redo" onClick={() => redoStroke(socketObj)} />
                     </div>
 
                     <div>
