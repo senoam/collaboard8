@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { MdLogout } from "react-icons/md";
 import authService from "../../services/auth.service";
 import BoardTile from "./BoardTile";
 import PlusIcon from "./BoardPlusIcon";
@@ -89,7 +89,7 @@ function Boards(props) {
                             class={"Boards-create-button-icon"}
                             onHoverGradient={isHoverCreateTile}
                         />
-                        <h2 className="Boards-create-button-label">Create a Board</h2>
+                        <h3 className="Boards-create-button-label">Create a Board</h3>
                     </div>
                 </div>
             </Link>
@@ -123,7 +123,8 @@ function Boards(props) {
     const renderSearchResults = () => {
         return (
             <Fragment>
-                <h1>Search results</h1>
+                <h2>Search results</h2>
+                <hr className="hr-long" />
                 <div className="Boards-container">{searchResults}</div>
             </Fragment>
         );
@@ -132,12 +133,14 @@ function Boards(props) {
     const renderAllBoards = () => {
         return (
             <Fragment>
-                <h1>My Boards</h1>
+                <h2>My Boards</h2>
+                <hr className="hr-long" />
                 <div className="Boards-container">
                     {renderCreateTile()}
                     {renderBoards("owner")}
                 </div>
-                <h1>Shared with Me</h1>
+                <h2>Shared with Me</h2>
+                <hr className="hr-long" />
                 <div className="Boards-container">{renderBoards("editor")}</div>
             </Fragment>
         );
@@ -145,11 +148,23 @@ function Boards(props) {
 
     return (
         <Fragment>
-            <button type="button" onClick={logOut}>
-                Logout
-            </button>
-            <input onChange={updateSearchMode} type="text" placeholder="Search for a CollaBoard" />
-            {searchMode ? renderSearchResults() : renderAllBoards()}
+            <div className="whiteboard-header">
+                <Link to="/home" className="whiteboard-link">
+                    <h1 className="mini-logo">
+                        Colla<span className="logo-green">board</span>8
+                    </h1>
+                </Link>
+                <input
+                    onChange={updateSearchMode}
+                    type="text"
+                    className="search-bar"
+                    placeholder="Search for a CollaBoard"
+                />
+                <button className="round-button" id="logout-button" onClick={logOut}>
+                    <MdLogout />
+                </button>
+            </div>
+            <div id="boards-list">{searchMode ? renderSearchResults() : renderAllBoards()}</div>
         </Fragment>
     );
 }
