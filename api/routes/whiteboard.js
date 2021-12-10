@@ -86,6 +86,10 @@ router.put("/edit-title", function (req, res, next) {
 });
 
 router.post("/add-collaborator", function (req, res, next) {
+    // Check if the user is already a collaboarator
+    const isCollaboratorQuery =
+        "SELECT EXISTS (SELECT 1 FROM whiteboard_collaborator WHERE whiteboard_id=$1 AND user_id=$2);";
+
     const wbcQuery =
         "INSERT INTO whiteboard_collaborator(whiteboard_id, user_id, user_role) \
         VALUES ($1, $2, $3) \
@@ -93,11 +97,35 @@ router.post("/add-collaborator", function (req, res, next) {
 
     const { whiteboard_id, user_id, user_role } = req.body;
 
-    req.db.query(wbcQuery, [whiteboard_id, user_id, user_role], function (err, wbcResult) {
-        if (err) next(err);
+    const roles = ["owner", "editor"];
 
-        res.json(wbcResult.rows[0]);
-    });
+    if (!roles.includes(user_role) || !whiteboard_id || !user_id) {
+        return res
+            .status(400)
+            .send({ message: "Please provide whiteboard_id, user_id and user_role" });
+    }
+
+    req.db.query(
+        isCollaboratorQuery,
+        [whiteboard_id, user_id],
+        function (err, isCollaboratorResult) {
+            if (err) next(err);
+
+            // Don't do anything if they are already a collaborator
+            if (isCollaboratorResult.rows[0].exists) {
+                res.json({ preExists: true });
+            } else {
+                req.db.query(
+                    wbcQuery,
+                    [whiteboard_id, user_id, user_role],
+                    function (err, wbcResult) {
+                        if (err) next(err);
+                        res.json({ preExists: false, data: wbcResult.rows[0] });
+                    }
+                );
+            }
+        }
+    );
 });
 
 router.delete("/remove-collaborator", function (req, res, next) {
