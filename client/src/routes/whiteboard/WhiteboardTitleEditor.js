@@ -1,0 +1,46 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+import "./WhiteboardTitleEditor.css";
+
+function WhiteboardTitle(props) {
+    const [whiteboardTitle, setWhiteboardTitle] = useState("");
+    const maxTitleLength = 100;
+
+    useEffect(() => {
+        // Initialize the title
+        setWhiteboardTitle(props.initialTitle);
+    }, []);
+
+    const updateTitle = (newTitle) => {
+        axios
+            .put("http://localhost:4200/whiteboard/edit-title", {
+                whiteboard_id: props.whiteboardId,
+                new_whiteboard_title: newTitle
+            })
+            .then(() => {
+                setWhiteboardTitle(newTitle);
+            });
+    };
+
+    return (
+        <div className="whiteboard-edit-title" title={whiteboardTitle}>
+            <label className="whiteboard-edit-title-label">
+                <p className="whiteboard-edit-title-text">{whiteboardTitle}</p>
+                <input
+                    className="whiteboard-edit-title-input whiteboard-edit-title-input-hover"
+                    type="text"
+                    value={whiteboardTitle}
+                    maxLength={maxTitleLength}
+                    onBlur={() => updateTitle(whiteboardTitle)}
+                    onChange={(e) => {
+                        const newTitle = e.target.value;
+                        setWhiteboardTitle(newTitle);
+                    }}
+                ></input>
+            </label>
+        </div>
+    );
+}
+
+export default WhiteboardTitle;

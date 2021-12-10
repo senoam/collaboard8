@@ -30,27 +30,43 @@ option {
 
 .whiteboard-header,
 .whiteboard-toolbar {
-    width: 100%;
     height: 5vh;
     position: fixed;
     display: grid;
+
     grid-gap: 2em;
     background-color: var(--secondary);
+    width: var(--screen-width);
 }
 
 .whiteboard-header {
     top: 0;
-    grid-template-columns: 4fr 4fr 4fr;
+    grid-gap: 0;
+    grid-template-columns:
+        calc(var(--screen-width) / 3)
+        calc(var(--screen-width) / 3)
+        calc(var(--screen-width) / 3);
 }
 
 .whiteboard-title {
     margin-top: 0.5em;
     text-align: center;
+    max-width: 100%;
 }
 
 .whiteboard-toolbar {
     bottom: 0;
     grid-template-columns: 3fr 1fr 1fr 3fr 3fr 1fr;
+}
+
+.whiteboard-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.whiteboard-history-btn {
+    display: inline;
+    margin: 0 8px;
 }
 
 #brush-size-picker {
