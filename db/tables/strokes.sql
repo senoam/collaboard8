@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS strokes (
     whiteboard_id uuid,
     user_id int,
     draw_time timestamp(0),
-    data_string varchar(1000),
+    data_string varchar(2500),
     brush_shape varchar(10),
     brush_colour varchar(10),
     brush_size int,

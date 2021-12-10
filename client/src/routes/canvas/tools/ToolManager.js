@@ -66,9 +66,11 @@ export class ToolManager {
         if (stage === "continue" && this.saveAllStrokes) {
             data_string = logData(data_string, x, y);
 
-            if (data_string.length > 900) {
+            if (data_string.length > 2400) {
+                // if continuing, add from last stroke for continuous redraw
+                const last_stroke = data_string.split(";").slice(-2)[0];
                 sendStroke(this.socketObj, window.tool, data_string);
-                return "";
+                return last_stroke + ";";
             }
 
             return data_string;
