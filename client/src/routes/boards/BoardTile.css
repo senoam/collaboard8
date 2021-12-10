@@ -1,13 +1,15 @@
 :root {
-    --board-tile-padding: 16px;
+    --board-tile-padding: 1em;
     --board-tile-img-border: 2px;
     --board-tile-width: 100%;
 }
 
 .BoardTile {
     padding: var(--board-tile-padding);
+    margin: var(--board-tile-padding);
     position: relative;
     display: block;
+    background-color: white;
 }
 
 .BoardTile-link {
@@ -17,17 +19,17 @@
     display: block;
 }
 
-/* A new class for the hover is needed to not override the non-hover .BoardTile css */
 .BoardTile-hover:hover {
-    background-color: rgb(196, 196, 196);
+    /* separate class so that it is not applied on deletion hover*/
+    background-color: var(--light);
 }
 
 .BoardTile-btn {
     display: inline;
     right: calc(var(--board-tile-padding) + 6px);
     top: calc(var(--board-tile-padding) + 6px);
-    padding: 15px 20px;
-    background-color: rgb(0, 0, 0, 0.8);
+    padding: 0.3em 0.4em;
+    background-color: var(--primary);
     border-radius: 25%;
     color: white;
     cursor: pointer;
@@ -43,11 +45,15 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+.BoardTile-btn:hover {
+    background-color: var(--primary-dark);
+}
+
 .BoardTile-edit-btn {
     display: none;
 }
 
-.BoardTile-hover:hover .BoardTile-edit-btn {
+.BoardTile:hover .BoardTile-edit-btn {
     display: inline;
 }
 
@@ -61,13 +67,14 @@
 .BoardTile-img {
     /* If you use --board-tile-width on its own, the image will become slightly larger than the .BoardTile */
     width: calc(var(--board-tile-width) - var(--board-tile-img-border));
-    border: solid var(--board-tile-img-border);
+    border: solid var(--board-tile-img-border) var(--dark);
+    background-color: white;
 }
 
 .BoardTile-edit-overlay {
-    background-color: rgb(0, 0, 0, 0.8);
-    padding: 0px;
+    background-color: var(--medium);
     color: white;
+    padding: 0;
     position: relative;
 }
 
@@ -77,9 +84,4 @@
     left: 50%;
     text-align: center;
     transform: translate(-50%, -50%);
-}
-
-.BoardTile-delete-btn:hover {
-    background-color: rgb(255, 68, 55);
-    color: white;
 }

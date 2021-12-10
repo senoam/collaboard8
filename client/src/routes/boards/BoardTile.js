@@ -1,6 +1,7 @@
 import React, { Fragment, useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { MdDelete, MdClose } from "react-icons/md";
 
 import "./BoardTile.css";
 
@@ -53,12 +54,12 @@ function BoardTile(props) {
                         handleShowEditBoard(false);
                     }}
                 >
-                    Close
+                    <MdClose />
                 </div>
                 <div className="BoardTile-edit-overlay-content">
-                    <p>Pernamently delete this board for everyone?</p>
+                    <p>Permanently delete "{props.title}" for everyone?</p>
                     <button onClick={handleDeleteBoard} className="BoardTile-delete-btn">
-                        Delete "{props.title}"
+                        Delete
                     </button>
                 </div>
             </div>
@@ -81,14 +82,14 @@ function BoardTile(props) {
                             alt={"Recent snapshot for " + props.title}
                             onLoad={() => setBoardTileHeight(boardTileRef.current.clientHeight)}
                         />
-                        <h2 className="BoardTile-title">{props.title}</h2>
-                        <p>Last edited {getFormattedTime(lastEdited)}</p>
+                        <h4 className="BoardTile-title">{props.title}</h4>
+                        <p className="timestamp">Last edited {getFormattedTime(lastEdited)}</p>
                     </Link>
                     <div
                         className="BoardTile-edit-btn BoardTile-btn"
                         onClick={() => handleShowEditBoard(true)}
                     >
-                        Edit
+                        <MdDelete />
                     </div>
                 </div>
             )

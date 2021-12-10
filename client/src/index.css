@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Montserrat:wght@400;600&display=swap");
 
 :root {
     --display-font: "Comfortaa", cursive;
@@ -29,8 +29,11 @@ button {
     border-width: 0;
     border-radius: 0.3em;
     font-size: 1.1em;
-    font-family: var(--text-font); /* get semibold */
+    font-family: var(--text-font);
     cursor: pointer;
+}
+button:hover {
+    background-color: var(--primary-dark);
 }
 
 h1 {
@@ -39,16 +42,42 @@ h1 {
     margin-bottom: 0.1em;
 }
 
+h2 {
+    font-family: var(--display-font);
+    color: var(--medium);
+    padding-top: 1em;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
 h3 {
     font-family: var(--text-font);
     margin-top: 0;
     color: var(--medium);
 }
 
+h4 {
+    font-family: var(--text-font);
+    font-weight: 600;
+    color: var(--dark);
+    padding: 0;
+    margin: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+}
+
 hr {
     border: none; /* reset default borders */
     border-top: 0.3em solid var(--secondary);
+}
+
+.hr-short {
     width: 15vw;
+}
+
+.hr-long {
+    width: 25vw;
+    float: left;
 }
 
 .logo-green {
@@ -61,6 +90,10 @@ hr {
     margin-left: 0.5em;
 }
 
+.modal-exit {
+    float: right;
+}
+
 .round-button {
     background-color: var(--primary);
     border-radius: 50%;
@@ -69,4 +102,29 @@ hr {
     padding: 0;
     margin: 0.5em;
     text-align: center;
+}
+
+.search-bar {
+    width: 30vw;
+    height: 2vh;
+    margin-top: 0.5em;
+    font-family: var(--text-font);
+    padding: 0.25em 2em;
+    border: 0.2em solid var(--light);
+    border-radius: 0.3em;
+    background-color: #f9f9fa;
+    color: var(--medium);
+    outline: none;
+}
+
+.timestamp {
+    color: var(--medium);
+    font-size: 0.75em;
+    padding: 0;
+    margin: 0;
+}
+
+.unstyled-link {
+    color: inherit;
+    text-decoration: none;
 }

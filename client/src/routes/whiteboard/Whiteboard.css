@@ -18,16 +18,6 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-}
-
-option {
-    font-size: 2em;
-}
-
 .whiteboard-header,
 .whiteboard-toolbar {
     height: 5vh;
@@ -99,4 +89,13 @@ option {
 #undo:hover,
 #redo:hover {
     color: var(--dark);
+}
+
+#type-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+}
+#type-select > option {
+    font-size: 2em;
 }

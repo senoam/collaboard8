@@ -19,11 +19,11 @@
 }
 
 .whiteboard-edit-title-input-hover:hover {
-    border: 1px solid var(--light);
+    border: 2px solid var(--medium);
 }
 
 .whiteboard-edit-title-input-hover:focus {
-    border: 4px solid var(--primary-dark);
+    border: 3px solid var(--dark);
 }
 
 .whiteboard-edit-title-text {

@@ -30,7 +30,7 @@ function Signup(props) {
                 Colla<span className="logo-green">Board</span>8
             </h1>
             <h3>A Collaborative Whiteboarding Tool</h3>
-            <hr class="short" />
+            <hr class="hr-short" />
             <form onSubmit={signup}>
                 <input
                     type="text"

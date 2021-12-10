@@ -4,8 +4,7 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import { IconContext } from "react-icons";
-import { CgUserAdd } from "react-icons/cg";
-import { MdHistory, MdLogout, MdUndo, MdRedo } from "react-icons/md";
+import { MdHistory, MdLogout, MdUndo, MdRedo, MdClose, MdPersonAddAlt1 } from "react-icons/md";
 import Toggle from "react-toggle";
 import axios from "axios";
 import ReactModal from "react-modal";
@@ -97,10 +96,15 @@ function Whiteboard(props) {
                         <IconContext.Provider
                             value={{ className: "whiteboard-history-btn", size: 26 }}
                         >
-                            <MdHistory onClick={toggleModal} />
+                            <MdHistory onClick={toggleModal} style={{ cursor: "pointer" }} />
                         </IconContext.Provider>
                     </h3>
-                    <button className="round-button" id="logout-button" onClick={logOut}>
+                    <button
+                        type="button"
+                        className="round-button"
+                        id="logout-button"
+                        onClick={logOut}
+                    >
                         <MdLogout />
                     </button>
                 </div>
@@ -112,10 +116,10 @@ function Whiteboard(props) {
                     shouldCloseOnOverlayClick={true}
                     shouldCloseOnEsc={true}
                 >
-                    <HistoryCarousel socketObj={socketObj} />
-                    <button type="button" onClick={toggleModal}>
-                        Close
+                    <button type="button" className="round-button modal-exit" onClick={toggleModal}>
+                        <MdClose />
                     </button>
+                    <HistoryCarousel socketObj={socketObj} />
                 </ReactModal>
 
                 <WhiteboardCanvas
@@ -129,8 +133,8 @@ function Whiteboard(props) {
 
                 <div className="whiteboard-toolbar">
                     <div>
-                        <button className="round-button" onClick={toggleUsers}>
-                            <CgUserAdd />
+                        <button type="button" className="round-button" onClick={toggleUsers}>
+                            <MdPersonAddAlt1 />
                         </button>
 
                         <ReactModal
@@ -140,15 +144,20 @@ function Whiteboard(props) {
                             shouldCloseOnOverlayClick={true}
                             shouldCloseOnEsc={true}
                         >
-                            <UserList socketObj={socketObj} />
-                            <button type="button" onClick={toggleUsers}>
-                                Close
+                            <button
+                                type="button"
+                                className="round-button modal-exit"
+                                onClick={toggleUsers}
+                            >
+                                <MdClose />
                             </button>
+                            <UserList socketObj={socketObj} />
                         </ReactModal>
                     </div>
 
                     <div id="brush-type-picker">
                         <select
+                            id="type-select"
                             onChange={(e) => {
                                 setBrushType(e.target.value);
                             }}
