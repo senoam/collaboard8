@@ -9,6 +9,8 @@
     --light: #f4f4f5;
     --medium: #797b84;
     --dark: #1a1d23;
+    /* Screen width minus the vertical scroll bar */
+    --screen-width: calc(100vw - (100vw - 100%));
 }
 
 body {

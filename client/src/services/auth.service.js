@@ -34,7 +34,6 @@ class AuthService {
         if (localStorage.getItem("user") === null) {
             return undefined;
         }
-        console.log(localStorage.getItem("user"));
 
         return JSON.parse(localStorage.getItem("user"));
     }
