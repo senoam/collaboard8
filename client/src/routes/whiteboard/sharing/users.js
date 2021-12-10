@@ -10,7 +10,7 @@ function UserList(props) {
 
     const [users, setUsers] = useState([]);
     const [email, setEmail] = useState("");
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState("owner");
 
     const removeUser = (id) => {
         axios
@@ -23,26 +23,30 @@ function UserList(props) {
             });
     };
 
-    const getUsers = () => {
-        axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
-            console.log(res.data.collaborators);
-
-            const rows = res.data.collaborators;
-            const usermap = rows.map((row) => (
+    const renderUserRow = (email, user_role, user_id) => {
+        return (
+            <Fragment key={email}>
                 <tr>
-                    <td className="user-email">{row.email}</td>
-                    <td className="user-role">{row.user_role}</td>
+                    <td className="user-email">{email}</td>
+                    <td className="user-role">{user_role}</td>
                     <td>
                         <button
                             type="button"
                             className="round-button"
-                            onClick={() => removeUser(row.user_id)}
+                            onClick={() => removeUser(user_id)}
                         >
                             <MdPersonRemoveAlt1 />
                         </button>
                     </td>
                 </tr>
-            ));
+            </Fragment>
+        );
+    };
+
+    const getUsers = () => {
+        axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
+            const rows = res.data.collaborators;
+            const usermap = rows.map((row) => renderUserRow(row.email, row.user_role, row.user_id));
 
             setUsers(usermap);
         });
@@ -56,17 +60,12 @@ function UserList(props) {
         setRole(event.target.value);
     };
 
-    const handleAdd = (event) => {
-        event.preventDefault();
-        alert("You have submitted an add collaborator request");
-    };
-
-    const addCollab = (email, role) => {
+    const addCollab = (e) => {
+        e.preventDefault();
         axios.get(`http://localhost:4200/users/id/${email}`).then((res) => {
             if (res.data) {
                 var uid = res.data.user_id;
 
-                console.log(uid);
                 axios
                     .post(`http://localhost:4200/whiteboard/add-collaborator`, {
                         whiteboard_id: whiteboardId,
@@ -74,9 +73,23 @@ function UserList(props) {
                         user_role: role
                     })
                     .then((res) => {
-                        console.log("Added collaborator");
-                        console.log(res.data);
+                        const newUser = res.data;
+                        if (newUser) {
+                            if (!newUser.preExists) {
+                                setUsers([...users, renderUserRow(email, role, uid)]);
+                                alert(`${email} added to whiteboard`);
+                            } else {
+                                alert(`${email} is already a collaborator`);
+                            }
+                        } else {
+                            alert(`Please check user role`);
+                        }
+                    })
+                    .catch(() => {
+                        alert("Please provide a valid email and collaborator role");
                     });
+            } else {
+                alert(`${email} is not a CollaBoard8 user`);
             }
         });
     };
@@ -92,19 +105,21 @@ function UserList(props) {
             <br />
             <br />
             <table>
-                <tr>
-                    <th>Email</th>
-                    <th>User Role</th>
-                    <th>Remove Collaborator</th>
-                </tr>
-                {users}
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>User Role</th>
+                        <th>Remove Collaborator</th>
+                    </tr>
+                </thead>
+                <tbody>{users}</tbody>
             </table>
 
             <h2>Add a new collaborator</h2>
             <hr className="hr-long"></hr>
             <br />
             <br />
-            <form onSubmit={handleAdd}>
+            <form onSubmit={addCollab}>
                 <label>
                     <h4>Collaborator Email:</h4>
                     <input
@@ -124,9 +139,7 @@ function UserList(props) {
                     </select>
                 </label>
                 <br />
-                <button type="submit" onClick={() => addCollab(email, role)}>
-                    Add Collaborator
-                </button>
+                <button type="submit">Add Collaborator</button>
             </form>
         </Fragment>
     );

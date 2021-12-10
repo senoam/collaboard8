@@ -36,7 +36,7 @@ function Login(props) {
                 <input
                     type="text"
                     placeholder="Email"
-                    class="login-input"
+                    className="login-input"
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}
@@ -45,7 +45,7 @@ function Login(props) {
                 <input
                     type="password"
                     placeholder="Password"
-                    class="login-input"
+                    className="login-input"
                     onChange={(e) => {
                         setPassword(e.target.value);
                     }}
