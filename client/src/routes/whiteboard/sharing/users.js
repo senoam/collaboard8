@@ -13,13 +13,19 @@ function UserList(props) {
     const [role, setRole] = useState("owner");
 
     const removeUser = (id) => {
+        console.log("User id: " + id);
+        console.log("Wb id: " + whiteboardId);
         axios
             .delete("http://localhost:4200/whiteboard/remove-collaborator", {
-                whiteboard_id: whiteboardId,
-                user_id: id
+                data: {
+                    whiteboard_id: whiteboardId,
+                    user_id: id
+                }
             })
             .then((res) => {
-                alert("You have deleted user");
+                console.log(res);
+                props.onChange();
+                alert("You have removed this user");
             });
     };
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
@@ -26,6 +26,8 @@ function Whiteboard(props) {
     const [isLoading, setIsLoading] = useState(true);
 
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
+
+    const childRef = useRef();
 
     const logOut = () => {
         authService.logout();
@@ -83,7 +85,11 @@ function Whiteboard(props) {
         !isLoading && (
             <Fragment>
                 <div className="whiteboard-header">
-                    <Link to="/home" className="whiteboard-link">
+                    <Link
+                        to="/home"
+                        className="whiteboard-link"
+                        onClick={() => childRef.current.save()}
+                    >
                         <h1 className="mini-logo">
                             Colla<span className="logo-green">board</span>8
                         </h1>
@@ -129,6 +135,7 @@ function Whiteboard(props) {
                         type: brushType
                     }}
                     socketObj={socketObj}
+                    ref={childRef}
                 />
 
                 <div className="whiteboard-toolbar">

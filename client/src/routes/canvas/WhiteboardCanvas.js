@@ -1,10 +1,10 @@
-import React, { createRef, useEffect } from "react";
+import React, { createRef, useEffect, useImperativeHandle } from "react";
 import "./WhiteboardCanvas.css";
 import axios from "axios";
 import { retrieveStroke } from "./tools/strokeData";
 import { drawingHandler } from "./tools/DrawingHandler";
 
-function WhiteboardCanvas(props) {
+const WhiteboardCanvas = React.forwardRef((props, ref) => {
     // To get the actual canvas element, use "this.canvasRef.current"
     window.canvasRef = createRef();
     const socketObj = props.socketObj;
@@ -21,26 +21,36 @@ function WhiteboardCanvas(props) {
                 mouse_y = e.clientY;
 
                 if (mouse_y < window_top) {
-                    console.log("Sending a history POST request.");
-                    var timestamp = new Date().getTime();
-
-                    const canvas = window.canvasRef.current;
-                    var imgURL = canvas.toDataURL();
-
-                    axios
-                        .post("http://localhost:4200/history/add-history", {
-                            timestamp: timestamp,
-                            whiteboard_id: socketObj.room,
-                            buffer: imgURL
-                        })
-                        .then((response) => {
-                            console.log("Saved image id: " + response.data.data);
-                        });
+                    saveHistory();
                 }
             }),
             false
         );
     };
+
+    const saveHistory = () => {
+        console.log("Sending a history POST request.");
+        var timestamp = new Date().getTime();
+
+        const canvas = window.canvasRef.current;
+        var imgURL = canvas.toDataURL();
+
+        axios
+            .post("http://localhost:4200/history/add-history", {
+                timestamp: timestamp,
+                whiteboard_id: socketObj.room,
+                buffer: imgURL
+            })
+            .then((response) => {
+                console.log("Saved image id: " + response.data.data);
+            });
+    };
+
+    useImperativeHandle(ref, () => ({
+        save() {
+            saveHistory();
+        }
+    }));
 
     // Component on room change
     useEffect(() => {
@@ -69,10 +79,6 @@ function WhiteboardCanvas(props) {
         };
     }, []);
 
-    window.onbeforeunload = function () {
-        return "Are you sure you want to leave this whiteboard?";
-    };
-
     return (
         <canvas
             ref={window.canvasRef}
@@ -81,6 +87,6 @@ function WhiteboardCanvas(props) {
             height="1080"
         ></canvas>
     );
-}
+});
 
 export default WhiteboardCanvas;
