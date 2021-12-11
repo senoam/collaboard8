@@ -1,6 +1,5 @@
 .whiteboard-canvas {
     background: white;
-    margin-top: 5vh;
-    width: 100vw;
+    width: var(--screen-width);
     height: 90vh;
 }

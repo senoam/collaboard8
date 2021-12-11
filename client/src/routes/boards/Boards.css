@@ -13,6 +13,17 @@
     display: grid;
 }
 
+.Boards-container-empty {
+    text-align: center;
+    padding: 4.5em;
+    border: 0.2em dotted var(--light);
+    margin: 1em;
+}
+
+.Boards-ghost {
+    color: var(--medium);
+}
+
 .Boards-create-tile {
     text-align: center;
     text-decoration: none;
@@ -52,6 +63,14 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.Boards-bottom-space {
+    height: 2em;
+}
+
+.Boards-bring-to-front {
+    z-index: 1;
 }
 
 /* https://www.sliderrevolution.com/resources/css-animated-background/ */
@@ -117,6 +136,5 @@
 
 #boards-list {
     background-color: white;
-    margin-top: 5vh;
     padding: 0 3vw;
 }

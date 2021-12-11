@@ -82,7 +82,8 @@ function BoardTile(props) {
                             alt={"Recent snapshot for " + props.title}
                             onLoad={() => setBoardTileHeight(boardTileRef.current.clientHeight)}
                         />
-                        <h4 className="BoardTile-title">{props.title}</h4>
+                        {/* The line break makes the Last edited times line up :) */}
+                        <h4 className="BoardTile-title">{props.title ? props.title : <br />}</h4>
                         <p className="timestamp">Last edited {getFormattedTime(lastEdited)}</p>
                     </Link>
                     <div
