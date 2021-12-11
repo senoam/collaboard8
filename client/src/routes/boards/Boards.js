@@ -21,6 +21,8 @@ function Boards(props) {
     const user = authService.getCurrentUser();
     const [currentUser, setCurrentUser] = useState("");
 
+    const [editorEmpty, setEditors] = useState(true);
+
     useEffect(() => {
         authorize();
     }, []);
@@ -68,6 +70,9 @@ function Boards(props) {
                     />
                 );
             }
+            if ((role === "editor") & (result.length !== 0)) {
+                setEditors(false);
+            }
             return result;
         }, []);
     };
@@ -94,6 +99,24 @@ function Boards(props) {
                 </div>
             </Link>
         );
+    };
+
+    const renderEmptyTile = () => {
+        if (editorEmpty) {
+            return (
+                <div className="Boards-container">
+                    <div className="Boards-create-tile">
+                        <div className="Boards-create-button">
+                            <div className="Boards-create-button-container">
+                                <h3 className="Boards-create-button-label">
+                                    You have no shared boards.
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     };
 
     const updateSearchMode = (e) => {
@@ -142,6 +165,7 @@ function Boards(props) {
                 <h2>Shared with Me</h2>
                 <hr className="hr-long" />
                 <div className="Boards-container">{renderBoards("editor")}</div>
+                {renderEmptyTile()}
             </Fragment>
         );
     };
