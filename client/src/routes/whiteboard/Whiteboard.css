@@ -20,8 +20,6 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 
 .whiteboard-header,
 .whiteboard-toolbar {
-    height: 5vh;
-    position: fixed;
     display: grid;
 
     grid-gap: 2em;
@@ -30,6 +28,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 .whiteboard-header {
+    position: sticky;
     top: 0;
     grid-gap: 0;
     grid-template-columns:
@@ -39,12 +38,13 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 .whiteboard-title {
-    margin-top: 0.5em;
+    margin: 0;
     text-align: center;
     max-width: 100%;
 }
 
 .whiteboard-toolbar {
+    position: fixed;
     bottom: 0;
     grid-template-columns: 3fr 1fr 1fr 3fr 3fr 1fr;
 }

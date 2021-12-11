@@ -25,8 +25,10 @@ function WhiteboardTitle(props) {
 
     return (
         <div className="whiteboard-edit-title" title={whiteboardTitle}>
-            <label className="whiteboard-edit-title-label">
-                <h3 className="whiteboard-edit-title-text">{whiteboardTitle}</h3>
+            <label className="whiteboard-edit-title-label vertical-align">
+                {/* For some reason, the whiteboard title input moves off the nav bar when there's no content 
+                    in .whiteboard-edit-title-text, so there's a hacky period here now lol. */}
+                <h3 className="whiteboard-edit-title-text">.{whiteboardTitle}</h3>
                 <input
                     className="whiteboard-edit-title-input whiteboard-edit-title-input-hover"
                     type="text"

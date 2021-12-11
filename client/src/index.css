@@ -17,7 +17,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: var(--text-font);
-    background-color: var(--secondary);
     color: var(--dark);
 }
 
@@ -45,7 +44,7 @@ h1 {
 h2 {
     font-family: var(--display-font);
     color: var(--medium);
-    padding-top: 1em;
+    padding-top: 0.5em;
     margin-bottom: 0;
     font-weight: 400;
 }
@@ -77,7 +76,7 @@ hr {
 
 .hr-long {
     width: 25vw;
-    float: left;
+    margin-left: 0;
 }
 
 .logo-green {
@@ -104,10 +103,9 @@ hr {
     text-align: center;
 }
 
-.search-bar {
+.text-input {
     width: 30vw;
     height: 2vh;
-    margin-top: 0.5em;
     font-family: var(--text-font);
     padding: 0.25em 2em;
     border: 0.2em solid var(--light);
@@ -115,6 +113,12 @@ hr {
     background-color: #f9f9fa;
     color: var(--medium);
     outline: none;
+}
+
+.vertical-align {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .timestamp {

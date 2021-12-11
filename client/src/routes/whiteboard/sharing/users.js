@@ -124,7 +124,7 @@ function UserList(props) {
                     <h4>Collaborator Email:</h4>
                     <input
                         type="text"
-                        className="search-bar"
+                        className="text-input"
                         placeholder="example@email.com"
                         value={email}
                         onChange={inputEmail}
