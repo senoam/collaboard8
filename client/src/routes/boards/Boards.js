@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
+import { RiGhostLine } from "react-icons/ri";
+import { IconContext } from "react-icons";
+
 import authService from "../../services/auth.service";
 import BoardTile from "./BoardTile";
 import PlusIcon from "./BoardPlusIcon";
@@ -20,8 +23,6 @@ function Boards(props) {
 
     const user = authService.getCurrentUser();
     const [currentUser, setCurrentUser] = useState("");
-
-    const [editorEmpty, setEditors] = useState(true);
 
     useEffect(() => {
         authorize();
@@ -70,9 +71,6 @@ function Boards(props) {
                     />
                 );
             }
-            if ((role === "editor") & (result.length !== 0)) {
-                setEditors(false);
-            }
             return result;
         }, []);
     };
@@ -99,24 +97,6 @@ function Boards(props) {
                 </div>
             </Link>
         );
-    };
-
-    const renderEmptyTile = () => {
-        if (editorEmpty) {
-            return (
-                <div className="Boards-container">
-                    <div className="Boards-create-tile">
-                        <div className="Boards-create-button">
-                            <div className="Boards-create-button-container">
-                                <h3 className="Boards-create-button-label">
-                                    You have no shared boards.
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
     };
 
     const updateSearchMode = (e) => {
@@ -153,6 +133,27 @@ function Boards(props) {
         );
     };
 
+    const renderNothingToSee = (message) => {
+        return (
+            <div className="Boards-container-empty">
+                <IconContext.Provider value={{ className: "Boards-ghost", size: "5em" }}>
+                    <RiGhostLine />
+                </IconContext.Provider>
+                <h3>Nothing to see here!</h3>
+                <p>{message}</p>
+            </div>
+        );
+    };
+
+    const renderConditionalBoards = (role) => {
+        const boards = renderBoards(role);
+        if (boards.length) {
+            return <div className="Boards-container">{boards}</div>;
+        } else {
+            return renderNothingToSee("You have no boards shared with you.");
+        }
+    };
+
     const renderAllBoards = () => {
         return (
             <Fragment>
@@ -164,15 +165,15 @@ function Boards(props) {
                 </div>
                 <h2>Shared with Me</h2>
                 <hr className="hr-long" />
-                <div className="Boards-container">{renderBoards("editor")}</div>
-                {renderEmptyTile()}
+                {renderConditionalBoards("editor")}
+                <div className="Boards-bottom-space" />
             </Fragment>
         );
     };
 
     return (
         <Fragment>
-            <div className="whiteboard-header">
+            <div className="whiteboard-header Boards-bring-to-front">
                 <Link to="/home" className="whiteboard-link">
                     <h1 className="mini-logo">
                         Colla<span className="logo-green">board</span>8
@@ -181,7 +182,7 @@ function Boards(props) {
                 <input
                     onChange={updateSearchMode}
                     type="text"
-                    className="search-bar"
+                    className="text-input vertical-align"
                     placeholder="Search for a CollaBoard"
                 />
                 <button className="round-button" id="logout-button" onClick={logOut}>
