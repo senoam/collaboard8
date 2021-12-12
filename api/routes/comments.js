@@ -11,8 +11,8 @@ router.get("/db", auth.verifyToken, function (req, res) {
         .catch(() => res.send("Theres something wrong with user table."));
 });
 
-router.post("/get-comments", [auth.verifyToken], function (req, res) {
-    var whiteboardID = req.body.whiteboard_id;
+router.get("/get/:whiteboard_id", function (req, res) {
+    var whiteboardID = req.params.whiteboard_id;
     req.db.query(
         `SELECT * FROM comments WHERE whiteboard_id = $1`,
         [whiteboardID],

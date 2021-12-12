@@ -4,13 +4,23 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import { IconContext } from "react-icons";
-import { MdHistory, MdLogout, MdUndo, MdRedo, MdClose, MdPersonAddAlt1 } from "react-icons/md";
+import {
+    MdHistory,
+    MdLogout,
+    MdUndo,
+    MdRedo,
+    MdClose,
+    MdPersonAddAlt1,
+    MdComment,
+    MdEdit
+} from "react-icons/md";
 import Toggle from "react-toggle";
+import "react-toggle/style.css";
 import axios from "axios";
 import ReactModal from "react-modal";
 
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
-import CommentContainer from "../comments/CommentContainer";
+import Comments from "../comments/Comments";
 import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
 import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
@@ -73,27 +83,34 @@ function Whiteboard(props) {
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
     const [openModal, setOpen] = useState(false);
+    const [openUsers, setUsers] = useState(false);
+    const [openComments, setComments] = useState(false);
+
     function toggleModal() {
         setOpen(!openModal);
     }
-    const [openUsers, setUsers] = useState(false);
+
     function toggleUsers() {
         setUsers(!openUsers);
+    }
+
+    function toggleComments() {
+        setComments(!openComments);
     }
 
     return (
         !isLoading && (
             <Fragment>
                 <div className="whiteboard-header">
-                    <Link
-                        to="/home"
-                        className="whiteboard-link"
-                        onClick={() => childRef.current.save()}
-                    >
-                        <h1 className="mini-logo">
+                    <h1 className="mini-logo">
+                        <Link
+                            to="/home"
+                            className="whiteboard-link"
+                            onClick={() => childRef.current.save()}
+                        >
                             Colla<span className="logo-green">board</span>8
-                        </h1>
-                    </Link>
+                        </Link>
+                    </h1>
                     <h3 className="whiteboard-title">
                         <WhiteboardTitleEditor
                             initialTitle={whiteboardTitle}
@@ -137,6 +154,7 @@ function Whiteboard(props) {
                     socketObj={socketObj}
                     ref={childRef}
                 />
+                {openComments && <Comments socketObj={socketObj} />}
 
                 <div className="whiteboard-toolbar">
                     <div>
@@ -204,11 +222,18 @@ function Whiteboard(props) {
                     </div>
 
                     <div>
-                        <Toggle defaultChecked={true} icons={false} />
+                        <label>
+                            <Toggle
+                                className="comment-toggle"
+                                icons={{
+                                    checked: <MdComment />,
+                                    unchecked: <MdEdit />
+                                }}
+                                onChange={toggleComments}
+                            />
+                        </label>
                     </div>
                 </div>
-
-                <CommentContainer socketObj={socketObj} />
             </Fragment>
         )
     );
