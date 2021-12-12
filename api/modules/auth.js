@@ -25,11 +25,16 @@ function verifyToken(req, res, next) {
     });
 }
 
+function verifyRole(req, res, next) {
+    // console.log(req.user);
+}
+
 function createAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "60m" });
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "15m" });
 }
 
 module.exports = {
     verifyToken,
-    createAccessToken
+    createAccessToken,
+    verifyRole
 };

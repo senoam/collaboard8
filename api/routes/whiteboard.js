@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
+var auth = require("../modules/auth");
 
 // Returns the whiteboard title and its collaborators
-router.get("/id/:whiteboardId", function (req, res, next) {
+router.get("/id/:whiteboardId", auth.verifyToken, function (req, res, next) {
     const wbQuery =
         "SELECT whiteboard_title \
         FROM whiteboard \
