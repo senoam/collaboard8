@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { MdPersonRemoveAlt1 } from "react-icons/md";
-
+import authHeader from "../../../services/auth-header";
 import "./users.css";
 
 function UserList(props) {
@@ -50,12 +50,16 @@ function UserList(props) {
     };
 
     const getUsers = () => {
-        axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
-            const rows = res.data.collaborators;
-            const usermap = rows.map((row) => renderUserRow(row.email, row.user_role, row.user_id));
+        axios
+            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`, { headers: authHeader() })
+            .then((res) => {
+                const rows = res.data.collaborators;
+                const usermap = rows.map((row) =>
+                    renderUserRow(row.email, row.user_role, row.user_id)
+                );
 
-            setUsers(usermap);
-        });
+                setUsers(usermap);
+            });
     };
 
     const inputEmail = (event) => {
