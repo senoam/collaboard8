@@ -67,7 +67,7 @@
 .BoardTile-img {
     /* If you use --board-tile-width on its own, the image will become slightly larger than the .BoardTile */
     width: calc(var(--board-tile-width) - var(--board-tile-img-border));
-    border: solid var(--board-tile-img-border) var(--dark);
+    border: solid var(--board-tile-img-border) var(--medium);
     background-color: white;
 }
 

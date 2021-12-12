@@ -1,31 +1,44 @@
 import React, { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import { FaMapMarker } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
+import { OffCanvas, OffCanvasMenu } from "react-offcanvas";
 import "./Comments.css";
-import CommentMarker from "./CommentMarker";
+import { CommentContainer } from "./CommentContainer";
+import { getParentComments } from "./commentData";
 
 function Comments(props) {
     const socketObj = props.socketObj;
 
     const [allCommentMarkers, setCommentMarkers] = useState([]);
+    const [commentPanelOpen, setCommentPanelOpen] = useState(false);
+    const [commentContainerData, setCommentContainerData] = useState({});
 
     useEffect(() => {
-        getComments();
+        getParentComments(socketObj, setCommentMarkers);
     }, []);
 
-    const getComments = () => {
-        axios.get("http://localhost:4200/comments/get/" + socketObj.room).then((res) => {
-            setCommentMarkers(res.data.comments);
-        });
-    };
+    function toggleCommentPanel() {
+        setCommentPanelOpen(!commentPanelOpen);
+    }
+
+    function showComment(comment) {
+        setCommentPanelOpen(true);
+        setCommentContainerData(comment);
+    }
+
+    //function newComment() {}
 
     const commentMarkers = allCommentMarkers.map((comment) => {
+        const location = comment.comment_location.split(",");
         return (
-            <CommentMarker
+            <FaMapMarker
                 key={comment.comment_id}
-                text={comment.message_text}
-                time={comment.timestamp}
-                user_id={comment.user_id}
-                location_string={comment.comment_location}
+                className="comment-marker"
+                style={{
+                    top: location[0],
+                    left: location[1]
+                }}
+                onClick={() => showComment(comment)}
             />
         );
     });
@@ -35,6 +48,27 @@ function Comments(props) {
             <div id="comment-overlay">
                 <div id="comment-markers">{commentMarkers}</div>
             </div>
+            <OffCanvas
+                width={300}
+                transitionDuration={300}
+                effect={"parallax"}
+                isMenuOpened={commentPanelOpen}
+                position={"right"}
+            >
+                <OffCanvasMenu>
+                    <button
+                        type="button"
+                        className="round-button modal-exit"
+                        onClick={toggleCommentPanel}
+                    >
+                        <MdClose />
+                    </button>
+                    <CommentContainer
+                        socketObj={socketObj}
+                        commentContainerData={commentContainerData}
+                    />
+                </OffCanvasMenu>
+            </OffCanvas>
         </Fragment>
     );
 }

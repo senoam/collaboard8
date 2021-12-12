@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import "./CommentContainer.css";
-import axios from "axios";
-import authHeader from "../../services/auth-header";
+import { MdSend } from "react-icons/md";
+import SimpleDateTime from "react-simple-timestamp-to-date";
+import { getReplyComments, sendComment } from "./commentData";
 
-function CommentContainer(props) {
+export function CommentContainer(props) {
     const socketObj = props.socketObj;
+    const parentComment = props.commentContainerData;
+    const [commentReplyData, setCommentReplyData] = useState([]);
 
     useEffect(() => {
-        retrieveComment();
-    }, [socketObj.room]);
+        getReplyComments(socketObj, parentComment, setCommentReplyData);
+    }, [socketObj.room, parentComment]);
 
     const handleCommentSubmit = (e) => {
         // get form values https://stackoverflow.com/questions/3547035/getting-html-form-values
@@ -16,64 +19,53 @@ function CommentContainer(props) {
         const formData = new FormData(e.target);
         const formProps = Object.fromEntries(formData);
         document.getElementById("comment-form").reset();
-        addComment(formProps.comment);
-        sendComment(formProps.comment);
+        const comment = {
+            whiteboard_id: socketObj.room,
+            comment_location: "",
+            message_text: formProps.comment,
+            user_id: 2,
+            parent_comment_id: parentComment.comment_id
+        };
+        sendComment(socketObj, comment, parentComment.comment_id);
+        getReplyComments(socketObj, parentComment, setCommentReplyData);
     };
 
-    const addComment = (comment) => {
-        const commentDom = document.getElementById("comment-list");
-        var newComment = document.createElement("li");
-        newComment.innerText = comment;
-
-        commentDom.appendChild(newComment);
-    };
-
-    const sendComment = (comment) => {
-        // Post comment to comments db
-        axios.post(
-            "http://localhost:4200/comments/db",
-            {
-                whiteboard_id: socketObj.room,
-                comment_location: "23,23",
-                message_text: comment,
-                user_id: 2,
-                parent_comment_id: 2
-            },
-            { headers: authHeader() }
+    const createComment = (comment) => {
+        return (
+            <Fragment>
+                <p>
+                    {comment.user_id}{" "}
+                    <span className="timestamp">
+                        <SimpleDateTime dateSeparator="/" timeSeparator=":">
+                            {comment.time_stamp}
+                        </SimpleDateTime>
+                    </span>
+                </p>
+                <p>{comment.message_text}</p>
+            </Fragment>
         );
     };
 
-    const retrieveComment = (comment) => {
-        // database retrieve
-        axios
-            .post(
-                "http://localhost:4200/comments//get-comments",
-                {
-                    whiteboard_id: socketObj.room
-                },
-                { headers: authHeader() }
-            )
-            .then((res) => {
-                var comments = res.data["comments"];
-                for (let i = 0; i < comments.length; i++) {
-                    comment = comments[i]["message_text"];
-                    addComment(comment);
-                }
-                return;
-            });
-
-        socketObj.socket.on("comment", (comment) => {
-            addComment(comment);
-        });
-    };
+    const commentReplies = commentReplyData.map((comment) => {
+        return (
+            <Fragment key={comment.comment_id}>
+                <li>{createComment(comment)}</li>
+                <hr className="comment-divider"></hr>
+            </Fragment>
+        );
+    });
 
     return (
         <div id="comment-container">
-            <h1>Comments</h1>
-            <ul id="comment-list"></ul>
+            <div id="comment-parent-container">{createComment(parentComment)}</div>
+            <div id="comment-reply-container">
+                <ul id="comment-list">{commentReplies}</ul>
+            </div>
             <form id="comment-form" onSubmit={handleCommentSubmit}>
-                <input type="text" name="comment" />
-                <button type="submit">Send</button>
+                <textarea type="text" name="comment" id="comment-input" />
+                <button type="submit" className="round-button modal-exit">
+                    <MdSend />
+                </button>
             </form>
         </div>
     );
