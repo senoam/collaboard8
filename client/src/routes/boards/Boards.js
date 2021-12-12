@@ -3,12 +3,11 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
-import { RiGhostLine } from "react-icons/ri";
-import { IconContext } from "react-icons";
 
 import authService from "../../services/auth.service";
 import BoardTile from "./BoardTile";
-import PlusIcon from "./BoardPlusIcon";
+import BoardCreateTile from "./BoardCreateTile";
+import Error from "../error/Error";
 
 import "./Boards.css";
 
@@ -16,7 +15,6 @@ function Boards(props) {
     let navigate = useNavigate();
 
     const [allBoards, setAllBoards] = useState([]);
-    const [isHoverCreateTile, setHoverCreateTile] = useState(false);
 
     const [searchMode, setSearchMode] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
@@ -75,30 +73,6 @@ function Boards(props) {
         }, []);
     };
 
-    const renderCreateTile = () => {
-        return (
-            <Link
-                to="/whiteboard"
-                state={{ whiteboardId: undefined }}
-                className="Boards-create-tile"
-            >
-                <div
-                    className="Boards-create-button"
-                    onMouseEnter={() => setHoverCreateTile(true)}
-                    onMouseLeave={() => setHoverCreateTile(false)}
-                >
-                    <div className="Boards-create-button-container">
-                        <PlusIcon
-                            class={"Boards-create-button-icon"}
-                            onHoverGradient={isHoverCreateTile}
-                        />
-                        <h3 className="Boards-create-button-label">Create a Board</h3>
-                    </div>
-                </div>
-            </Link>
-        );
-    };
-
     const updateSearchMode = (e) => {
         const searchValue = e.target.value;
         setSearchMode(!!searchValue);
@@ -133,24 +107,17 @@ function Boards(props) {
         );
     };
 
-    const renderNothingToSee = (message) => {
-        return (
-            <div className="Boards-container-empty">
-                <IconContext.Provider value={{ className: "Boards-ghost", size: "5em" }}>
-                    <RiGhostLine />
-                </IconContext.Provider>
-                <h3>Nothing to see here!</h3>
-                <p>{message}</p>
-            </div>
-        );
-    };
-
     const renderConditionalBoards = (role) => {
         const boards = renderBoards(role);
         if (boards.length) {
             return <div className="Boards-container">{boards}</div>;
         } else {
-            return renderNothingToSee("You have no boards shared with you.");
+            return (
+                <Error
+                    message="You have no boards shared with you."
+                    style={{ border: "0.2em dotted var(--light)" }}
+                />
+            );
         }
     };
 
@@ -160,7 +127,7 @@ function Boards(props) {
                 <h2>My Boards</h2>
                 <hr className="hr-long" />
                 <div className="Boards-container">
-                    {renderCreateTile()}
+                    <BoardCreateTile userId={user.user_id} />
                     {renderBoards("owner")}
                 </div>
                 <h2>Shared with Me</h2>

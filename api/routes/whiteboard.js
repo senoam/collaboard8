@@ -16,18 +16,28 @@ router.get("/id/:whiteboardId", function (req, res, next) {
 
     const { whiteboardId } = req.params;
 
-    req.db.query(wbcQuery, [whiteboardId], function (err, wbcResult) {
-        if (err) next(err);
+    const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
 
-        req.db.query(wbQuery, [whiteboardId], function (err, wbResult) {
+    if (regex.test(whiteboardId)) {
+        req.db.query(wbcQuery, [whiteboardId], function (err, wbcResult) {
             if (err) next(err);
 
-            res.json({
-                ...wbResult.rows[0],
-                collaborators: wbcResult.rows
-            });
+            if (wbcResult) {
+                req.db.query(wbQuery, [whiteboardId], function (err, wbResult) {
+                    if (err) next(err);
+
+                    res.json({
+                        ...wbResult.rows[0],
+                        collaborators: wbcResult.rows
+                    });
+                });
+            } else {
+                res.status(400).send({ message: "Please provide valid whiteboard_id" });
+            }
         });
-    });
+    } else {
+        res.status(400).send({ message: "Parameter whiteboard_id needs to be of uuid type" });
+    }
 });
 
 // Creates new whiteboard and designates creator as the owner
