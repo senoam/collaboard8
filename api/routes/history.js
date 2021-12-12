@@ -5,6 +5,7 @@ router.get("/", function (req, res, next) {
     res.send("History API is reachable");
 });
 
+//Add a timestamp and image to history db
 router.post("/add-history", function (req, res, next) {
     console.log("Got add-history request");
 
@@ -34,7 +35,7 @@ router.post("/add-history", function (req, res, next) {
     });
 });
 
-//Set up getting cross table
+//Send all snapshots and timestamps for a given whiteboard
 router.post("/get-history", function (req, res, next) {
     var whiteboard_id = req.body.whiteboard_id;
 
@@ -55,6 +56,7 @@ router.post("/get-history", function (req, res, next) {
     });
 });
 
+//Thumbnail get request for most recent snapshot
 router.get("/thumbnail/:whiteboardId", function (req, res, next) {
     var room_id = req.params.whiteboardId;
 

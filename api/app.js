@@ -79,7 +79,7 @@ var socketapp = express();
 var server = require("http").createServer(socketapp);
 var io = require("socket.io")(server, {
     cors: {
-        origin: "*"
+        origin: "http://localhost:3000"
     }
 });
 
