@@ -172,7 +172,7 @@ function Whiteboard(props) {
                             >
                                 <MdClose />
                             </button>
-                            <UserList socketObj={socketObj} />
+                            <UserList socketObj={socketObj} onChange={toggleUsers} />
                         </ReactModal>
                     </div>
 
