@@ -40,6 +40,7 @@ function Whiteboard(props) {
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
     const childRef = useRef();
+    const soc = useRef();
 
     const logOut = () => {
         authService.logout();
@@ -62,6 +63,16 @@ function Whiteboard(props) {
             .catch(() => {
                 setShowError(true);
             });
+    }, []);
+
+    useEffect(() => {
+        soc.current = socketObj;
+    }, [socketObj]);
+
+    useEffect(() => {
+        return () => {
+            soc.current.socket.emit("leave_room", soc.current.room);
+        };
     }, []);
 
     const initializeWhiteboard = (title, id) => {
