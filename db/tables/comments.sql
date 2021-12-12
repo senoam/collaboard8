@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS comments (
   );
 
 INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp)
-VALUES ('4db898e8-556c-11ec-beb4-0242ac130002', '200,250', 'Message example', '10', '1', '2021-11-26 00:00:01');
+VALUES ('4db898e8-556c-11ec-beb4-0242ac130002', '200,250', 'Message example', '10', '0', '2021-11-26 00:00:01');
 
 INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp)
-VALUES ('4db898e8-556c-11ec-beb4-0242ac130002', '100,150', 'Message example', '10', '1', '2021-11-26 00:00:01');
+VALUES ('4db898e8-556c-11ec-beb4-0242ac130002', '100,150', 'Message example 2', '10', '0', '2021-11-26 00:00:01');
+
+INSERT INTO comments(whiteboard_id, comment_location, message_text, user_id, parent_comment_id, time_stamp)
+VALUES ('4db898e8-556c-11ec-beb4-0242ac130002', '100,150', 'reply to message 1', '10', '1', '2021-11-26 00:00:01');

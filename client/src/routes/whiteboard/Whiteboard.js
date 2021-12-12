@@ -17,7 +17,6 @@ import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import axios from "axios";
 import ReactModal from "react-modal";
-
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import Comments from "../comments/Comments";
 import HistoryCarousel from "../history/Carousel";
