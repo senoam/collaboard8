@@ -56,7 +56,10 @@ router.post("/db", auth.verifyToken, function (req, res) {
         [whiteboard_id, comment_location, message_text, user_id, parent_comment_id],
         (err, result) => {
             if (err) {
-                throw err;
+                res.status(404).send({
+                    message: "Whiteboard id is not found"
+                });
+                return;
             }
             res.status(200).send("Comment added successfully");
         }
