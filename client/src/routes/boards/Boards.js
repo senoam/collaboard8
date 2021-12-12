@@ -174,11 +174,11 @@ function Boards(props) {
     return (
         <Fragment>
             <div className="whiteboard-header Boards-bring-to-front">
-                <Link to="/home" className="whiteboard-link">
-                    <h1 className="mini-logo">
+                <h1 className="mini-logo">
+                    <Link to="/home" className="whiteboard-link">
                         Colla<span className="logo-green">board</span>8
-                    </h1>
-                </Link>
+                    </Link>
+                </h1>
                 <input
                     onChange={updateSearchMode}
                     type="text"

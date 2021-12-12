@@ -18,6 +18,16 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
+.comment-toggle.react-toggle {
+    color: white;
+    margin-top: 1em;
+    margin-right: 1em;
+    float: right;
+}
+.comment-toggle.react-toggle--checked .react-toggle-track {
+    background-color: var(--primary);
+}
+
 .whiteboard-header,
 .whiteboard-toolbar {
     display: grid;
