@@ -47,7 +47,7 @@ function CommentContainer(props) {
         // database retrieve
         axios
             .post(
-                "http://localhost:4200/comments//get-comments",
+                "http://localhost:4200/comments/get-comments",
                 {
                     whiteboard_id: socketObj.room
                 },

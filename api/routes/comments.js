@@ -28,6 +28,26 @@ router.get("/get/:whiteboard_id", function (req, res) {
     );
 });
 
+router.post("/get-comments", [auth.verifyToken], function (req, res) {
+    var whiteboardID = req.body.whiteboard_id;
+    req.db.query(
+        `SELECT * FROM comments WHERE whiteboard_id = $1`,
+        [whiteboardID],
+        (error, results) => {
+            if (error) {
+                res.status(404).send({
+                    message: "whiteboard id not found"
+                });
+                return;
+            }
+
+            res.status(200).send({
+                comments: results["rows"]
+            });
+        }
+    );
+});
+
 router.post("/db", auth.verifyToken, function (req, res) {
     const { whiteboard_id, comment_location, message_text, user_id, parent_comment_id } = req.body;
 
