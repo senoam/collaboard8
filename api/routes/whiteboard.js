@@ -3,7 +3,7 @@ var router = express.Router();
 var auth = require("../modules/auth");
 
 // Returns the whiteboard title and its collaborators
-router.get("/id/:whiteboardId", auth.verifyToken, function (req, res, next) {
+router.get("/id/:whiteboardId", [auth.verifyToken], function (req, res, next) {
     const wbQuery =
         "SELECT whiteboard_title \
         FROM whiteboard \
@@ -16,6 +16,12 @@ router.get("/id/:whiteboardId", auth.verifyToken, function (req, res, next) {
         WHERE whiteboard_id=$1;";
 
     const { whiteboardId } = req.params;
+
+    if (auth.verifyRole(req.user.email, req.params.whiteboardId, req) === 403) {
+        console.log("asfdgfdgfbfgfb");
+        res.status(403).send({ message: "User is not permitted to access this whiteboard" });
+    }
+    console.log("whiteboard function");
 
     const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
 

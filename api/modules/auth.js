@@ -25,8 +25,39 @@ function verifyToken(req, res, next) {
     });
 }
 
-function verifyRole(req, res, next) {
-    // console.log(req.user);
+function verifyRole(email, whiteboardID, req) {
+    var roleQuery =
+        "SELECT * FROM whiteboard_collaborator WHERE whiteboard_id = $1 AND user_id = $2 AND (user_role = $3 OR user_role = $4);";
+
+    var userIdQuery = "SELECT user_id\
+        FROM users \
+        WHERE email=$1;";
+
+    var userId;
+    req.db.query(userIdQuery, [email], (err, userQueryResult) => {
+        if (err) {
+            res.send({
+                message: "email not found"
+            });
+            return;
+        }
+        userId = userQueryResult.rows[0].user_id;
+        console.log("dalem function");
+        req.db.query(
+            roleQuery,
+            [whiteboardID, userId, "owner", "editor"],
+            (error, roleQueryResult) => {
+                if (error) {
+                    throw error;
+                }
+                if (roleQueryResult.rows.length < 1) {
+                    return 403;
+                }
+                console.log(roleQueryResult.rows);
+                return 200;
+            }
+        );
+    });
 }
 
 function createAccessToken(user) {
