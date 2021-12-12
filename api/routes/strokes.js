@@ -37,7 +37,7 @@ router.post("/save", function (req, res, next) {
 
     req.db.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("1 record inserted");
+        res.sendStatus(200);
     });
 });
 
@@ -105,6 +105,7 @@ router.delete("/clean_undo_redo/:whiteboard_id", function (req, res, next) {
       AND stroke_id IN (SELECT stroke_id FROM undo_redo)`;
     req.db.query(sql, function (err, result) {
         if (err) throw err;
+        res.sendStatus(200);
     });
 });
 
