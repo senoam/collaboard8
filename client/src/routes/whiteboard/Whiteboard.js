@@ -207,6 +207,7 @@ function Whiteboard(props) {
                             min="0"
                             max="100"
                             name="brushSizePicker"
+                            value={brushSize}
                             onChange={(e) => setBrushSize(e.target.value)}
                         />
                     </div>
