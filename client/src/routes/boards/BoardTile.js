@@ -71,8 +71,7 @@ function BoardTile(props) {
             !deleted && (
                 <div className="BoardTile BoardTile-hover" ref={boardTileRef}>
                     <Link
-                        to="/whiteboard"
-                        state={{ whiteboardId: props.id }}
+                        to={`/whiteboard/${props.id}`}
                         className="BoardTile-link"
                         title={props.title}
                     >

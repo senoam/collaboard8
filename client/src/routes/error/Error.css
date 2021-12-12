@@ -1,0 +1,9 @@
+.Error-container {
+    text-align: center;
+    padding: 4.5em;
+    margin: 1em;
+}
+
+.Error-ghost {
+    color: var(--medium);
+}

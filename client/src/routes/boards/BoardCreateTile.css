@@ -1,0 +1,30 @@
+.Boards-create-tile {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    border: 0.2em solid var(--light);
+    border-style: dotted;
+    outline: none;
+    margin: var(--board-tile-padding);
+}
+
+.Boards-create-tile:hover {
+    background-color: var(--light);
+    cursor: pointer;
+}
+
+.Boards-create-button {
+    width: 100%;
+    height: 100%;
+}
+
+.Boards-create-button-container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.Boards-create-button-icon {
+    width: 25%;
+    margin-bottom: 1em;
+}

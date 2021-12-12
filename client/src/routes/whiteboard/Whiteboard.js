@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
-import { useLocation } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import { IconContext } from "react-icons";
@@ -26,14 +25,17 @@ import authService from "../../services/auth.service";
 import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
 import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
 import UserList from "./sharing/users";
+import Error from "../error/Error";
 
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
     const navigate = useNavigate();
-    const location = useLocation();
+    const { whiteboardId } = useParams();
+
     const [socketObj, setSocketObj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showError, setShowError] = useState(false);
 
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
@@ -52,22 +54,14 @@ function Whiteboard(props) {
     }, [socketObj]);
 
     useEffect(() => {
-        const user = authService.getCurrentUser();
-
-        var whiteboardId = location.state.whiteboardId;
-
-        if (!!whiteboardId) {
-            axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
+        axios
+            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`)
+            .then((res) => {
                 initializeWhiteboard(res.data.whiteboard_title, whiteboardId);
+            })
+            .catch(() => {
+                setShowError(true);
             });
-        } else {
-            // Create a new whiteboard
-            axios
-                .post("http://localhost:4200/whiteboard/create", { user_id: user.user_id })
-                .then((res) => {
-                    initializeWhiteboard("Untitled CollaBoard", res.data.whiteboard_id);
-                });
-        }
     }, []);
 
     const initializeWhiteboard = (title, id) => {
@@ -98,7 +92,9 @@ function Whiteboard(props) {
         setComments(!openComments);
     }
 
-    return (
+    return showError ? (
+        <Error message="Please check your whiteboard URL" showHeader={true} />
+    ) : (
         !isLoading && (
             <Fragment>
                 <div className="whiteboard-header">
