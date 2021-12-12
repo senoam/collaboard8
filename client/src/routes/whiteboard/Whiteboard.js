@@ -1,29 +1,41 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
-import { useLocation } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import { IconContext } from "react-icons";
-import { MdHistory, MdLogout, MdUndo, MdRedo, MdClose, MdPersonAddAlt1 } from "react-icons/md";
+import {
+    MdHistory,
+    MdLogout,
+    MdUndo,
+    MdRedo,
+    MdClose,
+    MdPersonAddAlt1,
+    MdComment,
+    MdEdit
+} from "react-icons/md";
 import Toggle from "react-toggle";
+import "react-toggle/style.css";
 import axios from "axios";
 import ReactModal from "react-modal";
 
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
-import CommentContainer from "../comments/CommentContainer";
+import Comments from "../comments/Comments";
 import HistoryCarousel from "../history/Carousel";
 import authService from "../../services/auth.service";
 import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
 import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
 import UserList from "./sharing/users";
+import Error from "../error/Error";
 
 import "./Whiteboard.css";
 
 function Whiteboard(props) {
     const navigate = useNavigate();
-    const location = useLocation();
+    const { whiteboardId } = useParams();
+
     const [socketObj, setSocketObj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showError, setShowError] = useState(false);
 
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
@@ -42,22 +54,14 @@ function Whiteboard(props) {
     }, [socketObj]);
 
     useEffect(() => {
-        const user = authService.getCurrentUser();
-
-        var whiteboardId = location.state.whiteboardId;
-
-        if (!!whiteboardId) {
-            axios.get(`http://localhost:4200/whiteboard/id/${whiteboardId}`).then((res) => {
+        axios
+            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`)
+            .then((res) => {
                 initializeWhiteboard(res.data.whiteboard_title, whiteboardId);
+            })
+            .catch(() => {
+                setShowError(true);
             });
-        } else {
-            // Create a new whiteboard
-            axios
-                .post("http://localhost:4200/whiteboard/create", { user_id: user.user_id })
-                .then((res) => {
-                    initializeWhiteboard("Untitled CollaBoard", res.data.whiteboard_id);
-                });
-        }
     }, []);
 
     const initializeWhiteboard = (title, id) => {
@@ -73,27 +77,36 @@ function Whiteboard(props) {
     const [brushSize, setBrushSize] = useState(10);
     const [brushType, setBrushType] = useState("freehand");
     const [openModal, setOpen] = useState(false);
+    const [openUsers, setUsers] = useState(false);
+    const [openComments, setComments] = useState(false);
+
     function toggleModal() {
         setOpen(!openModal);
     }
-    const [openUsers, setUsers] = useState(false);
+
     function toggleUsers() {
         setUsers(!openUsers);
     }
 
-    return (
+    function toggleComments() {
+        setComments(!openComments);
+    }
+
+    return showError ? (
+        <Error message="Please check your whiteboard URL" showHeader={true} />
+    ) : (
         !isLoading && (
             <Fragment>
                 <div className="whiteboard-header">
-                    <Link
-                        to="/home"
-                        className="whiteboard-link"
-                        onClick={() => childRef.current.save()}
-                    >
-                        <h1 className="mini-logo">
+                    <h1 className="mini-logo">
+                        <Link
+                            to="/home"
+                            className="whiteboard-link"
+                            onClick={() => childRef.current.save()}
+                        >
                             Colla<span className="logo-green">board</span>8
-                        </h1>
-                    </Link>
+                        </Link>
+                    </h1>
                     <h3 className="whiteboard-title">
                         <WhiteboardTitleEditor
                             initialTitle={whiteboardTitle}
@@ -137,6 +150,7 @@ function Whiteboard(props) {
                     socketObj={socketObj}
                     ref={childRef}
                 />
+                {openComments && <Comments socketObj={socketObj} />}
 
                 <div className="whiteboard-toolbar">
                     <div>
@@ -204,11 +218,18 @@ function Whiteboard(props) {
                     </div>
 
                     <div>
-                        <Toggle defaultChecked={true} icons={false} />
+                        <label>
+                            <Toggle
+                                className="comment-toggle"
+                                icons={{
+                                    checked: <MdComment />,
+                                    unchecked: <MdEdit />
+                                }}
+                                onChange={toggleComments}
+                            />
+                        </label>
                     </div>
                 </div>
-
-                <CommentContainer socketObj={socketObj} />
             </Fragment>
         )
     );

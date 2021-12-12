@@ -1,0 +1,8 @@
+.comment-marker {
+    color: var(--primary);
+    position: fixed;
+}
+.comment-marker:hover {
+    color: var(--primary-dark);
+    cursor: pointer;
+}
