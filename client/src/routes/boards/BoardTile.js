@@ -16,10 +16,12 @@ function BoardTile(props) {
     const boardTileRef = useRef(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:4200/history/thumbnail/${props.id}`).then((res) => {
-            setSnapshot(res.data.image_data);
-            setLastEdited(res.data.image_time);
-        });
+        axios
+            .get(`http://localhost:4200/history/thumbnail/${props.id}`, { headers: authHeader() })
+            .then((res) => {
+                setSnapshot(res.data.image_data);
+                setLastEdited(res.data.image_time);
+            });
     }, []);
 
     const getFormattedTime = (dateString) => {
