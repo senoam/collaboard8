@@ -41,10 +41,7 @@ export const retrieveStroke = (socketObj) => {
     });
 
     socketObj.socket.on("undo", () => {
-        const canvas = window.canvasRef.current;
-        const context = canvas.getContext("2d");
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        window.location.reload();
     });
 
     axios.get("http://localhost:4200/strokes/get/" + socketObj.room).then((response) => {
