@@ -10,7 +10,6 @@ function UserList(props) {
 
     const [users, setUsers] = useState([]);
     const [email, setEmail] = useState("");
-    const [role, setRole] = useState("owner");
 
     const removeUser = (id) => {
         console.log("User id: " + id);
@@ -62,10 +61,6 @@ function UserList(props) {
         setEmail(event.target.value);
     };
 
-    const inputRole = (event) => {
-        setRole(event.target.value);
-    };
-
     const addCollab = (e) => {
         e.preventDefault();
         axios.get(`http://localhost:4200/users/id/${email}`).then((res) => {
@@ -76,13 +71,13 @@ function UserList(props) {
                     .post(`http://localhost:4200/whiteboard/add-collaborator`, {
                         whiteboard_id: whiteboardId,
                         user_id: uid,
-                        user_role: role
+                        user_role: "editor"
                     })
                     .then((res) => {
                         const newUser = res.data;
                         if (newUser) {
                             if (!newUser.preExists) {
-                                setUsers([...users, renderUserRow(email, role, uid)]);
+                                setUsers([...users, renderUserRow(email, "editor", uid)]);
                                 alert(`${email} added to whiteboard`);
                             } else {
                                 alert(`${email} is already a collaborator`);
@@ -136,13 +131,6 @@ function UserList(props) {
                         onChange={inputEmail}
                         required
                     />
-                </label>
-                <label>
-                    <h4>Role:</h4>
-                    <select name="role" id="role-select" onChange={inputRole} value={role} required>
-                        <option value="owner">Owner</option>
-                        <option value="editor">Editor</option>
-                    </select>
                 </label>
                 <br />
                 <button type="submit">Add Collaborator</button>
