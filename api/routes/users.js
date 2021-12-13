@@ -35,7 +35,7 @@ router.get("/id/:email", function (req, res, next) {
 });
 
 //Return first name last name of user id for commenting
-router.get("/id/:userId", function (req, res, next) {
+router.get("/get-name/:userId", function (req, res, next) {
     const query = "SELECT first_name, last_name\
         FROM users \
         WHERE user_id=$1;";

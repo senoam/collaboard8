@@ -46,7 +46,7 @@ function Comments(props) {
                 user_id: user.user_id,
                 parent_comment_id: 0 // no parent
             };
-            sendComment(socketObj, comment, 0);
+            sendComment(socketObj, comment);
         };
         const newComment = (
             <Fragment>
@@ -67,7 +67,7 @@ function Comments(props) {
                     }}
                 >
                     <h4>New Comment</h4>
-                    <textarea type="text" name="comment" id="comment-input" maxlength="250" />
+                    <textarea type="text" name="comment" id="comment-input" maxLength="250" />
                     <button type="submit" className="round-button modal-exit">
                         <MdSend />
                     </button>

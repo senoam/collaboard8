@@ -29,7 +29,7 @@ export function CommentContainer(props) {
             user_id: user.user_id,
             parent_comment_id: parentComment.comment_id
         };
-        sendComment(socketObj, comment, parentComment.comment_id);
+        sendComment(socketObj, comment);
         getReplyComments(socketObj, parentComment, setCommentReplyData);
 
         socketObj.socket.emit("update-comment", socketObj.room);
@@ -39,7 +39,7 @@ export function CommentContainer(props) {
         return (
             <Fragment>
                 <p>
-                    {comment.user_id}{" "}
+                    {comment.name}{" "}
                     <span className="timestamp">
                         <SimpleDateTime dateSeparator="/" timeSeparator=":">
                             {comment.time_stamp}
@@ -81,7 +81,7 @@ export function CommentContainer(props) {
                 <ul id="comment-list">{replies}</ul>
             </div>
             <form id="comment-form" onSubmit={handleCommentSubmit}>
-                <textarea type="text" name="comment" id="comment-input" maxlength="250" />
+                <textarea type="text" name="comment" id="comment-input" maxLength="250" />
                 <button type="submit" className="round-button modal-exit">
                     <MdSend />
                 </button>
