@@ -31,6 +31,8 @@ export function CommentContainer(props) {
         };
         sendComment(socketObj, comment, parentComment.comment_id);
         getReplyComments(socketObj, parentComment, setCommentReplyData);
+
+        socketObj.socket.emit("update-comment", socketObj.room);
     };
 
     const createComment = (comment) => {
@@ -52,6 +54,12 @@ export function CommentContainer(props) {
     useEffect(() => {
         updateReplies();
     }, [commentReplyData]);
+
+    useEffect(() => {
+        socketObj.socket.on("update-comment", () => {
+            getReplyComments(socketObj, parentComment, setCommentReplyData);
+        });
+    });
 
     const updateReplies = () => {
         const commentReplies = commentReplyData.map((comment) => {
