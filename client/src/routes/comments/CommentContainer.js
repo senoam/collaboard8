@@ -8,6 +8,7 @@ export function CommentContainer(props) {
     const socketObj = props.socketObj;
     const parentComment = props.commentContainerData;
     const [commentReplyData, setCommentReplyData] = useState([]);
+    const [replies, setReplies] = useState([]);
 
     useEffect(() => {
         getReplyComments(socketObj, parentComment, setCommentReplyData);
@@ -46,20 +47,28 @@ export function CommentContainer(props) {
         );
     };
 
-    const commentReplies = commentReplyData.map((comment) => {
-        return (
-            <Fragment key={comment.comment_id}>
-                <li>{createComment(comment)}</li>
-                <hr className="comment-divider"></hr>
-            </Fragment>
-        );
-    });
+    useEffect(() => {
+        updateReplies();
+    }, [commentReplyData]);
+
+    const updateReplies = () => {
+        const commentReplies = commentReplyData.map((comment) => {
+            return (
+                <Fragment key={comment.comment_id}>
+                    <li>{createComment(comment)}</li>
+                    <hr className="comment-divider"></hr>
+                </Fragment>
+            );
+        });
+
+        setReplies(commentReplies);
+    };
 
     return (
         <div id="comment-container">
             <div id="comment-parent-container">{createComment(parentComment)}</div>
             <div id="comment-reply-container">
-                <ul id="comment-list">{commentReplies}</ul>
+                <ul id="comment-list">{replies}</ul>
             </div>
             <form id="comment-form" onSubmit={handleCommentSubmit}>
                 <textarea type="text" name="comment" id="comment-input" />
