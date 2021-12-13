@@ -37,5 +37,5 @@ export const getReplyComments = (socketObj, comment, setCommentReplyData) => {
 };
 
 export const sendComment = (socketObj, comment) => {
-    axios.post("http://localhost:4200/comments/db", comment);
+    axios.post("http://localhost:4200/comments/db", comment, { headers: authHeader() });
 };
