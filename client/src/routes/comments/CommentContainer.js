@@ -3,9 +3,11 @@ import "./CommentContainer.css";
 import { MdSend } from "react-icons/md";
 import SimpleDateTime from "react-simple-timestamp-to-date";
 import { getReplyComments, sendComment } from "./commentData";
+import authService from "../../services/auth.service";
 
 export function CommentContainer(props) {
     const socketObj = props.socketObj;
+    const user = authService.getCurrentUser();
     const parentComment = props.commentContainerData;
     const [commentReplyData, setCommentReplyData] = useState([]);
 
@@ -23,7 +25,7 @@ export function CommentContainer(props) {
             whiteboard_id: socketObj.room,
             comment_location: "",
             message_text: formProps.comment,
-            user_id: 2,
+            user_id: user.user_id,
             parent_comment_id: parentComment.comment_id
         };
         sendComment(socketObj, comment, parentComment.comment_id);
@@ -62,7 +64,7 @@ export function CommentContainer(props) {
                 <ul id="comment-list">{commentReplies}</ul>
             </div>
             <form id="comment-form" onSubmit={handleCommentSubmit}>
-                <textarea type="text" name="comment" id="comment-input" />
+                <textarea type="text" name="comment" id="comment-input" maxlength="250" />
                 <button type="submit" className="round-button modal-exit">
                     <MdSend />
                 </button>

@@ -1,17 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { FaMapMarker } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
+import { FaMapMarker, FaTimesCircle } from "react-icons/fa";
+import { MdClose, MdSend } from "react-icons/md";
 import { OffCanvas, OffCanvasMenu } from "react-offcanvas";
 import "./Comments.css";
 import { CommentContainer } from "./CommentContainer";
-import { getParentComments } from "./commentData";
+import { getParentComments, sendComment } from "./commentData";
+import authService from "../../services/auth.service";
 
 function Comments(props) {
     const socketObj = props.socketObj;
+    const user = authService.getCurrentUser();
 
     const [allCommentMarkers, setCommentMarkers] = useState([]);
     const [commentPanelOpen, setCommentPanelOpen] = useState(false);
     const [commentContainerData, setCommentContainerData] = useState({});
+    const [newCommentMarker, setNewCommentMarker] = useState(null);
 
     useEffect(() => {
         getParentComments(socketObj, setCommentMarkers);
@@ -26,7 +29,53 @@ function Comments(props) {
         setCommentContainerData(comment);
     }
 
-    //function newComment() {}
+    const createMarker = (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        const x_marker = x - 8; // scale for the empty space around commentMarkers
+        const y_marker = y - 18;
+        const location_string = x_marker.toString() + "," + y_marker.toString();
+
+        const handleCommentSubmit = (e) => {
+            const formData = new FormData(e.target);
+            const formProps = Object.fromEntries(formData);
+            const comment = {
+                whiteboard_id: socketObj.room,
+                comment_location: location_string,
+                message_text: formProps.comment,
+                user_id: user.user_id,
+                parent_comment_id: 0 // no parent
+            };
+            sendComment(socketObj, comment, 0);
+        };
+        const newComment = (
+            <Fragment>
+                <FaTimesCircle
+                    className="comment-marker"
+                    style={{
+                        left: x_marker,
+                        top: y_marker
+                    }}
+                    onClick={() => setNewCommentMarker(null)}
+                />
+                <form
+                    onSubmit={handleCommentSubmit}
+                    id="new-comment-form"
+                    style={{
+                        left: x,
+                        top: y
+                    }}
+                >
+                    <h4>New Comment</h4>
+                    <textarea type="text" name="comment" id="comment-input" maxlength="250" />
+                    <button type="submit" className="round-button modal-exit">
+                        <MdSend />
+                    </button>
+                </form>
+            </Fragment>
+        );
+        setNewCommentMarker(newComment);
+    };
 
     const commentMarkers = allCommentMarkers.map((comment) => {
         const location = comment.comment_location.split(",");
@@ -35,8 +84,8 @@ function Comments(props) {
                 key={comment.comment_id}
                 className="comment-marker"
                 style={{
-                    top: location[0],
-                    left: location[1]
+                    left: location[0],
+                    top: location[1]
                 }}
                 onClick={() => showComment(comment)}
             />
@@ -45,9 +94,9 @@ function Comments(props) {
 
     return (
         <Fragment>
-            <div id="comment-overlay">
-                <div id="comment-markers">{commentMarkers}</div>
-            </div>
+            <div id="comment-overlay" onMouseDown={createMarker}></div>
+            <div id="comment-markers">{commentMarkers}</div>
+            <div id="new-comment">{newCommentMarker}</div>
             <OffCanvas
                 width={300}
                 transitionDuration={300}

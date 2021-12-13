@@ -52,7 +52,7 @@ router.get("/get-reply/:whiteboard_id/:parent_comment_id", function (req, res) {
     );
 });
 
-router.post("/db", auth.verifyToken, function (req, res) {
+router.post("/db", function (req, res) {
     const { whiteboard_id, comment_location, message_text, user_id, parent_comment_id } = req.body;
 
     req.db.query(
@@ -62,7 +62,7 @@ router.post("/db", auth.verifyToken, function (req, res) {
             if (err) {
                 throw err;
             }
-            res.status(200).send("Comment added successfully");
+            res.sendStatus(200);
         }
     );
 });
