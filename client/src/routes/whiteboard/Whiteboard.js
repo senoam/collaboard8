@@ -31,6 +31,8 @@ import "./Whiteboard.css";
 function Whiteboard(props) {
     const navigate = useNavigate();
     const { whiteboardId } = useParams();
+    window.user = authService.getCurrentUser();
+    const [currentUser, setCurrentUser] = useState("");
 
     const [socketObj, setSocketObj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +42,19 @@ function Whiteboard(props) {
 
     const childRef = useRef();
     const soc = useRef();
+
+    useEffect(() => {
+        authorize();
+    }, []);
+
+    const authorize = () => {
+        if (!!window.user) {
+            setCurrentUser(window.user);
+        } else {
+            // Navigate to the login page
+            navigate("/");
+        }
+    };
 
     const logOut = () => {
         authService.logout();
