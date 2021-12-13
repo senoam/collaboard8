@@ -40,6 +40,13 @@ export const retrieveStroke = (socketObj) => {
         );
     });
 
+    socketObj.socket.on("undo", () => {
+        const canvas = window.canvasRef.current;
+        const context = canvas.getContext("2d");
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
     axios.get("http://localhost:4200/strokes/get/" + socketObj.room).then((response) => {
         for (var stroke of response.data) {
             toolManager.load(
@@ -63,7 +70,8 @@ export function undoStroke(socketObj) {
             context.clearRect(0, 0, canvas.width, canvas.height);
             retrieveStroke(socketObj);
         });
-    // TODO: use sockets to redraw all other windows...
+
+    socketObj.socket.emit("undo", socketObj.room);
 }
 
 export function redoStroke(socketObj) {

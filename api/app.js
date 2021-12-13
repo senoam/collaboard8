@@ -105,6 +105,10 @@ io.on("connection", (socket) => {
         socket.to(whiteboard_id).emit("drawing", data);
     });
 
+    socket.on("undo", (whiteboard_id) => {
+        socket.to(whiteboard_id).emit("undo");
+    });
+
     socket.on("comment", (whiteboard_id, comment) => {
         socket.to(whiteboard_id).emit("comment", comment);
     });
