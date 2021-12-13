@@ -20,7 +20,8 @@ router.get("/db", function (req, res) {
 router.get("/get/:whiteboard_id", function (req, res, next) {
     const sql_get_strokes = `SELECT * FROM strokes
       WHERE whiteboard_id='${req.params.whiteboard_id}'
-      AND stroke_id NOT IN (SELECT stroke_id FROM undo_redo);`;
+      AND stroke_id NOT IN (SELECT stroke_id FROM undo_redo)
+      ORDER BY draw_time ASC;`;
     req.db
         .query(sql_get_strokes)
         .then((data) => {
