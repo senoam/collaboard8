@@ -218,6 +218,7 @@ function Whiteboard(props) {
                             max="100"
                             name="brushSizePicker"
                             value={brushSize}
+                            style={{ width: "20em" }}
                             onChange={(e) => setBrushSize(e.target.value)}
                         />
                     </div>
