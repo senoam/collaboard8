@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ToolManager } from "./ToolManager";
-
+import authHeader from "../../../services/auth-header";
 // deals with all stroke database and socket interactions
 
 export const sendStroke = (socketObj, brush_shape, data_string) => {
@@ -16,20 +16,25 @@ export const sendStroke = (socketObj, brush_shape, data_string) => {
         brush_size: brush_size
     });
 
-    axios.post("http://localhost:4200/strokes/save", {
-        whiteboard_id: socketObj.room,
-        user_id: window.user.user_id,
-        data_string: data_string,
-        brush_shape: brush_shape,
-        brush_colour: brush_colour,
-        brush_size: brush_size
-    });
+    axios.post(
+        "http://localhost:4200/strokes/save",
+        {
+            whiteboard_id: socketObj.room,
+            user_id: window.user.user_id,
+            data_string: data_string,
+            brush_shape: brush_shape,
+            brush_colour: brush_colour,
+            brush_size: brush_size
+        },
+        { headers: authHeader() }
+    );
 
     axios.delete(
         "http://localhost:4200/strokes/clean_undo_redo/" +
             socketObj.room +
             "/" +
-            window.user.user_id
+            window.user.user_id,
+        { headers: authHeader() }
     );
 };
 
@@ -48,26 +53,32 @@ export const retrieveStroke = (socketObj) => {
         window.location.reload();
     });
 
-    axios.get("http://localhost:4200/strokes/get/" + socketObj.room).then((response) => {
-        for (var stroke of response.data) {
-            toolManager.load(
-                stroke.data_string,
-                stroke.brush_shape,
-                stroke.brush_colour,
-                stroke.brush_size
-            );
-        }
-    });
+    axios
+        .get("http://localhost:4200/strokes/get/" + socketObj.room, { headers: authHeader() })
+        .then((response) => {
+            for (var stroke of response.data) {
+                toolManager.load(
+                    stroke.data_string,
+                    stroke.brush_shape,
+                    stroke.brush_colour,
+                    stroke.brush_size
+                );
+            }
+        });
 };
 
 export function undoStroke(socketObj) {
     const canvas = window.canvasRef.current;
     const context = canvas.getContext("2d");
     axios
-        .post("http://localhost:4200/strokes/undo", {
-            whiteboard_id: socketObj.room,
-            user_id: window.user.user_id
-        })
+        .post(
+            "http://localhost:4200/strokes/undo",
+            {
+                whiteboard_id: socketObj.room,
+                user_id: window.user.user_id
+            },
+            { headers: authHeader() }
+        )
         .then(() => {
             context.clearRect(0, 0, canvas.width, canvas.height);
             retrieveStroke(socketObj);
@@ -78,10 +89,14 @@ export function undoStroke(socketObj) {
 
 export function redoStroke(socketObj) {
     axios
-        .post("http://localhost:4200/strokes/redo", {
-            whiteboard_id: socketObj.room,
-            user_id: window.user.user_id
-        })
+        .post(
+            "http://localhost:4200/strokes/redo",
+            {
+                whiteboard_id: socketObj.room,
+                user_id: window.user.user_id
+            },
+            { headers: authHeader() }
+        )
         .then((response) => response.data)
         .then((data) => {
             if (data === "") return; // nothing to redo
