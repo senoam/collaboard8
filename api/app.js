@@ -79,7 +79,7 @@ var socketapp = express();
 var server = require("http").createServer(socketapp);
 var io = require("socket.io")(server, {
     cors: {
-        origin: "*"
+        origin: "http://localhost:3000"
     }
 });
 
@@ -97,8 +97,16 @@ io.on("connection", (socket) => {
         socket.join(whiteboard_id);
     });
 
+    socket.on("leave_room", (whiteboard_id) => {
+        socket.leave(whiteboard_id);
+    });
+
     socket.on("drawing", (whiteboard_id, data) => {
         socket.to(whiteboard_id).emit("drawing", data);
+    });
+
+    socket.on("undo", (whiteboard_id) => {
+        socket.to(whiteboard_id).emit("undo");
     });
 
     socket.on("comment", (whiteboard_id, comment) => {

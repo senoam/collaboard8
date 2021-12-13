@@ -35,6 +35,12 @@ function WhiteboardTitle(props) {
                     value={whiteboardTitle}
                     maxLength={maxTitleLength}
                     onBlur={() => updateTitle(whiteboardTitle)}
+                    onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                            e.target.blur();
+                            updateTitle(whiteboardTitle);
+                        }
+                    }}
                     onChange={(e) => {
                         const newTitle = e.target.value;
                         setWhiteboardTitle(newTitle);

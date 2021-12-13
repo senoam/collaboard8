@@ -31,7 +31,7 @@ function Login(props) {
                 Colla<span className="logo-green">Board</span>8
             </h1>
             <h3>A Collaborative Whiteboarding Tool</h3>
-            <hr class="hr-short" />
+            <hr className="hr-short" />
             <form onSubmit={login}>
                 <input
                     type="text"

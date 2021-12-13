@@ -1,7 +1,23 @@
+.comment-marker {
+    color: var(--primary);
+    position: fixed;
+}
+.comment-marker:hover {
+    color: var(--primary-dark);
+    cursor: pointer;
+}
+
 #comment-overlay {
     position: fixed;
     width: var(--screen-width);
     height: 90vh;
     top: 5vh;
     background-color: rgba(255, 209, 186, 0.5);
+}
+#new-comment-form {
+    position: fixed;
+    width: 20em;
+    background-color: white;
+    padding: 1em;
+    height: 13vh;
 }

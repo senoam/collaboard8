@@ -31,7 +31,6 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 .whiteboard-header,
 .whiteboard-toolbar {
     display: grid;
-
     grid-gap: 2em;
     background-color: var(--secondary);
     width: var(--screen-width);

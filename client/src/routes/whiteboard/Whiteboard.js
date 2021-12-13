@@ -17,7 +17,6 @@ import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import axios from "axios";
 import ReactModal from "react-modal";
-
 import WhiteboardCanvas from "../canvas/WhiteboardCanvas";
 import Comments from "../comments/Comments";
 import HistoryCarousel from "../history/Carousel";
@@ -33,6 +32,8 @@ import "./Whiteboard.css";
 function Whiteboard(props) {
     const navigate = useNavigate();
     const { whiteboardId } = useParams();
+    window.user = authService.getCurrentUser();
+    const [currentUser, setCurrentUser] = useState("");
 
     const [socketObj, setSocketObj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -41,6 +42,20 @@ function Whiteboard(props) {
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
 
     const childRef = useRef();
+    const soc = useRef();
+
+    useEffect(() => {
+        authorize();
+    }, []);
+
+    const authorize = () => {
+        if (!!window.user) {
+            setCurrentUser(window.user);
+        } else {
+            // Navigate to the login page
+            navigate("/");
+        }
+    };
 
     const logOut = () => {
         authService.logout();
@@ -63,6 +78,16 @@ function Whiteboard(props) {
             .catch(() => {
                 setShowError(true);
             });
+    }, []);
+
+    useEffect(() => {
+        soc.current = socketObj;
+    }, [socketObj]);
+
+    useEffect(() => {
+        return () => {
+            soc.current.socket.emit("leave_room", soc.current.room);
+        };
     }, []);
 
     const initializeWhiteboard = (title, id) => {
@@ -208,6 +233,8 @@ function Whiteboard(props) {
                             min="0"
                             max="100"
                             name="brushSizePicker"
+                            value={brushSize}
+                            style={{ width: "20em" }}
                             onChange={(e) => setBrushSize(e.target.value)}
                         />
                     </div>
