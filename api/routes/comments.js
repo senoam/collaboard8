@@ -12,7 +12,7 @@ router.get("/db", auth.verifyToken, function (req, res) {
 });
 
 // GET main comments
-router.get("/get/:whiteboard_id", function (req, res) {
+router.get("/get/:whiteboard_id", auth.verifyToken, function (req, res) {
     var whiteboardId = req.params.whiteboard_id;
     req.db.query(
         `SELECT * FROM comments WHERE whiteboard_id = $1 AND parent_comment_id = 0;`,
@@ -45,7 +45,7 @@ router.post("/get-comments", [auth.verifyToken], function (req, res) {
     );
 });
 // GET reply comments
-router.get("/get-reply/:whiteboard_id/:parent_comment_id", function (req, res) {
+router.get("/get-reply/:whiteboard_id/:parent_comment_id", auth.verifyToken, function (req, res) {
     var whiteboardId = req.params.whiteboard_id;
     var parentCommentId = req.params.parent_comment_id;
     req.db.query(
