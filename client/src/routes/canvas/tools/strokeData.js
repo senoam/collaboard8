@@ -18,6 +18,7 @@ export const sendStroke = (socketObj, brush_shape, data_string) => {
 
     axios.post("http://localhost:4200/strokes/save", {
         whiteboard_id: socketObj.room,
+        user_id: window.user.user_id,
         data_string: data_string,
         brush_shape: brush_shape,
         brush_colour: brush_colour,
@@ -25,7 +26,8 @@ export const sendStroke = (socketObj, brush_shape, data_string) => {
     });
 
     axios.delete("http://localhost:4200/strokes/clean_undo_redo/" + socketObj.room, {
-        whiteboard_id: socketObj.room
+        whiteboard_id: socketObj.room,
+        user_id: window.user.user_id
     });
 };
 
@@ -61,7 +63,8 @@ export function undoStroke(socketObj) {
     const context = canvas.getContext("2d");
     axios
         .post("http://localhost:4200/strokes/undo", {
-            whiteboard_id: socketObj.room
+            whiteboard_id: socketObj.room,
+            user_id: window.user.user_id
         })
         .then(() => {
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -74,7 +77,8 @@ export function undoStroke(socketObj) {
 export function redoStroke(socketObj) {
     axios
         .post("http://localhost:4200/strokes/redo", {
-            whiteboard_id: socketObj.room
+            whiteboard_id: socketObj.room,
+            user_id: window.user.user_id
         })
         .then((response) => response.data)
         .then((data) => {

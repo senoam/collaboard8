@@ -6,16 +6,6 @@ router.get("/", function (req, res, next) {
     res.send("Stroke API is working!");
 });
 
-/* GET stroke listing. */
-router.get("/db", function (req, res) {
-    req.db
-        .query(`SELECT * FROM strokes;`)
-        .then((data) => {
-            res.json({ data: data.rows });
-        })
-        .catch(() => res.send("Theres something wrong with strokes table."));
-});
-
 /* GET strokes on this board. */
 router.get("/get/:whiteboard_id", function (req, res, next) {
     const sql_get_strokes = `SELECT * FROM strokes
@@ -32,9 +22,9 @@ router.get("/get/:whiteboard_id", function (req, res, next) {
 
 /* POST new stroke. */
 router.post("/save", function (req, res, next) {
-    const { whiteboard_id, data_string, brush_shape, brush_colour, brush_size } = req.body;
-    const sql = `INSERT INTO strokes(whiteboard_id, draw_time, data_string, brush_shape, brush_colour, brush_size)
-    VALUES ('${whiteboard_id}', current_timestamp, '${data_string}', '${brush_shape}', '${brush_colour}', '${brush_size}');`;
+    const { whiteboard_id, user_id, data_string, brush_shape, brush_colour, brush_size } = req.body;
+    const sql = `INSERT INTO strokes(whiteboard_id, user_id, draw_time, data_string, brush_shape, brush_colour, brush_size)
+    VALUES ('${whiteboard_id}', ${user_id}, current_timestamp, '${data_string}', '${brush_shape}', '${brush_colour}', '${brush_size}');`;
 
     req.db.query(sql, function (err, result) {
         if (err) throw err;
@@ -45,12 +35,14 @@ router.post("/save", function (req, res, next) {
 /* POST new undo request. */
 router.post("/undo", function (req, res, next) {
     // TODO: add user check
+    console.log(req.body.user_id);
     const sql_get_stroke = `SELECT data.stroke_id, data.data_string, data.brush_shape, data.brush_size
        FROM strokes data INNER JOIN (
          SELECT MAX(stroke_id) as stroke_id
          FROM strokes
          WHERE whiteboard_id='${req.body.whiteboard_id}'
          AND stroke_id NOT IN (SELECT stroke_id FROM undo_redo)
+         AND user_id='${req.body.user_id}'
        ) max ON data.stroke_id = max.stroke_id
        LIMIT 1;`;
     req.db.query(sql_get_stroke, function (err, result) {
@@ -77,6 +69,7 @@ router.post("/redo", function (req, res, next) {
         SELECT stroke_id
         FROM strokes
         WHERE whiteboard_id='${req.body.whiteboard_id}'
+        AND user_id='${req.body.user_id}'
       )
       LIMIT 1;`;
     req.db.query(sql_get_stroke, function (err, result) {
@@ -99,11 +92,11 @@ router.post("/redo", function (req, res, next) {
 });
 
 /* DELETE to clean undo_redo table request. */
-router.delete("/clean_undo_redo/:whiteboard_id", function (req, res, next) {
+router.delete("/clean_undo_redo/:whiteboard_id/:user_id", function (req, res, next) {
     // TODO: add user check
     const sql = `DELETE FROM strokes
       WHERE whiteboard_id='${req.params.whiteboard_id}'
-      AND stroke_id IN (SELECT stroke_id FROM undo_redo)`;
+      AND stroke_id IN (SELECT stroke_id FROM undo_redo WHERE user_id='${req.params.user_id}')`;
     req.db.query(sql, function (err, result) {
         if (err) throw err;
         res.sendStatus(200);
