@@ -16,7 +16,7 @@ function verifyToken(req, res, next) {
     var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
         if (error) {
             res.status(403).send({
-                message: "forbidden"
+                message: "Unauthorized user"
             });
             return;
         }
