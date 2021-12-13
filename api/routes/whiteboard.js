@@ -3,7 +3,7 @@ var router = express.Router();
 var auth = require("../modules/auth");
 
 // Returns the whiteboard title and its collaborators
-router.get("/id/:whiteboardId", [auth.verifyToken], function (req, res, next) {
+router.get("/id/:whiteboardId", [auth.verifyToken], async function (req, res, next) {
     const wbQuery =
         "SELECT whiteboard_title \
         FROM whiteboard \
@@ -17,40 +17,38 @@ router.get("/id/:whiteboardId", [auth.verifyToken], function (req, res, next) {
 
     const { whiteboardId } = req.params;
 
-    if (
-        auth.verifyRole(req.user.email, req.params.whiteboardId, req, auth.verifyRoleCallback) ===
-        403
-    ) {
-        res.status(403).send({ message: "User is not permitted to access this whiteboard" });
-    }
+    try {
+        var statusCode = await auth.verifyRole(req.user.email, req.params.whiteboardId, req);
+        if (statusCode === 403) {
+            res.status(403).send({ message: "User is not permitted to access this whiteboard" });
+            return;
+        }
 
-    // if (auth.verifyRole(req.user.email, req.params.whiteboardId, req) === 403) {
-    //     console.log("asfdgfdgfbfgfb");
-    //     res.status(403).send({ message: "User is not permitted to access this whiteboard" });
-    // }
-    console.log("whiteboard function");
+        const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
 
-    const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        if (regex.test(whiteboardId)) {
+            req.db.query(wbcQuery, [whiteboardId], function (err, wbcResult) {
+                if (err) next(err);
 
-    if (regex.test(whiteboardId)) {
-        req.db.query(wbcQuery, [whiteboardId], function (err, wbcResult) {
-            if (err) next(err);
+                if (wbcResult) {
+                    req.db.query(wbQuery, [whiteboardId], function (err, wbResult) {
+                        if (err) next(err);
 
-            if (wbcResult) {
-                req.db.query(wbQuery, [whiteboardId], function (err, wbResult) {
-                    if (err) next(err);
-
-                    res.json({
-                        ...wbResult.rows[0],
-                        collaborators: wbcResult.rows
+                        res.json({
+                            ...wbResult.rows[0],
+                            collaborators: wbcResult.rows
+                        });
                     });
-                });
-            } else {
-                res.status(400).send({ message: "Please provide valid whiteboard_id" });
-            }
-        });
-    } else {
-        res.status(400).send({ message: "Parameter whiteboard_id needs to be of uuid type" });
+                } else {
+                    res.status(400).send({ message: "Please provide valid whiteboard_id" });
+                }
+            });
+        } else {
+            res.status(400).send({ message: "Parameter whiteboard_id needs to be of uuid type" });
+        }
+    } catch (err) {
+        res.status(500).send({ message: "something is wrong, please check your query" });
+        return;
     }
 });
 

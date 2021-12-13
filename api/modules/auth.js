@@ -25,44 +25,43 @@ function verifyToken(req, res, next) {
     });
 }
 
-function verifyRoleCallback(err, result) {
-    return result;
-}
+function verifyRole(email, whiteboardID, req) {
+    return new Promise((resolve, reject) => {
+        var roleQuery =
+            "SELECT * FROM whiteboard_collaborator WHERE whiteboard_id = $1 AND user_id = $2 AND (user_role = $3 OR user_role = $4);";
 
-function verifyRole(email, whiteboardID, req, callback) {
-    var roleQuery =
-        "SELECT * FROM whiteboard_collaborator WHERE whiteboard_id = $1 AND user_id = $2 AND (user_role = $3 OR user_role = $4);";
-
-    var userIdQuery = "SELECT user_id\
+        var userIdQuery = "SELECT user_id\
         FROM users \
         WHERE email=$1;";
 
-    var userId;
-    req.db.query(userIdQuery, [email], (err, userQueryResult) => {
-        if (err) {
-            res.send({
-                message: "email not found"
-            });
-            callback(err, null);
-        }
-        userId = userQueryResult.rows[0].user_id;
-        req.db.query(
-            roleQuery,
-            [whiteboardID, userId, "owner", "editor"],
-            (error, roleQueryResult) => {
-                if (error) {
-                    res.send({
-                        message: "Invalid wbc query"
-                    });
-                    callback(error, null);
-                }
-                if (roleQueryResult.rows.length < 1) {
-                    callback(null, 403);
-                }
-                console.log(roleQueryResult.rows);
-                callback(null, 200);
+        var userId;
+        req.db.query(userIdQuery, [email], (err, userQueryResult) => {
+            if (err) {
+                res.send({
+                    message: "email not found"
+                });
+                reject("error");
             }
-        );
+            userId = userQueryResult.rows[0].user_id;
+
+            req.db.query(
+                roleQuery,
+                [whiteboardID, userId, "owner", "editor"],
+                (error, roleQueryResult) => {
+                    if (error) {
+                        res.send({
+                            message: "Invalid wbc query"
+                        });
+                        reject("error");
+                    }
+                    if (roleQueryResult.rows.length < 1) {
+                        resolve(403);
+                    }
+
+                    resolve(200);
+                }
+            );
+        });
     });
 }
 
@@ -73,6 +72,5 @@ function createAccessToken(user) {
 module.exports = {
     verifyToken,
     createAccessToken,
-    verifyRole,
-    verifyRoleCallback
+    verifyRole
 };
