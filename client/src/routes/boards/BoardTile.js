@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdDelete, MdClose } from "react-icons/md";
-
+import authHeader from "../../services/auth-header";
 import "./BoardTile.css";
 
 function BoardTile(props) {
@@ -34,7 +34,8 @@ function BoardTile(props) {
     const handleDeleteBoard = () => {
         axios
             .delete("http://localhost:4200/whiteboard/delete", {
-                data: { whiteboard_id: props.id }
+                data: { whiteboard_id: props.id },
+                headers: authHeader()
             })
             .then((res) => {
                 if (!!res.data) {

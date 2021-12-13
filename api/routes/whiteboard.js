@@ -53,7 +53,7 @@ router.get("/id/:whiteboardId", [auth.verifyToken], async function (req, res, ne
 });
 
 // Creates new whiteboard and designates creator as the owner
-router.post("/create", function (req, res, next) {
+router.post("/create", auth.verifyToken, function (req, res, next) {
     const wbQuery =
         "INSERT INTO whiteboard(whiteboard_id, whiteboard_title) \
         VALUES (DEFAULT, DEFAULT) \
@@ -77,7 +77,7 @@ router.post("/create", function (req, res, next) {
     });
 });
 
-router.delete("/delete", function (req, res, next) {
+router.delete("/delete", auth.verifyToken, function (req, res, next) {
     const wbQuery = "DELETE FROM whiteboard \
         WHERE whiteboard_id=$1 \
         RETURNING *;";
@@ -91,7 +91,7 @@ router.delete("/delete", function (req, res, next) {
     });
 });
 
-router.put("/edit-title", function (req, res, next) {
+router.put("/edit-title", auth.verifyToken, function (req, res, next) {
     const wbQuery =
         "UPDATE whiteboard \
         SET whiteboard_title=$1 \
@@ -107,7 +107,7 @@ router.put("/edit-title", function (req, res, next) {
     });
 });
 
-router.post("/add-collaborator", function (req, res, next) {
+router.post("/add-collaborator", auth.verifyToken, function (req, res, next) {
     // Check if the user is already a collaboarator
     const isCollaboratorQuery =
         "SELECT EXISTS (SELECT 1 FROM whiteboard_collaborator WHERE whiteboard_id=$1 AND user_id=$2);";
@@ -150,7 +150,7 @@ router.post("/add-collaborator", function (req, res, next) {
     );
 });
 
-router.delete("/remove-collaborator", function (req, res, next) {
+router.delete("/remove-collaborator", auth.verifyToken, function (req, res, next) {
     const wbcQuery =
         "DELETE FROM whiteboard_collaborator \
         WHERE whiteboard_id=$1 AND user_id=$2 \
