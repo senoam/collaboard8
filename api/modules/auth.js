@@ -8,14 +8,14 @@ function verifyToken(req, res, next) {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (token == null) {
-        res.sendStatus(401);
+        res.sendStatus(403);
         res.end();
         return;
     }
 
     var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
         if (error) {
-            res.status(401).send({
+            res.status(403).send({
                 message: "forbidden"
             });
             return;
@@ -48,7 +48,10 @@ function verifyRole(email, whiteboardID, req) {
             [whiteboardID, userId, "owner", "editor"],
             (error, roleQueryResult) => {
                 if (error) {
-                    throw error;
+                    res.send({
+                        message: "Invalid wbc query"
+                    });
+                    return;
                 }
                 if (roleQueryResult.rows.length < 1) {
                     return 403;
