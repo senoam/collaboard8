@@ -2,8 +2,14 @@ import axios from "axios";
 import authHeader from "../../services/auth-header";
 
 export const getParentComments = (socketObj, setCommentMarkers) => {
-    axios.get("http://localhost:4200/comments/get/" + socketObj.room).then((res) => {
-        setCommentMarkers(res.data.comments);
+    axios.get("http://localhost:4200/comments/get/" + socketObj.room).then(async (res) => {
+        var comments = res.data.comments;
+        for (var comment of comments) {
+            var name = await axios.get("http://localhost:4200/users/get-name/" + comment.user_id);
+            name = name.data;
+            comment.name = name.first_name + " " + name.last_name;
+        }
+        setCommentMarkers(comments);
     });
 };
 
@@ -12,8 +18,16 @@ export const getReplyComments = (socketObj, comment, setCommentReplyData) => {
         .get(
             "http://localhost:4200/comments/get-reply/" + socketObj.room + "/" + comment.comment_id
         )
-        .then((res) => {
-            setCommentReplyData(res.data.comments);
+        .then(async (res) => {
+            var comments = res.data.comments;
+            for (var comment of comments) {
+                var name = await axios.get(
+                    "http://localhost:4200/users/get-name/" + comment.user_id
+                );
+                name = name.data;
+                comment.name = name.first_name + " " + name.last_name;
+            }
+            setCommentReplyData(comments);
             return;
         });
 
@@ -22,6 +36,6 @@ export const getReplyComments = (socketObj, comment, setCommentReplyData) => {
     });
 };
 
-export const sendComment = (socketObj, comment, parent_comment_id) => {
+export const sendComment = (socketObj, comment) => {
     axios.post("http://localhost:4200/comments/db", comment);
 };

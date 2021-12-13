@@ -25,10 +25,12 @@ export const sendStroke = (socketObj, brush_shape, data_string) => {
         brush_size: brush_size
     });
 
-    axios.delete("http://localhost:4200/strokes/clean_undo_redo/" + socketObj.room, {
-        whiteboard_id: socketObj.room,
-        user_id: window.user.user_id
-    });
+    axios.delete(
+        "http://localhost:4200/strokes/clean_undo_redo/" +
+            socketObj.room +
+            "/" +
+            window.user.user_id
+    );
 };
 
 export const retrieveStroke = (socketObj) => {

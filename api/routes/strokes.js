@@ -34,8 +34,6 @@ router.post("/save", function (req, res, next) {
 
 /* POST new undo request. */
 router.post("/undo", function (req, res, next) {
-    // TODO: add user check
-    console.log(req.body.user_id);
     const sql_get_stroke = `SELECT data.stroke_id, data.data_string, data.brush_shape, data.brush_size
        FROM strokes data INNER JOIN (
          SELECT MAX(stroke_id) as stroke_id
@@ -62,7 +60,6 @@ router.post("/undo", function (req, res, next) {
 
 /* POST new redo request. */
 router.post("/redo", function (req, res, next) {
-    // TODO: add user check
     const sql_get_stroke = `SELECT MIN(stroke_id) as stroke_id
       FROM undo_redo
       WHERE stroke_id IN (
@@ -93,7 +90,6 @@ router.post("/redo", function (req, res, next) {
 
 /* DELETE to clean undo_redo table request. */
 router.delete("/clean_undo_redo/:whiteboard_id/:user_id", function (req, res, next) {
-    // TODO: add user check
     const sql = `DELETE FROM strokes
       WHERE whiteboard_id='${req.params.whiteboard_id}'
       AND stroke_id IN (SELECT stroke_id FROM undo_redo WHERE user_id='${req.params.user_id}')`;
