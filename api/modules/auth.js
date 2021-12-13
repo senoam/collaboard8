@@ -21,6 +21,29 @@ function verifyToken(req, res, next) {
             return;
         }
         req.user = user;
+        var verificationCode;
+        try {
+            if (req.params.whiteboardId !== undefined) {
+                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
+                if (verificationCode === 403) {
+                    res.status(403).send({
+                        message: "Unauthorized user"
+                    });
+                }
+            } else if (req.params.whiteboard_id !== undefined) {
+                verifyRole(user.email, req.params.whiteboard_id, req);
+                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
+                if (verificationCode === 403) {
+                    res.status(403).send({
+                        message: "Unauthorized user"
+                    });
+                }
+            }
+        } catch (e) {
+            res.sendStatus(403);
+            res.end();
+            return;
+        }
         next();
     });
 }
@@ -66,7 +89,7 @@ function verifyRole(email, whiteboardID, req) {
 }
 
 function createAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "15m" });
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "20160m" });
 }
 
 module.exports = {
