@@ -17,10 +17,17 @@ router.get("/id/:whiteboardId", [auth.verifyToken], function (req, res, next) {
 
     const { whiteboardId } = req.params;
 
-    if (auth.verifyRole(req.user.email, req.params.whiteboardId, req) === 403) {
-        console.log("asfdgfdgfbfgfb");
+    if (
+        auth.verifyRole(req.user.email, req.params.whiteboardId, req, auth.verifyRoleCallback) ===
+        403
+    ) {
         res.status(403).send({ message: "User is not permitted to access this whiteboard" });
     }
+
+    // if (auth.verifyRole(req.user.email, req.params.whiteboardId, req) === 403) {
+    //     console.log("asfdgfdgfbfgfb");
+    //     res.status(403).send({ message: "User is not permitted to access this whiteboard" });
+    // }
     console.log("whiteboard function");
 
     const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");

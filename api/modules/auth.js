@@ -25,7 +25,11 @@ function verifyToken(req, res, next) {
     });
 }
 
-function verifyRole(email, whiteboardID, req) {
+function verifyRoleCallback(err, result) {
+    return result;
+}
+
+function verifyRole(email, whiteboardID, req, callback) {
     var roleQuery =
         "SELECT * FROM whiteboard_collaborator WHERE whiteboard_id = $1 AND user_id = $2 AND (user_role = $3 OR user_role = $4);";
 
@@ -39,10 +43,9 @@ function verifyRole(email, whiteboardID, req) {
             res.send({
                 message: "email not found"
             });
-            return;
+            callback(err, null);
         }
         userId = userQueryResult.rows[0].user_id;
-        console.log("dalem function");
         req.db.query(
             roleQuery,
             [whiteboardID, userId, "owner", "editor"],
@@ -51,13 +54,13 @@ function verifyRole(email, whiteboardID, req) {
                     res.send({
                         message: "Invalid wbc query"
                     });
-                    return;
+                    callback(error, null);
                 }
                 if (roleQueryResult.rows.length < 1) {
-                    return 403;
+                    callback(null, 403);
                 }
                 console.log(roleQueryResult.rows);
-                return 200;
+                callback(null, 200);
             }
         );
     });
@@ -70,5 +73,6 @@ function createAccessToken(user) {
 module.exports = {
     verifyToken,
     createAccessToken,
-    verifyRole
+    verifyRole,
+    verifyRoleCallback
 };
