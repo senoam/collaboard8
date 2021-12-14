@@ -14,11 +14,7 @@ function BoardCreateTile(props) {
 
     const createNewBoard = () => {
         axios
-            .post(
-                "http://localhost:4200/whiteboard/create",
-                { user_id: props.userId },
-                { headers: authHeader() }
-            )
+            .post("/api/whiteboard/create", { user_id: props.userId }, { headers: authHeader() })
             .then((res) => {
                 navigate(`/whiteboard/${res.data.whiteboard_id}`);
             });

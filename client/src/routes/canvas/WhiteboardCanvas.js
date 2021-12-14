@@ -38,7 +38,7 @@ const WhiteboardCanvas = React.forwardRef((props, ref) => {
 
         axios
             .post(
-                "http://localhost:4200/history/add-history",
+                "/api/history/add-history",
                 {
                     timestamp: timestamp,
                     whiteboard_id: socketObj.room,

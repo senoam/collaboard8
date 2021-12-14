@@ -71,7 +71,7 @@ function Whiteboard(props) {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`, { headers: authHeader() })
+            .get(`/api/whiteboard/id/${whiteboardId}`, { headers: authHeader() })
             .then((res) => {
                 initializeWhiteboard(res.data.whiteboard_title, whiteboardId);
             })
@@ -94,7 +94,7 @@ function Whiteboard(props) {
         setWhiteboardTitle(title);
 
         setSocketObj({
-            socket: io("http://localhost:4000"),
+            socket: io("http://localhost:8080"),
             room: id
         });
     };

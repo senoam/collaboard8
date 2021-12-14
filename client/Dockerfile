@@ -1,16 +1,15 @@
 FROM node:10.15.0-alpine
 EXPOSE 3000
 
-# ARG API_HOST
-# ENV API_HOST $API_HOST
-
 WORKDIR /home/app
 
 COPY package.json /home/app/
-RUN npm install
+RUN npm install --production
 
 COPY . /home/app
 
-# RUN npm start
+RUN npm run build
 
-CMD [ "npm", "start" ]
+RUN npm install -g serve
+
+CMD ["serve", "-s", "build"]

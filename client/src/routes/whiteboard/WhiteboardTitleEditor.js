@@ -16,7 +16,7 @@ function WhiteboardTitle(props) {
     const updateTitle = (newTitle) => {
         axios
             .put(
-                "http://localhost:4200/whiteboard/edit-title",
+                "/api/whiteboard/edit-title",
                 {
                     whiteboard_id: props.whiteboardId,
                     new_whiteboard_title: newTitle

@@ -46,7 +46,7 @@ function Boards(props) {
 
     const getBoards = () => {
         axios
-            .get(`http://localhost:4200/users/id/${currentUser.user_id}/whiteboards`, {
+            .get(`/api/users/id/${currentUser.user_id}/whiteboards`, {
                 headers: authHeader()
             })
             .then((res) => {
