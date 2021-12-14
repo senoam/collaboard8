@@ -70,6 +70,8 @@ export function CommentContainer(props) {
         <div id="comment-container">
             <div id="comment-parent-container">{createComment(parentComment)}</div>
             <div id="comment-reply-container">
+                <h4>Replies</h4>
+                <hr className="comment-divider"></hr>
                 <ul id="comment-list">{replies}</ul>
             </div>
             <form id="comment-form" onSubmit={handleCommentSubmit}>

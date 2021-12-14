@@ -13,7 +13,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 # Easily-missed Features
 
 -   History: we save session history when any user leaves the whiteboard, so users coming back in the future can see what they missed over time. You can view this history by clicking on the click icon beside the whiteboard name on the whiteboard drawing page.
--   Collaboration: drawings are connected to SocketJS allowing for real-time collaboration between users (we recommend logging into both John and Frank’s accounts, but log into one from an incognito tab as logging out from a duplicated window will log out of all sessions)
+-   Collaboration: drawings are connected to SocketIO allowing for real-time collaboration between users (we recommend logging into both John and Frank’s accounts, but log into one from an incognito tab as logging out from a duplicated window will log out of all sessions)
 -   Boards Sharing: you can add users as editor collaborators with the bottom left collaborator button in a whiteboard. Editor users will see the whiteboard appear as a tile in their Shared with Me section on the homepage.
 -   Undo/Redo: your undo/redo history is saved in a database so even if you come back to the whiteboard days later, you can undo your last drawings, or redo anything if you left the board after undoing some content.
 -   Comments: clicking on the bottom right toggle will open comment view, on which you can click any part of the screen to add a new comment, or click an existing comment marker to view their comment and add your replies.
