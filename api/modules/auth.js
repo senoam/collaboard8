@@ -13,7 +13,7 @@ function verifyToken(req, res, next) {
         return;
     }
 
-    var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
+    var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, async (error, user) => {
         if (error) {
             res.status(403).send({
                 message: "Unauthorized user"
@@ -22,12 +22,21 @@ function verifyToken(req, res, next) {
         }
         req.user = user;
         try {
-            if (req.params.whiteboardId !== undefined || req.params.whiteboard_id !== undefined) {
-                var verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
+            console.log(req.body.whiteboard_id);
+            if (
+                req.params.whiteboardId !== undefined ||
+                req.params.whiteboard_id !== undefined ||
+                req.body.whiteboardId !== undefined ||
+                req.body.whiteboard_id !== undefined
+            ) {
+                // second argument should be one of the `req.` values
+                var verificationCode = await verifyRole(user.email, req.body.whiteboard_id, req);
+                console.log(verificationCode);
                 if (verificationCode === 403) {
                     res.status(403).send({
                         message: "Unauthorized user"
                     });
+                    return;
                 }
             }
         } catch (e) {
