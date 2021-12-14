@@ -18,6 +18,8 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 -   Undo/Redo: your undo/redo history is saved in a database so even if you come back to the whiteboard days later, you can undo your last drawings, or redo anything if you left the board after undoing some content.
 -   Comments: clicking on the bottom right toggle will open comment view, on which you can click any part of the screen to add a new comment, or click an existing comment marker to view their comment and add your replies.
 
+Note: on the boards page for the preloaded whiteboard, there is no history therefore no image. Normally created boards (not manually created) ones will not have this issue.
+
 # All Features
 
 ## Databases

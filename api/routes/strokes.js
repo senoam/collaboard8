@@ -1,10 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var auth = require("../modules/auth");
-/* GET check API is working. */
-router.get("/", function (req, res, next) {
-    res.send("Stroke API is working!");
-});
 
 /* GET strokes on this board. */
 router.get("/get/:whiteboard_id", auth.verifyToken, function (req, res, next) {

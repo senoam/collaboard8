@@ -30,12 +30,12 @@ function Signup(props) {
                 Colla<span className="logo-green">Board</span>8
             </h1>
             <h3>A Collaborative Whiteboarding Tool</h3>
-            <hr class="hr-short" />
+            <hr className="hr-short" />
             <form onSubmit={signup}>
                 <input
                     type="text"
                     placeholder="First name"
-                    class="login-input name-input"
+                    className="login-input name-input"
                     onChange={(e) => {
                         setFirstName(e.target.value);
                     }}
@@ -44,7 +44,7 @@ function Signup(props) {
                 <input
                     type="text"
                     placeholder="Last name"
-                    class="login-input name-input"
+                    className="login-input name-input"
                     onChange={(e) => {
                         setLastName(e.target.value);
                     }}
@@ -54,7 +54,7 @@ function Signup(props) {
                 <input
                     type="text"
                     placeholder="Email"
-                    class="login-input"
+                    className="login-input"
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}
@@ -64,7 +64,7 @@ function Signup(props) {
                 <input
                     type="password"
                     placeholder="Password"
-                    class="login-input"
+                    className="login-input"
                     onChange={(e) => {
                         setPassword(e.target.value);
                     }}

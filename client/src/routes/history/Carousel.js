@@ -19,11 +19,9 @@ function HistoryCarousel(props) {
                 { headers: authHeader() }
             )
             .then((response) => {
-                console.log(response.data.data);
-
                 const rows = response.data.data;
                 const imgsmap = rows.map((row) => (
-                    <div>
+                    <div id="history-modal">
                         <img key={row.image_id} src={row.image_data} alt="" />
                         <p className="legend">{row.image_time}</p>
                     </div>
@@ -39,7 +37,7 @@ function HistoryCarousel(props) {
 
     return (
         <Fragment>
-            <h1>Snapshot History</h1>
+            <h2>Snapshot History</h2>
             <Carousel>{imgs}</Carousel>
         </Fragment>
     );
