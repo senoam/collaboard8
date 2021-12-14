@@ -21,18 +21,9 @@ function verifyToken(req, res, next) {
             return;
         }
         req.user = user;
-        var verificationCode;
         try {
-            if (req.params.whiteboardId !== undefined) {
-                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
-                if (verificationCode === 403) {
-                    res.status(403).send({
-                        message: "Unauthorized user"
-                    });
-                }
-            } else if (req.params.whiteboard_id !== undefined) {
-                verifyRole(user.email, req.params.whiteboard_id, req);
-                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
+            if (req.params.whiteboardId !== undefined || req.params.whiteboard_id !== undefined) {
+                var verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
                 if (verificationCode === 403) {
                     res.status(403).send({
                         message: "Unauthorized user"
