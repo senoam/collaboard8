@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import axios from "axios";
+import authHeader from "../../services/auth-header";
 
 function HistoryCarousel(props) {
     const socketObj = props.socketObj;
@@ -10,9 +11,13 @@ function HistoryCarousel(props) {
 
     const getHistory = () => {
         axios
-            .post("http://localhost:4200/history/get-history", {
-                whiteboard_id: room
-            })
+            .post(
+                "http://localhost:4200/history/get-history",
+                {
+                    whiteboard_id: room
+                },
+                { headers: authHeader() }
+            )
             .then((response) => {
                 console.log(response.data.data);
 
