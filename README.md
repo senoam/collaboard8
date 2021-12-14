@@ -53,7 +53,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 -   Board Tiles feature the latest snapshot with its last edited time.
 -   The Boards page uses responsive design and adjusts to all screen sizes.
 -   The top bar of the Boards page has a search bar that would hide your boards to show the search results based on the Whiteboard title.
--   Hovering over the Board Tile would show the delete button. Clicking on it would show a prompt with a button. Any other collaborator will see that the board got deleted by refreshing their page.
+-   Hovering over the Board Tile would show the delete button. Clicking on it would show a prompt with a button. Any other collaborator will see that the board got deleted by refreshing their page. _Anyone can delete whiteboards, regardless of owner or editor role_
 -   If the user has no Shared Boards, a little ghost would appear saying “You have no boards shared with you.”
 
 ## Whiteboard
@@ -68,6 +68,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 -   Hovering over the Whiteboard title would show the borders of the input box.
 -   When clicking on the title, the user will be sent to “edit mode” and can make any changes, given that their title is 100 or less characters long.
     -   Press the Enter key or unfocus the input box to save the whiteboard title.
+-   _Anyone can edit whiteboard titles, regardless of owner or editor role_
 
 ### Collaboration
 
@@ -81,6 +82,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 -   To test the collaborative functionality open localhost:8080 on one browser logged in as John and open another logged in as Frank in incognito
 -   You can also choose to sign up your own user and try adding them as a collaborator!
 -   Comments are not yet connected to sockets, refreshing the comment by reclicking the marker will pull up new comments added to the database.
+-   _Anyone can add whiteboard collaborators, regardless of owner or editor role_
 
 ### Tools
 
