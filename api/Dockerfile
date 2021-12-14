@@ -4,7 +4,7 @@ EXPOSE 4200 4000
 WORKDIR /home/app
 
 COPY package.json /home/app/
-RUN npm install
+RUN npm install --production
 
 COPY . /home/app
 

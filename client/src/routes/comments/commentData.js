@@ -3,7 +3,7 @@ import authHeader from "../../services/auth-header";
 
 export const getParentComments = (socketObj, setCommentMarkers) => {
     axios
-        .get("http://localhost:4200/comments/get/" + socketObj.room, { headers: authHeader() })
+        .get("/api/comments/get/" + socketObj.room, { headers: authHeader() })
         .then(async (res) => {
             var comments = res.data.comments;
             for (var comment of comments) {
@@ -22,17 +22,15 @@ export const getParentComments = (socketObj, setCommentMarkers) => {
 
 export const getReplyComments = (socketObj, comment, setCommentReplyData) => {
     axios
-        .get(
-            "http://localhost:4200/comments/get-reply/" + socketObj.room + "/" + comment.comment_id,
-            { headers: authHeader() }
-        )
+        .get("/api/comments/get-reply/" + socketObj.room + "/" + comment.comment_id, {
+            headers: authHeader()
+        })
         .then(async (res) => {
             var comments = res.data.comments;
             for (var comment of comments) {
-                var name = await axios.get(
-                    "http://localhost:4200/users/get-name/" + comment.user_id,
-                    { headers: authHeader() }
-                );
+                var name = await axios.get("/api/users/get-name/" + comment.user_id, {
+                    headers: authHeader()
+                });
                 name = name.data;
                 comment.name = name.first_name + " " + name.last_name;
             }
@@ -46,5 +44,5 @@ export const getReplyComments = (socketObj, comment, setCommentReplyData) => {
 };
 
 export const sendComment = (socketObj, comment) => {
-    axios.post("http://localhost:4200/comments/db", comment, { headers: authHeader() });
+    axios.post("/api/comments/db", comment, { headers: authHeader() });
 };

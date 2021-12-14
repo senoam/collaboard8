@@ -16,12 +16,10 @@ function BoardTile(props) {
     const boardTileRef = useRef(null);
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:4200/history/thumbnail/${props.id}`, { headers: authHeader() })
-            .then((res) => {
-                setSnapshot(res.data.image_data);
-                setLastEdited(res.data.image_time);
-            });
+        axios.get(`/api/history/thumbnail/${props.id}`, { headers: authHeader() }).then((res) => {
+            setSnapshot(res.data.image_data);
+            setLastEdited(res.data.image_time);
+        });
     }, []);
 
     const getFormattedTime = (dateString) => {
@@ -35,7 +33,7 @@ function BoardTile(props) {
 
     const handleDeleteBoard = () => {
         axios
-            .delete("http://localhost:4200/whiteboard/delete", {
+            .delete("/api/whiteboard/delete", {
                 data: { whiteboard_id: props.id },
                 headers: authHeader()
             })

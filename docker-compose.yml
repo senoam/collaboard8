@@ -4,8 +4,6 @@ services:
   client:
     build:
       context: ./client
-    ports:
-      - "3000:3000"
     links:
       - "api"
 
@@ -15,9 +13,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - "4200:4200"
-      - "4000:4000"
 
   postgres:
     build:
@@ -29,3 +24,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - client
+      - api

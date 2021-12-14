@@ -13,7 +13,7 @@ function Signup(props) {
     const signup = (e) => {
         e.preventDefault();
         axios
-            .post("http://localhost:4200/signup", {
+            .post("/api/signup", {
                 email: email,
                 password: password,
                 firstName: firstName,

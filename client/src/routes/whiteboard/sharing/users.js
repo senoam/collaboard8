@@ -15,7 +15,7 @@ function UserList(props) {
         console.log("User id: " + id);
         console.log("Wb id: " + whiteboardId);
         axios
-            .delete("http://localhost:4200/whiteboard/remove-collaborator", {
+            .delete("/api/whiteboard/remove-collaborator", {
                 data: {
                     whiteboard_id: whiteboardId,
                     user_id: id
@@ -50,16 +50,12 @@ function UserList(props) {
     };
 
     const getUsers = () => {
-        axios
-            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`, { headers: authHeader() })
-            .then((res) => {
-                const rows = res.data.collaborators;
-                const usermap = rows.map((row) =>
-                    renderUserRow(row.email, row.user_role, row.user_id)
-                );
+        axios.get(`/api/whiteboard/id/${whiteboardId}`, { headers: authHeader() }).then((res) => {
+            const rows = res.data.collaborators;
+            const usermap = rows.map((row) => renderUserRow(row.email, row.user_role, row.user_id));
 
-                setUsers(usermap);
-            });
+            setUsers(usermap);
+        });
     };
 
     const inputEmail = (event) => {
@@ -68,42 +64,40 @@ function UserList(props) {
 
     const addCollab = (e) => {
         e.preventDefault();
-        axios
-            .get(`http://localhost:4200/users/id/${email}`, { headers: authHeader() })
-            .then((res) => {
-                if (res.data) {
-                    var uid = res.data.user_id;
+        axios.get(`/api/users/id/${email}`, { headers: authHeader() }).then((res) => {
+            if (res.data) {
+                var uid = res.data.user_id;
 
-                    axios
-                        .post(
-                            `http://localhost:4200/whiteboard/add-collaborator`,
-                            {
-                                whiteboard_id: whiteboardId,
-                                user_id: uid,
-                                user_role: "editor"
-                            },
-                            { headers: authHeader() }
-                        )
-                        .then((res) => {
-                            const newUser = res.data;
-                            if (newUser) {
-                                if (!newUser.preExists) {
-                                    setUsers([...users, renderUserRow(email, "editor", uid)]);
-                                    alert(`${email} added to whiteboard`);
-                                } else {
-                                    alert(`${email} is already a collaborator`);
-                                }
+                axios
+                    .post(
+                        `/api/whiteboard/add-collaborator`,
+                        {
+                            whiteboard_id: whiteboardId,
+                            user_id: uid,
+                            user_role: "editor"
+                        },
+                        { headers: authHeader() }
+                    )
+                    .then((res) => {
+                        const newUser = res.data;
+                        if (newUser) {
+                            if (!newUser.preExists) {
+                                setUsers([...users, renderUserRow(email, "editor", uid)]);
+                                alert(`${email} added to whiteboard`);
                             } else {
-                                alert(`Please check user role`);
+                                alert(`${email} is already a collaborator`);
                             }
-                        })
-                        .catch(() => {
-                            alert("Please provide a valid email and collaborator role");
-                        });
-                } else {
-                    alert(`${email} is not a CollaBoard8 user`);
-                }
-            });
+                        } else {
+                            alert(`Please check user role`);
+                        }
+                    })
+                    .catch(() => {
+                        alert("Please provide a valid email and collaborator role");
+                    });
+            } else {
+                alert(`${email} is not a CollaBoard8 user`);
+            }
+        });
     };
 
     useEffect(() => {
