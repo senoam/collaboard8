@@ -7,12 +7,9 @@ export const getParentComments = (socketObj, setCommentMarkers) => {
         .then(async (res) => {
             var comments = res.data.comments;
             for (var comment of comments) {
-                var name = await axios.get(
-                    "http://localhost:4200/users/get-name/" + comment.user_id,
-                    {
-                        headers: authHeader()
-                    }
-                );
+                var name = await axios.get("/api/users/get-name/" + comment.user_id, {
+                    headers: authHeader()
+                });
                 name = name.data;
                 comment.name = name.first_name + " " + name.last_name;
             }
