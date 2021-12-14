@@ -40,6 +40,7 @@ function Login(props) {
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}
+                    required
                 />
                 <br />
                 <input
@@ -49,6 +50,7 @@ function Login(props) {
                     onChange={(e) => {
                         setPassword(e.target.value);
                     }}
+                    required
                 />
                 <br />
                 <div>
