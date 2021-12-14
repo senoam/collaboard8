@@ -40,7 +40,7 @@ router.post("/", function (req, res, next) {
             }
         });
     } else {
-        res.send("Enter email and password");
+        res.status(404).send("Please Enter email and password");
     }
 });
 

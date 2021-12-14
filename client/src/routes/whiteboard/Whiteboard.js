@@ -25,6 +25,7 @@ import WhiteboardTitleEditor from "./WhiteboardTitleEditor";
 import { undoStroke, redoStroke } from "../canvas/tools/strokeData";
 import UserList from "./sharing/users";
 import Error from "../error/Error";
+import authHeader from "../../services/auth-header";
 
 import "./Whiteboard.css";
 
@@ -70,7 +71,7 @@ function Whiteboard(props) {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`)
+            .get(`http://localhost:4200/whiteboard/id/${whiteboardId}`, { headers: authHeader() })
             .then((res) => {
                 initializeWhiteboard(res.data.whiteboard_title, whiteboardId);
             })

@@ -3,6 +3,7 @@ import "./WhiteboardCanvas.css";
 import axios from "axios";
 import { retrieveStroke } from "./tools/strokeData";
 import { drawingHandler } from "./tools/DrawingHandler";
+import authHeader from "../../services/auth-header";
 
 const WhiteboardCanvas = React.forwardRef((props, ref) => {
     // To get the actual canvas element, use "this.canvasRef.current"
@@ -36,11 +37,15 @@ const WhiteboardCanvas = React.forwardRef((props, ref) => {
         var imgURL = canvas.toDataURL();
 
         axios
-            .post("http://localhost:4200/history/add-history", {
-                timestamp: timestamp,
-                whiteboard_id: socketObj.room,
-                buffer: imgURL
-            })
+            .post(
+                "http://localhost:4200/history/add-history",
+                {
+                    timestamp: timestamp,
+                    whiteboard_id: socketObj.room,
+                    buffer: imgURL
+                },
+                { headers: authHeader() }
+            )
             .then((response) => {
                 console.log("Saved image id: " + response.data.data);
             });

@@ -8,7 +8,7 @@ import authService from "../../services/auth.service";
 import BoardTile from "./BoardTile";
 import BoardCreateTile from "./BoardCreateTile";
 import Error from "../error/Error";
-
+import authHeader from "../../services/auth-header";
 import "./Boards.css";
 
 function Boards(props) {
@@ -46,7 +46,9 @@ function Boards(props) {
 
     const getBoards = () => {
         axios
-            .get(`http://localhost:4200/users/id/${currentUser.user_id}/whiteboards`)
+            .get(`http://localhost:4200/users/id/${currentUser.user_id}/whiteboards`, {
+                headers: authHeader()
+            })
             .then((res) => {
                 const boards = res.data.map((wb) => {
                     return {

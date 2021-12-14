@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./WhiteboardTitleEditor.css";
+import authHeader from "../../services/auth-header";
 
 function WhiteboardTitle(props) {
     const [whiteboardTitle, setWhiteboardTitle] = useState("");
@@ -14,10 +15,14 @@ function WhiteboardTitle(props) {
 
     const updateTitle = (newTitle) => {
         axios
-            .put("http://localhost:4200/whiteboard/edit-title", {
-                whiteboard_id: props.whiteboardId,
-                new_whiteboard_title: newTitle
-            })
+            .put(
+                "http://localhost:4200/whiteboard/edit-title",
+                {
+                    whiteboard_id: props.whiteboardId,
+                    new_whiteboard_title: newTitle
+                },
+                { headers: authHeader() }
+            )
             .then(() => {
                 setWhiteboardTitle(newTitle);
             });

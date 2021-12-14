@@ -1,13 +1,13 @@
 var express = require("express");
 var router = express.Router();
-
+var auth = require("../modules/auth");
 /* GET check API is working. */
 router.get("/", function (req, res, next) {
     res.send("Stroke API is working!");
 });
 
 /* GET strokes on this board. */
-router.get("/get/:whiteboard_id", function (req, res, next) {
+router.get("/get/:whiteboard_id", auth.verifyToken, function (req, res, next) {
     const whiteboardId = req.params.whiteboard_id;
     const sql_get_strokes = `SELECT * FROM strokes
       WHERE whiteboard_id = $1
@@ -22,7 +22,7 @@ router.get("/get/:whiteboard_id", function (req, res, next) {
 });
 
 /* POST new stroke. */
-router.post("/save", function (req, res, next) {
+router.post("/save", auth.verifyToken, function (req, res, next) {
     const { whiteboard_id, user_id, data_string, brush_shape, brush_colour, brush_size } = req.body;
     const sql = `INSERT INTO strokes(whiteboard_id, user_id, draw_time, data_string, brush_shape, brush_colour, brush_size)
     VALUES ($1, $2, current_timestamp, $3, $4, $5, $6);`;
@@ -38,7 +38,7 @@ router.post("/save", function (req, res, next) {
 });
 
 /* POST new undo request. */
-router.post("/undo", function (req, res, next) {
+router.post("/undo", auth.verifyToken, function (req, res, next) {
     const whiteboardId = req.body.whiteboard_id;
     const userId = req.body.user_id;
     const sql_get_stroke = `SELECT data.stroke_id, data.data_string, data.brush_shape, data.brush_size
@@ -66,7 +66,7 @@ router.post("/undo", function (req, res, next) {
 });
 
 /* POST new redo request. */
-router.post("/redo", function (req, res, next) {
+router.post("/redo", auth.verifyToken, function (req, res, next) {
     const whiteboardId = req.body.whiteboard_id;
     const userId = req.body.user_id;
     const sql_get_stroke = `SELECT MIN(stroke_id) as stroke_id
@@ -98,16 +98,20 @@ router.post("/redo", function (req, res, next) {
 });
 
 /* DELETE to clean undo_redo table request. */
-router.delete("/clean_undo_redo/:whiteboard_id/:user_id", function (req, res, next) {
-    const whiteboardId = req.params.whiteboard_id;
-    const userId = req.params.user_id;
-    const sql = `DELETE FROM strokes
+router.delete(
+    "/clean_undo_redo/:whiteboard_id/:user_id",
+    auth.verifyToken,
+    function (req, res, next) {
+        const whiteboardId = req.params.whiteboard_id;
+        const userId = req.params.user_id;
+        const sql = `DELETE FROM strokes
       WHERE whiteboard_id=$1
       AND stroke_id IN (SELECT stroke_id FROM undo_redo WHERE user_id=$2)`;
-    req.db.query(sql, [whiteboardId, userId], function (err, result) {
-        if (err) throw err;
-        res.sendStatus(200);
-    });
-});
+        req.db.query(sql, [whiteboardId, userId], function (err, result) {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    }
+);
 
 module.exports = router;

@@ -5,6 +5,7 @@ import axios from "axios";
 import PlusIcon from "./BoardPlusIcon";
 
 import "./BoardCreateTile.css";
+import authHeader from "../../services/auth-header";
 
 function BoardCreateTile(props) {
     let navigate = useNavigate();
@@ -13,7 +14,11 @@ function BoardCreateTile(props) {
 
     const createNewBoard = () => {
         axios
-            .post("http://localhost:4200/whiteboard/create", { user_id: props.userId })
+            .post(
+                "http://localhost:4200/whiteboard/create",
+                { user_id: props.userId },
+                { headers: authHeader() }
+            )
             .then((res) => {
                 navigate(`/whiteboard/${res.data.whiteboard_id}`);
             });

@@ -1,12 +1,12 @@
 var express = require("express");
 var router = express.Router();
-
+var auth = require("../modules/auth");
 router.get("/", function (req, res, next) {
     res.send("History API is reachable");
 });
 
 //Add a timestamp and image to history db
-router.post("/add-history", function (req, res, next) {
+router.post("/add-history", auth.verifyToken, function (req, res, next) {
     console.log("Got add-history request");
 
     var { timestamp, whiteboard_id, buffer } = req.body;
@@ -36,7 +36,7 @@ router.post("/add-history", function (req, res, next) {
 });
 
 //Send all snapshots and timestamps for a given whiteboard
-router.post("/get-history", function (req, res, next) {
+router.post("/get-history", auth.verifyToken, function (req, res, next) {
     var whiteboard_id = req.body.whiteboard_id;
 
     var query_str =
@@ -57,7 +57,7 @@ router.post("/get-history", function (req, res, next) {
 });
 
 //Thumbnail get request for most recent snapshot
-router.get("/thumbnail/:whiteboardId", function (req, res, next) {
+router.get("/thumbnail/:whiteboardId", auth.verifyToken, function (req, res, next) {
     var room_id = req.params.whiteboardId;
 
     var query_str =
