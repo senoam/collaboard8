@@ -21,7 +21,6 @@ export class ToolManager {
                 break;
             case "circle":
                 Circle.draw(context, start.x, start.y, current.x, current.y);
-                Circle.draw(context, current.x, current.y, start.x, start.y); // close the loop
                 break;
             case "eraser":
                 context.strokeStyle = "#FFFFFF";
