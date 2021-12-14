@@ -98,20 +98,20 @@ router.post("/redo", auth.verifyToken, function (req, res, next) {
 });
 
 /* DELETE to clean undo_redo table request. */
-router.delete(
-    "/clean_undo_redo/:whiteboard_id/:user_id",
-    auth.verifyToken,
-    function (req, res, next) {
-        const whiteboardId = req.params.whiteboard_id;
-        const userId = req.params.user_id;
-        const sql = `DELETE FROM strokes
+router.delete("/clean_undo_redo/:whiteboard_id/:user_id", auth.verifyToken, function (
+    req,
+    res,
+    next
+) {
+    const whiteboardId = req.params.whiteboard_id;
+    const userId = req.params.user_id;
+    const sql = `DELETE FROM strokes
       WHERE whiteboard_id=$1
       AND stroke_id IN (SELECT stroke_id FROM undo_redo WHERE user_id=$2)`;
-        req.db.query(sql, [whiteboardId, userId], function (err, result) {
-            if (err) throw err;
-            res.sendStatus(200);
-        });
-    }
-);
+    req.db.query(sql, [whiteboardId, userId], function (err, result) {
+        if (err) throw err;
+        res.sendStatus(200);
+    });
+});
 
 module.exports = router;

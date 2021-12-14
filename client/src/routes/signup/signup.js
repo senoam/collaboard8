@@ -39,6 +39,7 @@ function Signup(props) {
                     onChange={(e) => {
                         setFirstName(e.target.value);
                     }}
+                    required
                 />
                 <input
                     type="text"
@@ -47,6 +48,7 @@ function Signup(props) {
                     onChange={(e) => {
                         setLastName(e.target.value);
                     }}
+                    required
                 />
                 <br />
                 <input
@@ -56,6 +58,7 @@ function Signup(props) {
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}
+                    required
                 />
                 <br />
                 <input
