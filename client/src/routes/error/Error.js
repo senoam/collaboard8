@@ -19,24 +19,6 @@ function Error(props) {
 
     return (
         <Fragment>
-            {props.showHeader && (
-                <div className="whiteboard-header">
-                    <Link to="/home" className="whiteboard-link">
-                        <h1 className="mini-logo">
-                            Colla<span className="logo-green">board</span>8
-                        </h1>
-                    </Link>
-                    <button
-                        type="button"
-                        className="round-button"
-                        style={{ gridColumn: 3 }}
-                        id="logout-button"
-                        onClick={logOut}
-                    >
-                        <MdLogout />
-                    </button>
-                </div>
-            )}
             <div className="Error-container" style={props.style}>
                 <IconContext.Provider value={{ className: "Error-ghost", size: "5em" }}>
                     <RiGhostLine />
