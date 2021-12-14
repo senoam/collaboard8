@@ -84,7 +84,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 
 ### Tools
 
--   you can switch between multiple shapes and colours for the whiteboard pen, including an eraser (we are aware of a bug that sometimes shows one shape on top of the other despite the order they are drawn in)
+-   you can switch between multiple shapes and colours for the whiteboard pen, including an eraser.
 
 ## Comments
 

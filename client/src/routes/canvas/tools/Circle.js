@@ -14,14 +14,14 @@ export const load = (canvas, data) => {
 export const draw = (context, x0, y0, x1, y1) => {
     const radiusX = (x1 - x0) * 0.5;
     const radiusY = (y1 - y0) * 0.5;
-    const centerX = x0 + radiusX;
-    const centerY = y0 + radiusY;
+    const centerX = parseFloat(x0) + parseFloat(radiusX);
+    const centerY = parseFloat(y0) + parseFloat(radiusY);
     const step = 0.01;
     var a = step;
     const pi2 = Math.PI * 2 - step;
     context.beginPath();
     context.moveTo(centerX + radiusX * Math.cos(0), centerY + radiusY * Math.sin(0));
-    for (; a < pi2; a += step) {
+    for (; a <= pi2; a += step) {
         context.lineTo(centerX + radiusX * Math.cos(a), centerY + radiusY * Math.sin(a));
     }
     context.stroke();
