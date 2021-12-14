@@ -22,16 +22,20 @@ function verifyToken(req, res, next) {
         }
         req.user = user;
         try {
-            console.log(req.body.whiteboard_id);
             if (
                 req.params.whiteboardId !== undefined ||
                 req.params.whiteboard_id !== undefined ||
                 req.body.whiteboardId !== undefined ||
                 req.body.whiteboard_id !== undefined
             ) {
+                const whiteboard_id =
+                    req.params.whiteboardId ||
+                    req.params.whiteboard_id ||
+                    req.body.whiteboardId ||
+                    req.body.whiteboard_id;
+
                 // second argument should be one of the `req.` values
-                var verificationCode = await verifyRole(user.email, req.body.whiteboard_id, req);
-                console.log(verificationCode);
+                var verificationCode = await verifyRole(user.email, whiteboard_id, req);
                 if (verificationCode === 403) {
                     res.status(403).send({
                         message: "Unauthorized user"
