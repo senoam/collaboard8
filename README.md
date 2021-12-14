@@ -38,6 +38,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 -   React handles XSS attack by escaping text.
 -   The web app is not vulnerable to any CSRF attack since the app does not use cookies to store the token.
 -   Since the postgres functions that we are using build the queries safely, SQL injection is not possible.
+-   User can make changes through the api endpoints (e.g. using postman or curl) only if they have access to the whiteboard page that they want to make changes in.
 
 ## Login/Logout
 

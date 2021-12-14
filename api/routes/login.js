@@ -30,12 +30,12 @@ router.post("/", function (req, res, next) {
                             accessToken: accessToken
                         });
                     } else {
-                        res.send("Invalid email and/or password");
+                        res.status(404).send("Invalid email and/or password");
                     }
                     res.end();
                 });
             } else {
-                res.send("Invalid email and/or password");
+                res.status(404).send("Invalid email and/or password");
                 res.end();
             }
         });
