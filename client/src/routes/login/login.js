@@ -22,6 +22,9 @@ function Login(props) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
                 navigate("/home", { state: { userId: response.data.user_id } });
+            })
+            .catch((err) => {
+                alert("Please enter correct login information");
             });
     };
 
