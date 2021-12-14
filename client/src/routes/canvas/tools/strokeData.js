@@ -49,18 +49,16 @@ export const retrieveStroke = (socketObj) => {
         window.location.reload();
     });
 
-    axios
-        .get("http://localhost:4200/strokes/get/" + socketObj.room, { headers: authHeader() })
-        .then((response) => {
-            for (var stroke of response.data) {
-                toolManager.load(
-                    stroke.data_string,
-                    stroke.brush_shape,
-                    stroke.brush_colour,
-                    stroke.brush_size
-                );
-            }
-        });
+    axios.get("/api/strokes/get/" + socketObj.room, { headers: authHeader() }).then((response) => {
+        for (var stroke of response.data) {
+            toolManager.load(
+                stroke.data_string,
+                stroke.brush_shape,
+                stroke.brush_colour,
+                stroke.brush_size
+            );
+        }
+    });
 };
 
 export function undoStroke(socketObj) {
