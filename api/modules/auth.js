@@ -13,7 +13,7 @@ function verifyToken(req, res, next) {
         return;
     }
 
-    var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
+    var verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN, async (error, user) => {
         if (error) {
             res.status(403).send({
                 message: "Unauthorized user"
@@ -21,22 +21,26 @@ function verifyToken(req, res, next) {
             return;
         }
         req.user = user;
-        var verificationCode;
         try {
-            if (req.params.whiteboardId !== undefined) {
-                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
+            if (
+                req.params.whiteboardId !== undefined ||
+                req.params.whiteboard_id !== undefined ||
+                req.body.whiteboardId !== undefined ||
+                req.body.whiteboard_id !== undefined
+            ) {
+                const whiteboard_id =
+                    req.params.whiteboardId ||
+                    req.params.whiteboard_id ||
+                    req.body.whiteboardId ||
+                    req.body.whiteboard_id;
+
+                // second argument should be one of the `req.` values
+                var verificationCode = await verifyRole(user.email, whiteboard_id, req);
                 if (verificationCode === 403) {
                     res.status(403).send({
                         message: "Unauthorized user"
                     });
-                }
-            } else if (req.params.whiteboard_id !== undefined) {
-                verifyRole(user.email, req.params.whiteboard_id, req);
-                verificationCode = verifyRole(user.email, req.params.whiteboardID, req);
-                if (verificationCode === 403) {
-                    res.status(403).send({
-                        message: "Unauthorized user"
-                    });
+                    return;
                 }
             }
         } catch (e) {
