@@ -2,15 +2,6 @@ var express = require("express");
 var router = express.Router();
 var auth = require("../modules/auth");
 
-router.get("/db", auth.verifyToken, function (req, res) {
-    req.db
-        .query(`SELECT * FROM comments;`)
-        .then((data) => {
-            res.json({ data: data.rows });
-        })
-        .catch(() => res.send("Theres something wrong with user table."));
-});
-
 // GET main comments
 router.get("/get/:whiteboard_id", auth.verifyToken, function (req, res) {
     var whiteboardId = req.params.whiteboard_id;

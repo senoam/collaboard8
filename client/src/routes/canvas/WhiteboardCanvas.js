@@ -36,19 +36,15 @@ const WhiteboardCanvas = React.forwardRef((props, ref) => {
         const canvas = window.canvasRef.current;
         var imgURL = canvas.toDataURL();
 
-        axios
-            .post(
-                "/api/history/add-history",
-                {
-                    timestamp: timestamp,
-                    whiteboard_id: socketObj.room,
-                    buffer: imgURL
-                },
-                { headers: authHeader() }
-            )
-            .then((response) => {
-                console.log("Saved image id: " + response.data.data);
-            });
+        axios.post(
+            "/api/history/add-history",
+            {
+                timestamp: timestamp,
+                whiteboard_id: socketObj.room,
+                buffer: imgURL
+            },
+            { headers: authHeader() }
+        );
     };
 
     useImperativeHandle(ref, () => ({

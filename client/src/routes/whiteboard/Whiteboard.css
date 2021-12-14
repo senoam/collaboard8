@@ -83,6 +83,10 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     margin-top: 0.3em;
 }
 
+#history-modal {
+    border: 0.2em solid var(--medium);
+}
+
 #logout-button {
     margin-left: 29vw;
 }

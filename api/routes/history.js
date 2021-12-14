@@ -1,9 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var auth = require("../modules/auth");
-router.get("/", function (req, res, next) {
-    res.send("History API is reachable");
-});
 
 //Add a timestamp and image to history db
 router.post("/add-history", auth.verifyToken, function (req, res, next) {
@@ -27,7 +24,6 @@ router.post("/add-history", auth.verifyToken, function (req, res, next) {
                     next(err2);
                     res.send("Error in session_history table.");
                 } else {
-                    console.log("image id: " + result.rows[0].image_id);
                     res.json({ data: result.rows[0].image_id });
                 }
             });
