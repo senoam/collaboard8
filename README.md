@@ -104,3 +104,7 @@ Frank: [frankmap@example.com](mailto:frankmap@example.com) - Password: haha1234 
 ## Error handling
 
 -   All undefined URLs (ex. Localhost:8080/djfklajldfj), and localhost:8080/whiteboard/ URLs referring to non-existent whiteboards would render an error page with a ghost saying “Nothing to see here!”
+
+## Nginx
+
+-   We are serving our static files at `/static-files/`. You can see that our favicon is hosted at http://localhost:8080/static-files/favicon.ico
